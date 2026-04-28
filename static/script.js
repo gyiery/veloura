@@ -202,12 +202,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const preloader = document.getElementById("preloader");
 
-    setTimeout(function () {
-        preloader.classList.add("hide");
-    }, 1200);
+    if (preloader) {
+        setTimeout(function () {
+            preloader.classList.add("hide");
+            preloader.style.display = "none";
+        }, 1500);
+    }
 });
 
 
