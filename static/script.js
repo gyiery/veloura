@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const userIcon
+    const userIcon = document.getElementById("userIcon");
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
 
@@ -202,15 +202,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-document.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("load", function () {
     const preloader = document.getElementById("preloader");
 
-    if (preloader) {
-        setTimeout(function () {
-            preloader.classList.add("hide");
-            preloader.style.display = "none";
-        }, 1500);
-    }
+    setTimeout(function () {
+        preloader.classList.add("hide");
+    }, 1200);
 });
 
 
