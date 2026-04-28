@@ -2033,3 +2033,19 @@ def live_search(request):
             })
 
     return JsonResponse({'results': results})
+
+
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
+def create_live_admin(request):
+    if User.objects.filter(username="raviadmin").exists():
+        return HttpResponse("Admin already exists")
+
+    User.objects.create_superuser(
+        username="raviadmin",
+        email="your-email@gmail.com",
+        password="Ravi@12345"
+    )
+
+    return HttpResponse("Live admin created successfully")

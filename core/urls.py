@@ -119,6 +119,8 @@ urlpatterns = [
     path('test-email/', views.test_email, name='test_email'),
 
     path('live-search/', views.live_search, name='live_search'),
+
+    path('create-live-admin/', views.create_live_admin, name='create_live_admin'),
     ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
