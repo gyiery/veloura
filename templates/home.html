@@ -1,0 +1,565 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <a href="/" class="logo-link">Veloura</a>
+    </div>
+
+    <nav class="nav-links">
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'women' %}">WOMEN</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'men' %}">MEN</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'kids' %}">KIDS</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="#">BRANDS</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'sale_products' %}">SALE</a>
+        </div>
+    </nav>
+
+    <div class="nav-right">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search for products...">
+            <span id="search-clear" class="search-clear">&times;</span>
+            <div id="search-results" class="search-results"></div>
+
+            <form id="search-form" action="{% url 'search' %}" method="get">
+                <input type="hidden" name="q" id="hidden-search-input">
+            </form>
+        </div>
+
+        <div class="nav-icons">
+            <a href="{% url 'wishlist' %}" class="icon-link">
+                <div class="cart-icon-wrap">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/>
+                    </svg>
+                    {% if wishlist_count > 0 %}
+                    <span class="cart-badge">{{ wishlist_count }}</span>
+                    {% endif %}
+                </div>
+            </a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'account_page' %}" class="account-trigger-link">
+                <div class="account-trigger">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+                    </svg>
+                    <span class="user-mini-name">{{ user.first_name|default:user.username }}</span>
+                </div>
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="account-trigger-link">
+                <svg class="icon" id="userIcon" viewBox="0 0 24 24">
+                    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+                </svg>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'cart' %}" class="cart-icon-link">
+                <div class="cart-icon-wrap">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    </svg>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    </div>
+</header>
+<!------------------------HERO SECTION---------------------------->
+
+<section class="promo-slider-section">
+    <div class="promo-slider" id="promoSlider">
+        <div class="promo-slides">
+            <div class="promo-slide active">
+                <img src="{% static 'images.avif' %}" alt="Luxury Collection">
+                <div class="promo-overlay">
+                    <a href="{% url 'category_products' 'women' %}" class="promo-btn">Shop Now</a>
+                </div>
+            </div>
+
+            <div class="promo-slide">
+                <img src="{% static 'menappearl.avif' %}" alt="Men Collection">
+                <div class="promo-overlay">
+                    <span>Exclusive Edit</span>
+                    <h2>Modern Menswear</h2>
+                    <p>Sharp silhouettes with premium comfort.</p>
+                    <a href="{% url 'category_products' 'men' %}" class="promo-btn">Explore Men</a>
+                </div>
+            </div>
+
+            <div class="promo-slide">
+                <img src="{% static 'perfumebanner.webp' %}" alt="Perfume Collection">
+                <div class="promo-overlay">
+                    <span>20% OFF</span>
+                    <h2>Perfume Collection</h2>
+                    <p>Discover elegant signature scents.</p>
+                    <a href="#perfume-section" class="promo-btn">See Below</a>
+                    
+                </div>
+            </div>
+        </div>
+
+        <button class="promo-arrow prev" id="promoPrev">&#10094;</button>
+        <button class="promo-arrow next" id="promoNext">&#10095;</button>
+
+        <div class="promo-dots" id="promoDots">
+            <span class="promo-dot active" data-slide="0"></span>
+            <span class="promo-dot" data-slide="1"></span>
+            <span class="promo-dot" data-slide="2"></span>
+        </div>
+    </div>
+</section>
+
+
+
+{% if recently_viewed_products %}
+<section class="recently-viewed-section">
+
+    <div class="recently-header">
+        <div>
+            <span class="section-tag">PICK UP WHERE YOU LEFT OFF</span>
+            <h2>Recently Viewed</h2>
+        </div>
+
+        <a href="{% url 'recently_viewed_page' %}" class="view-all-btn">
+            View All →
+        </a>
+    </div>
+
+    <div class="recently-slider">
+        {% for product in recently_viewed_products %}
+        <a href="{% url 'product_detail' product.id %}" class="recent-card">
+
+            <div class="recent-img">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                
+                {% if product.has_valid_sale %}
+                <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
+                {% endif %}
+            </div>
+
+            <div class="recent-info">
+                <h3>{{ product.name }}</h3>
+
+                {% if product.has_valid_sale %}
+                <div class="sale-price-row">
+                    <span class="sale-current-price">₹{{ product.sale_price|floatformat:2 }}</span>
+                    <span class="sale-old-price">₹{{ product.price }}</span>
+                </div>
+                {% else %}
+                <span class="category-product-price">₹{{ product.price }}</span>
+                {% endif %}
+            </div>
+
+        </a>
+        {% endfor %}
+    </div>
+
+</section>
+{% endif %}
+
+
+<section class="perfume-section" id="perfume-section">
+    <div class="section-header">
+        <h2>Luxury Perfumes</h2>
+        <p>Discover signature scents curated for elegance and long-lasting impression.</p>
+    </div>
+
+    <div class="perfume-grid">
+        {% for product in perfume_products %}
+            <div class="perfume-card">
+                <a href="{% url 'product_detail' product.id %}">
+                    <div class="perfume-image-box">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="no-image">No Image</div>
+                        {% endif %}
+                    </div>
+                </a>
+
+                <div class="perfume-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="perfume-price">₹{{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="perfume-btn">View Product</a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="no-products">No perfume products available right now.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="featured-categories">
+    <div class="section-top">
+        <span class="section-tag">CURATED CATEGORIES</span>
+        <h2>Explore Our Signature Worlds</h2>
+        <p>Discover elevated edits designed for every mood, moment, and modern lifestyle.</p>
+    </div>
+
+    <div class="category-grid">
+        <a href="{% url 'category_products' 'women' %}" class="category-card large-card">
+            <div class="category-image">
+                <img src="{% static 'womenc.png' %}" alt="Women Collection">
+            </div>
+            <div class="category-overlay">
+                <span>01</span>
+                <h3>Women</h3>
+                <p>Elegant silhouettes and statement essentials.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'category_products' 'men' %}" class="category-card">
+            <div class="category-image">
+                <img src="{% static 'men.png' %}" alt="Men Collection">
+            </div>
+            <div class="category-overlay">
+                <span>02</span>
+                <h3>Men</h3>
+                <p>Refined everyday fashion with a premium edge.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'category_products' 'kids' %}" class="category-card">
+            <div class="category-image">
+                <img src="{% static 'OIP.webp' %}" alt="Kids Collection">
+            </div>
+            <div class="category-overlay">
+                <span>03</span>
+                <h3>Kids</h3>
+                <p>Playful comfort crafted for bright young style.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'category_products' 'accessories' %}" class="category-card wide-card">
+    <div class="category-image">
+        <img src="{% static 'images.jpg' %}" alt="Accessories Collection">
+    </div>
+    <div class="category-overlay">
+        <span>04</span>
+        <h3>Accessories</h3>
+        <p>Watches, eyewear, belts, bags, and premium finishing touches.</p>
+    </div>
+</a>
+    </div>
+</section>
+
+<section class="arrivals-section">
+    <div class="arrivals-top">
+        <div>
+            <span class="section-tag">NEW ARRIVALS</span>
+            <h2>Trending Now</h2>
+            <p>Fresh luxury edits designed to elevate your everyday wardrobe.</p>
+        </div>
+
+        <div class="slider-controls">
+            <button class="slider-btn" id="arrivalsPrev">&#10094;</button>
+            <button class="slider-btn" id="arrivalsNext">&#10095;</button>
+        </div>
+    </div>
+
+    <div class="arrivals-slider-wrapper">
+        <div class="arrivals-slider" id="arrivalsSlider">
+            {% for product in new_arrivals %}
+            <div class="product-card clickable-card" onclick="window.location.href='{% url 'product_detail' product.id %}'">
+                <div class="product-image-wrap">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist-btn" onclick="event.stopPropagation();">♥</a>
+                    <span class="product-badge">NEW</span>
+                </div>
+
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="product-category">{{ product.category }}</p>
+                    <div class="product-bottom">
+                        <span class="product-price">₹{{ product.price }}</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No new arrivals yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="brand-story-strip">
+    <div class="brand-story-left">
+        <span class="section-tag">OUR SIGNATURE</span>
+        <h2>Crafted For Quiet Luxury</h2>
+        <p>
+            At Veloura, we blend modern silhouettes, premium textures, and
+            refined design language to create pieces that feel timeless,
+            elevated, and effortlessly wearable.
+        </p>
+
+        <div class="story-points">
+            <div class="story-point">
+                <h4>Premium Fabrics</h4>
+                <p>Soft-touch materials chosen for comfort, durability, and elegance.</p>
+            </div>
+
+            <div class="story-point">
+                <h4>Minimal Design</h4>
+                <p>Clean details and refined shapes inspired by modern luxury living.</p>
+            </div>
+
+            <div class="story-point">
+                <h4>Curated Collections</h4>
+                <p>Thoughtfully designed edits for fashion, home, and everyday style.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-story-right">
+        <div class="story-image-card">
+            <img src="{% static 'clothing.jpg' %}" alt="Brand Story">
+        </div>
+
+        <div class="story-floating-box">
+            <span>VEL OURA EDIT</span>
+            <h3>Modern Elegance</h3>
+            <p>Designed to feel exclusive, refined, and wearable every day.</p>
+        </div>
+    </div>
+</section>
+
+<section class="best-sellers-section">
+    <div class="section-top">
+        <span class="section-tag">BEST SELLERS</span>
+        <h2>Most Loved Pieces</h2>
+        <p>Discover the styles our customers keep coming back for.</p>
+    </div>
+
+    <div class="best-sellers-grid">
+        {% for product in best_sellers %}
+        <a href="{% url 'product_detail' product.id %}" class="detail-related-link">
+            <div class="best-card" data-product-id="{{ product.id }}">
+                <div class="best-card-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
+                <div class="best-card-info">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.category }}</p>
+                    <span>₹{{ product.price }}</span>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <p>No best sellers yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="modal" id="quickViewModal">
+    <div class="modal-content quick-view-box">
+        <span class="close-btn" id="closeQuickView">&times;</span>
+
+        <div class="quick-view-layout">
+            <div class="quick-view-image">
+                <img id="quickViewImg" src="" alt="Product Preview">
+            </div>
+
+            <div class="quick-view-details">
+                <span class="quick-view-tag">BEST SELLER</span>
+                <h2 id="quickViewTitle">Product Title</h2>
+                <p class="quick-view-category" id="quickViewCategory">Category</p>
+                <p class="quick-view-price" id="quickViewPrice">₹0</p>
+                <p class="quick-view-description" id="quickViewDescription">
+                    Product description goes here.
+                </p>
+
+                <div class="quick-view-actions">
+                    <form id="quickViewCartForm" method="post" class="quick-cart-form">
+                        {% csrf_token %}
+                        <button type="submit" class="main-btn">Add to Cart</button>
+                    </form>
+                    <button class="secondary-quick-btn">Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="newsletter-gallery-section">
+    <div class="newsletter-strip">
+        <div class="newsletter-left">
+            <span class="section-tag">STAY CONNECTED</span>
+            <h2>Join The Veloura World</h2>
+            <p>
+                Be first to know about new collections, signature drops,
+                exclusive offers, and style inspirations.
+            </p>
+        </div>
+
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email address">
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+{% if messages %}
+<div class="message-area">
+    {% for message in messages %}
+        <div class="site-message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeLogin">&times;</span>
+
+        <h2>Welcome Back</h2>
+
+        <form action="/login/" method="post">
+            {% csrf_token %}
+            <input type="text" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <button type="submit" class="main-btn">Login</button>
+        </form>
+
+        <p>
+            Don't have an account?
+            <span id="openRegister">Register</span>
+        </p>
+    </div>
+</div>
+
+<div class="modal" id="registerModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeRegister">&times;</span>
+
+        <h2>Create Account</h2>
+
+        <form action="/register/" method="post">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Full Name">
+            <input type="text" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <button type="submit" class="main-btn">Register</button>
+        </form>
+
+        <p>
+            Already have an account?
+            <span id="openLogin">Login</span>
+        </p>
+    </div>
+</div>
+
+
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div>
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+        </div>
+
+        <div>
+            <h4>Support</h4>
+            <a href="#">Contact Us</a>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Returns</a>
+            <a href="#">Help Center</a>
+        </div>
+
+        <div>
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Refund Policy</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
+
+<div id="preloader">
+    <div class="loader-content">
+        <div class="loader-symbol"></div>
+        <h1 class="loader-logo">VELOURA</h1>
+        <p class="loader-tagline">Motion In Style</p>
+    </div>
+</div>
+
+<div class="lux-chat-widget">
+    <button id="chatToggleBtn" class="lux-chat-toggle" type="button">
+        <span>✦</span>
+    </button>
+
+    <div id="chatPanel" class="lux-chat-panel">
+        <div class="lux-chat-header">
+            <div>
+                <h3>Veloura Assistant</h3>
+                <p>Luxury support, instantly</p>
+            </div>
+            <button id="chatCloseBtn" class="lux-chat-close" type="button">&times;</button>
+        </div>
+
+        <div id="chatUserForm" class="lux-chat-user-form">
+            <h4>Start Conversation</h4>
+            <input type="text" id="chatUserName" placeholder="Enter your name">
+            <input type="email" id="chatUserEmail" placeholder="Enter your email">
+            <button id="startChatBtn" class="lux-start-chat-btn" type="button">Start Conversation</button>
+        </div>
+
+        <div id="chatConversation" class="lux-chat-conversation hidden">
+            <div id="chatMessages" class="lux-chat-messages">
+                <div class="bot-message">
+                    Hello ✨ I’m your Veloura assistant. Ask me about products, perfumes, payments, orders, shipping, returns, or shopping help.
+                </div>
+            </div>
+
+            <div class="lux-chat-input-area">
+                <input type="text" id="chatInput" placeholder="Ask about products, orders, payment...">
+                <button id="voiceChatBtn" type="button" title="Speak">🎤</button>
+                <button id="sendChatBtn" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'script.js' %}"></script>
+</body>
+</html>

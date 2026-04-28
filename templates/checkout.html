@@ -1,0 +1,376 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+        <nav class="nav-links">
+            <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+            <div class="nav-item"><a href="#">BRANDS</a></div>
+            <div class="nav-item"><a href="#">SALE</a></div>
+        </nav>
+
+        <div class="nav-icons">
+            <a href="{% url 'cart' %}" class="cart-icon-link">
+                <div class="cart-icon-wrap">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    </svg>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <section class="checkout-page">
+        <div class="checkout-top">
+
+            {% if messages %}
+    <div class="checkout-message-stack">
+        {% for message in messages %}
+            <div class="checkout-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+            <span class="section-tag">SECURE CHECKOUT</span>
+            <h1>Complete Your Order</h1>
+            <p>Luxury checkout experience with secure details, premium flow, and elegant review.</p>
+        </div>
+
+
+        <div class="checkout-layout">
+
+            <form id="checkoutForm" class="checkout-left">
+                {% csrf_token %}
+
+                <div class="checkout-card glass-card">
+                    <div class="checkout-card-top">
+                        <h2>Shipping Information</h2>
+                        <span class="checkout-step">01</span>
+                    </div>
+
+                    {% if default_address %}
+                    <div class="checkout-default-address-note">
+                        <strong>Using saved default address</strong>
+                        <p>{{ default_address.full_name }} • {{ default_address.phone }}</p>
+                        <span>{{ default_address.full_address }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="checkout-form-grid">
+                        <div class="checkout-field full-width">
+                            <label for="full_name">Full Name</label>
+                            <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" value="{{ checkout_prefill.full_name }}" required>
+                            <small class="field-error" id="full_name_error"></small>
+                        </div>
+
+                        <div class="checkout-field">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" id="phone" name="phone" placeholder="Enter phone number" value="{{ checkout_prefill.phone }}" required>
+                            <small class="field-error" id="phone_error"></small>
+                        </div>
+
+                        <div class="checkout-field">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email address" value="{{ checkout_prefill.email }}">
+                            <small class="field-error" id="email_error"></small>
+                        </div>
+
+                        <div class="checkout-field full-width">
+                            <label for="address">Full Address</label>
+                            <textarea id="address" name="address" placeholder="House no, street, city, state, postal code" required>{{ checkout_prefill.address }}</textarea>
+                            <small class="field-error" id="address_error"></small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-card glass-card">
+                    <div class="checkout-card-top">
+                        <h2>Secure Payment</h2>
+                        <span class="checkout-step">02</span>
+                    </div>
+
+                    <div class="real-payment-box">
+                        <div class="real-payment-left">
+                            <div class="lock-icon">🔒</div>
+                        </div>
+
+                        <div class="real-payment-content">
+                            <h3>Pay securely with Razorpay</h3>
+                            <p>
+                                After clicking <strong>Pay Now</strong>, you will be redirected to Razorpay
+                                to complete your payment using UPI, Cards, Net Banking, or Wallets.
+                            </p>
+
+                            <div class="payment-badges">
+                                <span>UPI</span>
+                                <span>Cards</span>
+                                <span>Net Banking</span>
+                                <span>Wallets</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="place-order-btn" id="payNowBtn" onclick="startRazorpay()">
+                    Pay Now
+                </button>
+            </form>
+
+            <div class="checkout-right">
+                <div class="checkout-summary-card glass-card">
+                    <div class="summary-header">
+                        <h2>Order Summary</h2>
+                        <span>{{ cart_count }} item{{ cart_count|pluralize }}</span>
+                    </div>
+
+                    <div class="checkout-items-list">
+                        {% for item in cart_items %}
+                        <div class="checkout-item-row">
+                            <div class="checkout-item-image">
+                                <img src="{{ item.image }}" alt="{{ item.name }}">
+                            </div>
+
+                            <div class="checkout-item-content">
+                                <h4>{{ item.name }}</h4>
+                                <p>₹{{ item.price }} × {{ item.quantity }}</p>
+                            </div>
+
+                            <div class="checkout-item-subtotal">
+                                ₹{{ item.subtotal }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <form method="post" action="{% url 'apply_coupon' %}" class="coupon-form">
+                        {% csrf_token %}
+                        <input type="text" name="coupon_code" placeholder="Enter coupon code" class="coupon-input">
+
+                        {% if applied_coupon %}
+                            <button type="button" class="coupon-btn applied-btn" disabled>Applied</button>
+                        {% else %}
+                            <button type="submit" class="coupon-btn">Apply</button>
+                        {% endif %}
+                    </form>
+
+                    {% if applied_coupon %}
+                    <div class="applied-coupon-box">
+                        <div>
+                            <strong>{{ applied_coupon.code }}</strong>
+                            <p>Coupon applied successfully</p>
+                        </div>
+                        <a href="{% url 'remove_coupon' %}" class="remove-coupon-link">Remove</a>
+                    </div>
+                    {% endif %}
+
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <span>₹{{ subtotal }}</span>
+                    </div>
+
+                    {% if discount_amount > 0 %}
+                    <div class="summary-line discount-line">
+                        <span>Coupon Discount</span>
+                        <span>- ₹{{ discount_amount }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="summary-line">
+                        <span>Delivery</span>
+                        <span>Free</span>
+                    </div>
+
+                    <div class="summary-line">
+                        <span>Taxes</span>
+                        <span>Included</span>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span>₹{{ total }}</span>
+                    </div>
+
+                    <div class="checkout-secure-note">
+                        <span>🔒</span>
+                        <p>Your checkout information is securely processed.</p>
+                    </div>
+
+                    <div id="checkoutGlobalError" class="checkout-global-error"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+    function clearErrors() {
+        const errorFields = ['full_name', 'phone', 'email', 'address'];
+        errorFields.forEach(field => {
+            const el = document.getElementById(field + '_error');
+            if (el) el.textContent = '';
+        });
+
+        const globalError = document.getElementById('checkoutGlobalError');
+        if (globalError) {
+            globalError.textContent = '';
+            globalError.style.display = 'none';
+        }
+    }
+
+    function showFieldError(field, message) {
+        const el = document.getElementById(field + '_error');
+        if (el) el.textContent = message;
+    }
+
+    function showGlobalError(message) {
+        const globalError = document.getElementById('checkoutGlobalError');
+        if (globalError) {
+            globalError.textContent = message;
+            globalError.style.display = 'block';
+        }
+    }
+
+    function validateCheckoutForm() {
+        clearErrors();
+
+        const fullName = document.getElementById('full_name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const address = document.getElementById('address').value.trim();
+
+        let isValid = true;
+
+        if (!fullName || fullName.length < 3) {
+            showFieldError('full_name', 'Enter a valid full name.');
+            isValid = false;
+        }
+
+        if (!phone || !/^[0-9]{10,15}$/.test(phone)) {
+            showFieldError('phone', 'Enter a valid phone number.');
+            isValid = false;
+        }
+
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showFieldError('email', 'Enter a valid email address.');
+            isValid = false;
+        }
+
+        if (!address || address.length < 10) {
+            showFieldError('address', 'Enter a complete delivery address.');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    async function startRazorpay() {
+        if (!validateCheckoutForm()) {
+            return;
+        }
+
+        const payBtn = document.getElementById('payNowBtn');
+        payBtn.disabled = true;
+        payBtn.textContent = 'Processing...';
+
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        const payload = {
+            full_name: document.getElementById('full_name').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            address: document.getElementById('address').value.trim()
+        };
+
+        try {
+            const response = await fetch("/payment/razorpay/create-order/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                showGlobalError(data.error || "Unable to start payment. Please try again.");
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay Now';
+                return;
+            }
+
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: "INR",
+                name: "Veloura",
+                description: "Order Payment",
+                order_id: data.razorpay_order_id,
+                prefill: {
+                    name: data.customer_name || "",
+                    email: data.customer_email || "",
+                    contact: data.customer_phone || ""
+                },
+                handler: function (response) {
+                    const form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = "/payment/razorpay/verify/";
+
+                    form.innerHTML = `
+                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+                        <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+                        <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+                        <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+                    `;
+
+                    document.body.appendChild(form);
+                    form.submit();
+                },
+                modal: {
+                    ondismiss: function () {
+                        payBtn.disabled = false;
+                        payBtn.textContent = 'Pay Now';
+                    }
+                },
+                theme: {
+                    color: "#111"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+
+        } catch (error) {
+            showGlobalError("Something went wrong while starting payment. Please try again.");
+            payBtn.disabled = false;
+            payBtn.textContent = 'Pay Now';
+        }
+    }
+    </script>
+
+</body>
+</html>

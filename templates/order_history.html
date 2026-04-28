@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+</header>
+
+<section class="success-page">
+    <div class="success-card">
+        <span class="section-tag">MY ORDERS</span>
+        <h1>Your Order History</h1>
+        <p class="success-subtext">Track your recent purchases and view detailed summaries.</p>
+
+        <div class="success-items-box">
+            {% for order in user_orders %}
+            <a href="{% url 'order_detail' order.id %}" class="order-history-link">
+                <div class="order-history-card">
+                    <div>
+                        <h3>Order #{{ order.id }}</h3>
+                        <p>{{ order.created_at|date:"d M Y, h:i A" }}</p>
+                    </div>
+
+                    <div class="order-history-meta">
+                        <span>{{ order.payment_provider|title }}</span>
+                        <strong>{{ order.payment_status|title }}</strong>
+                        <span>₹{{ order.total_amount }}</span>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <p class="no-review-text">You have not placed any orders yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

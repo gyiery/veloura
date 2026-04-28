@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category_name }} - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+        <nav class="nav-links">
+            <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+            <div class="nav-item"><a href="#">BRANDS</a></div>
+            <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+        </nav>
+
+        <div class="nav-icons">
+            <div class="search-box">
+                <input type="text" placeholder="Search for products...">
+            </div>
+
+            <a href="{% url 'cart' %}" class="cart-icon-link">
+                <div class="cart-icon-wrap">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    </svg>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <section class="category-page">
+        <div class="category-page-top">
+            <span class="section-tag">{{ category_name|upper }} COLLECTION</span>
+            <h1>{{ category_name }}</h1>
+
+            {% if category_name == "Accessories" %}
+                <p>Explore watches, glasses, belts, wallets, purse, jewellery, skin-care and more.</p>
+            {% else %}
+                <p>Explore our curated {{ category_name|lower }} products.</p>
+            {% endif %}
+        </div>
+
+        {% if category_name == "Accessories" or category_name == "Men" or category_name == "Women" or category_name == "Kids" %}
+        <div class="category-main-layout">
+
+            <aside class="category-filter-sidebar">
+                <form method="get" class="category-filter-form">
+                    {% if selected_sort %}
+                        <input type="hidden" name="sort" value="{{ selected_sort }}">
+                    {% endif %}
+
+                    {% if category_name == "Accessories" %}
+                        <div class="filter-block">
+                            <h3>Gender</h3>
+
+                            <label>
+                                <input type="radio" name="gender" value="" {% if not selected_gender %}checked{% endif %}>
+                                <span>All</span>
+                            </label>
+
+                            <label>
+                                <input type="radio" name="gender" value="men" {% if selected_gender == "men" %}checked{% endif %}>
+                                <span>Men</span>
+                            </label>
+
+                            <label>
+                                <input type="radio" name="gender" value="women" {% if selected_gender == "women" %}checked{% endif %}>
+                                <span>Women</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-block">
+                            <h3>Accessories Type</h3>
+
+                            <label><input type="radio" name="type" value="" {% if not selected_type %}checked{% endif %}><span>All</span></label>
+                            <label><input type="radio" name="type" value="shoes" {% if selected_type == "shoes" %}checked{% endif %}><span>Shoes</span></label>
+                            <label><input type="radio" name="type" value="watches" {% if selected_type == "watches" %}checked{% endif %}><span>Watches</span></label>
+                            <label><input type="radio" name="type" value="glasses" {% if selected_type == "glasses" %}checked{% endif %}><span>Glasses</span></label>
+                            <label><input type="radio" name="type" value="belts" {% if selected_type == "belts" %}checked{% endif %}><span>Belts</span></label>
+                            <label><input type="radio" name="type" value="wallets" {% if selected_type == "wallets" %}checked{% endif %}><span>Wallets</span></label>
+                            <label><input type="radio" name="type" value="purse" {% if selected_type == "purse" %}checked{% endif %}><span>Purse</span></label>
+                            <label><input type="radio" name="type" value="jewellery" {% if selected_type == "jewellery" %}checked{% endif %}><span>Jewellery</span></label>
+                            <label><input type="radio" name="type" value="skin-care" {% if selected_type == "skin-care" %}checked{% endif %}><span>Skin-Care</span></label>
+                        </div>
+                    {% endif %}
+
+                    {% if category_name == "Men" %}
+                        <div class="filter-block">
+                            <h3>Men Category</h3>
+                            <label><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                            <label><input type="radio" name="subcategory" value="shirts" {% if selected_subcategory == "shirts" %}checked{% endif %}><span>Shirts</span></label>
+                            <label><input type="radio" name="subcategory" value="t-shirts" {% if selected_subcategory == "t-shirts" %}checked{% endif %}><span>T-Shirts</span></label>
+                            <label><input type="radio" name="subcategory" value="jeans" {% if selected_subcategory == "jeans" %}checked{% endif %}><span>Jeans</span></label>
+                            <label><input type="radio" name="subcategory" value="formal" {% if selected_subcategory == "formal" %}checked{% endif %}><span>Formal</span></label>
+                            <label><input type="radio" name="subcategory" value="polos" {% if selected_subcategory == "polos" %}checked{% endif %}><span>Polos</span></label>
+                            <label><input type="radio" name="subcategory" value="jackets" {% if selected_subcategory == "jackets" %}checked{% endif %}><span>Jackets</span></label>
+                            <label><input type="radio" name="subcategory" value="trousers" {% if selected_subcategory == "trousers" %}checked{% endif %}><span>Trousers</span></label>
+                        </div>
+                    {% endif %}
+
+                    {% if category_name == "Women" %}
+                        <div class="filter-block">
+                            <h3>Women Category</h3>
+                            <label><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                            <label><input type="radio" name="subcategory" value="dresses" {% if selected_subcategory == "dresses" %}checked{% endif %}><span>Dresses</span></label>
+                            <label><input type="radio" name="subcategory" value="tops" {% if selected_subcategory == "tops" %}checked{% endif %}><span>Tops</span></label>
+                            <label><input type="radio" name="subcategory" value="kurtas" {% if selected_subcategory == "kurtas" %}checked{% endif %}><span>Kurtas</span></label>
+                            <label><input type="radio" name="subcategory" value="jeans" {% if selected_subcategory == "jeans" %}checked{% endif %}><span>Jeans</span></label>
+                            <label><input type="radio" name="subcategory" value="sarees" {% if selected_subcategory == "sarees" %}checked{% endif %}><span>Sarees</span></label>
+                            <label><input type="radio" name="subcategory" value="skirts" {% if selected_subcategory == "skirts" %}checked{% endif %}><span>Skirts</span></label>
+                            <label><input type="radio" name="subcategory" value="co-ords" {% if selected_subcategory == "co-ords" %}checked{% endif %}><span>Co-ords</span></label>
+                            <label><input type="radio" name="subcategory" value="leggings" {% if selected_subcategory == "leggings" %}checked{% endif %}><span>Leggings</span></label>
+                        </div>
+                    {% endif %}
+
+                    {% if category_name == "Kids" %}
+                        <div class="filter-block">
+                            <h3>Kids Category</h3>
+                            <label><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                            <label><input type="radio" name="subcategory" value="boys-wear" {% if selected_subcategory == "boys-wear" %}checked{% endif %}><span>Boys Wear</span></label>
+                            <label><input type="radio" name="subcategory" value="girls-wear" {% if selected_subcategory == "girls-wear" %}checked{% endif %}><span>Girls Wear</span></label>
+                            <label><input type="radio" name="subcategory" value="sets" {% if selected_subcategory == "sets" %}checked{% endif %}><span>Sets</span></label>
+                            <label><input type="radio" name="subcategory" value="nightwear" {% if selected_subcategory == "nightwear" %}checked{% endif %}><span>Nightwear</span></label>
+                            <label><input type="radio" name="subcategory" value="baby-wear" {% if selected_subcategory == "baby-wear" %}checked{% endif %}><span>Baby Wear</span></label>
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="category-filter-btn">Apply Filters</button>
+                </form>
+            </aside>
+
+            <div class="category-content-area">
+                <div class="filter-sort-bar">
+                    <form method="get" class="sort-form">
+                        {% if selected_gender %}
+                            <input type="hidden" name="gender" value="{{ selected_gender }}">
+                        {% endif %}
+                        {% if selected_type %}
+                            <input type="hidden" name="type" value="{{ selected_type }}">
+                        {% endif %}
+                        {% if selected_subcategory %}
+                            <input type="hidden" name="subcategory" value="{{ selected_subcategory }}">
+                        {% endif %}
+
+                        <select name="sort" onchange="this.form.submit()">
+                            <option value="">Sort By</option>
+                            <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+                            <option value="low-high" {% if selected_sort == 'low-high' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="high-low" {% if selected_sort == 'high-low' %}selected{% endif %}>Price: High to Low</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="category-grid-page">
+                    {% for product in products %}
+                    <div class="category-product-card clickable-card"
+                         onclick="window.location.href='{% url 'product_detail' product.id %}'">
+
+                        <div class="category-product-image">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+                            {% if product.has_valid_sale %}
+                                <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
+                            {% endif %}
+
+                            <a href="{% url 'add_to_wishlist' product.id %}"
+                               class="wishlist-btn"
+                               onclick="event.stopPropagation();">
+                                ♥
+                            </a>
+                        </div>
+
+                        <div class="category-product-info">
+                            <p class="category-product-type">
+                                {% if product.category == "Home" %}
+                                    Accessories
+                                {% else %}
+                                    {{ product.category }}
+                                {% endif %}
+                            </p>
+
+                            <h3>{{ product.name }}</h3>
+                            <p class="category-product-desc">{{ product.description|truncatechars:70 }}</p>
+
+                            <div class="product-stock-line">
+                                {% if product.stock > 5 %}
+                                    <span class="stock-badge in-stock">In Stock</span>
+                                {% elif product.stock > 0 %}
+                                    <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+                                {% else %}
+                                    <span class="stock-badge out-stock">Out of Stock</span>
+                                {% endif %}
+                            </div>
+
+                            <div class="category-product-bottom">
+                                {% if product.has_valid_sale %}
+                                <div class="sale-price-row">
+                                    <span class="sale-current-price">₹{{ product.sale_price|floatformat:2 }}</span>
+                                    <span class="sale-old-price">₹{{ product.price }}</span>
+                                </div>
+                                {% else %}
+                                <span class="category-product-price">₹{{ product.price }}</span>
+                                {% endif %}
+
+                                {% if product.stock > 0 %}
+                                    <form action="{% url 'add_to_cart' product.id %}"
+                                          method="post"
+                                          class="add-cart-form"
+                                          onclick="event.stopPropagation();">
+                                        {% csrf_token %}
+                                        <button type="submit" class="mini-cart-btn">Add</button>
+                                    </form>
+                                {% else %}
+                                    <button type="button"
+                                            class="mini-cart-btn out-stock-btn"
+                                            onclick="event.stopPropagation();"
+                                            disabled>
+                                        Out of Stock
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+                    {% empty %}
+                    <div class="empty-category-box">
+                        <h2>No {{ category_name }} products yet</h2>
+                        <p>Please add products from admin.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="filter-sort-bar">
+            <form method="get" class="sort-form">
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+                    <option value="low-high" {% if selected_sort == 'low-high' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="high-low" {% if selected_sort == 'high-low' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="category-grid-page">
+            {% for product in products %}
+            <div class="category-product-card clickable-card"
+                 onclick="window.location.href='{% url 'product_detail' product.id %}'">
+
+                <div class="category-product-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+                    {% if product.has_valid_sale %}
+                        <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
+                    {% endif %}
+
+                    <a href="{% url 'add_to_wishlist' product.id %}"
+                       class="wishlist-btn"
+                       onclick="event.stopPropagation();">
+                        ♥
+                    </a>
+                </div>
+
+                <div class="category-product-info">
+                    <p class="category-product-type">
+                        {% if product.category == "Home" %}
+                            Accessories
+                        {% else %}
+                            {{ product.category }}
+                        {% endif %}
+                    </p>
+
+                    <h3>{{ product.name }}</h3>
+                    <p class="category-product-desc">{{ product.description|truncatechars:70 }}</p>
+
+                    <div class="product-stock-line">
+                        {% if product.stock > 5 %}
+                            <span class="stock-badge in-stock">In Stock</span>
+                        {% elif product.stock > 0 %}
+                            <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+                        {% else %}
+                            <span class="stock-badge out-stock">Out of Stock</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="category-product-bottom">
+                        {% if product.has_valid_sale %}
+                        <div class="sale-price-row">
+                            <span class="sale-current-price">₹{{ product.sale_price|floatformat:2 }}</span>
+                            <span class="sale-old-price">₹{{ product.price }}</span>
+                        </div>
+                        {% else %}
+                        <span class="category-product-price">₹{{ product.price }}</span>
+                        {% endif %}
+
+                        {% if product.stock > 0 %}
+                            <form action="{% url 'add_to_cart' product.id %}"
+                                  method="post"
+                                  class="add-cart-form"
+                                  onclick="event.stopPropagation();">
+                                {% csrf_token %}
+                                <button type="submit" class="mini-cart-btn">Add</button>
+                            </form>
+                        {% else %}
+                            <button type="button"
+                                    class="mini-cart-btn out-stock-btn"
+                                    onclick="event.stopPropagation();"
+                                    disabled>
+                                Out of Stock
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            {% empty %}
+            <div class="empty-category-box">
+                <h2>No {{ category_name }} products yet</h2>
+                <p>Please add products from admin.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% endif %}
+    </section>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

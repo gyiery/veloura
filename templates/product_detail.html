@@ -1,0 +1,438 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}" class="cart-icon-link">
+            <div class="cart-icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</header>
+
+<section class="product-detail-page">
+    <div class="product-detail-layout">
+
+        <div class="product-detail-image-column">
+            <div class="product-gallery-wrap">
+                <div class="product-gallery-main">
+                    <img
+                        id="mainProductImage"
+                        src="{{ product.image.url }}"
+                        alt="{{ product.name }}"
+                        data-max-stock="{{ product.stock }}"
+                    >
+                    <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist-btn detail-wishlist-btn">♥</a>
+                </div>
+
+                <div class="product-gallery-thumbs">
+                    <button type="button" class="product-thumb active" onclick="changeMainImage(this, '{{ product.image.url }}')">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </button>
+
+                    {% for gallery in gallery_images %}
+                    <button type="button" class="product-thumb" onclick="changeMainImage(this, '{{ gallery.image.url }}')">
+                        <img src="{{ gallery.image.url }}" alt="{{ gallery.alt_text|default:product.name }}">
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="image-review-box">
+                <h3>Customer Reviews</h3>
+                <div class="image-review-top">
+                    <div class="image-review-score">{{ average_rating|default:"0" }}</div>
+                    <div>
+                        <div class="image-review-stars">
+                            {% if average_rating >= 1 %}★{% else %}☆{% endif %}
+                            {% if average_rating >= 2 %}★{% else %}☆{% endif %}
+                            {% if average_rating >= 3 %}★{% else %}☆{% endif %}
+                            {% if average_rating >= 4 %}★{% else %}☆{% endif %}
+                            {% if average_rating >= 5 %}★{% else %}☆{% endif %}
+                        </div>
+                        <p>{{ total_reviews }} reviews</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-detail-info premium-detail-panel">
+            <div class="detail-head-wrap">
+                <span class="luxury-label">
+                    {% if product.category == "Home" %}
+                        Accessories
+                    {% else %}
+                        {{ product.category }}
+                    {% endif %}
+                </span>
+
+                <button type="button" class="detail-share-btn" id="shareProductBtn">Share</button>
+            </div>
+
+            <h1 class="premium-product-title">{{ product.name }}</h1>
+
+            <div class="detail-rating-row premium-rating-row">
+                <div class="real-rating-box">
+                    <span class="rating-number">{{ average_rating|default:"0" }}</span>
+                    <span class="stars">
+                        {% if average_rating >= 1 %}★{% else %}☆{% endif %}
+                        {% if average_rating >= 2 %}★{% else %}☆{% endif %}
+                        {% if average_rating >= 3 %}★{% else %}☆{% endif %}
+                        {% if average_rating >= 4 %}★{% else %}☆{% endif %}
+                        {% if average_rating >= 5 %}★{% else %}☆{% endif %}
+                    </span>
+                    <span class="rating-text">{{ total_reviews }} reviews</span>
+                </div>
+            </div>
+
+            <div class="premium-price-block">
+                <div class="premium-price-line">
+                    <span class="premium-main-price">₹{{ product.price }}</span>
+                    <span class="premium-old-price">₹{{ product.price|add:800 }}</span>
+                    <span class="premium-discount-badge">18% OFF</span>
+                </div>
+                <p class="premium-tax-note">Inclusive of all taxes</p>
+            </div>
+
+            <p class="premium-short-desc">{{ product.description }}</p>
+
+            <div class="premium-info-strip">
+                <div class="info-chip">
+                    <span class="info-chip-label">Brand</span>
+                    <strong>Veloura</strong>
+                </div>
+                <div class="info-chip">
+                    <span class="info-chip-label">Availability</span>
+                    <strong>{{ product.stock_status }}</strong>
+                </div>
+                <div class="info-chip">
+                    <span class="info-chip-label">Category</span>
+                    <strong>
+                        {% if product.category == "Home" %}
+                            Accessories
+                        {% else %}
+                            {{ product.category }}
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="product-detail-stock-row">
+                {% if product.stock > 5 %}
+                    <span class="stock-badge in-stock">In Stock</span>
+                {% elif product.stock > 0 %}
+                    <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+                {% else %}
+                    <span class="stock-badge out-stock">Out of Stock</span>
+                {% endif %}
+            </div>
+
+            {% if product.stock > 0 %}
+            <div class="premium-section-card">
+                <div class="premium-section-top">
+                    <h3>Quantity</h3>
+                </div>
+                <div class="detail-qty-box luxury-qty-box">
+                    <div class="qty-controls">
+                        <button type="button" id="qtyMinusBtn">−</button>
+                        <span id="qtyValue">1</span>
+                        <button type="button" id="qtyPlusBtn">+</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="premium-section-card">
+                <div class="premium-section-top">
+                    <h3>Delivery</h3>
+                </div>
+                <div class="delivery-input-row luxury-delivery-row">
+                    <input type="text" id="pincodeInput" placeholder="Enter pincode">
+                    <button type="button" id="checkPincodeBtn">Check</button>
+                </div>
+                <p id="pincodeResult" class="premium-delivery-note">Enter your pincode to check delivery availability.</p>
+            </div>
+
+            <div class="premium-two-col">
+                <div class="premium-section-card">
+                    <div class="premium-section-top">
+                        <h3>Offers</h3>
+                    </div>
+                    <ul class="premium-list">
+                        <li>Extra 10% off on orders above ₹1999</li>
+                        <li>Free shipping on prepaid orders</li>
+                        <li>Special member-exclusive premium offers</li>
+                    </ul>
+                </div>
+
+                <div class="premium-section-card">
+                    <div class="premium-section-top">
+                        <h3>Highlights</h3>
+                    </div>
+                    <ul class="premium-list">
+                        <li>Premium finish and refined styling</li>
+                        <li>Curated for elevated everyday wear</li>
+                        <li>High-quality material and clean detailing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="detail-action-buttons premium-action-row">
+                {% if product.stock > 0 %}
+                <form action="{% url 'add_to_cart' product.id %}" method="post" class="detail-cart-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="cartQuantityInput" value="1">
+                    <button type="submit" class="detail-add-cart-btn premium-dark-btn">Add to Cart</button>
+                </form>
+
+                <form action="{% url 'buy_now' product.id %}" method="post" class="detail-cart-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="buyNowQuantityInput" value="1">
+                    <button type="submit" class="detail-buy-now-btn premium-light-btn">Buy Now</button>
+                </form>
+                {% else %}
+                <button type="button" class="detail-add-cart-btn premium-dark-btn disabled-btn" disabled>Out of Stock</button>
+                {% endif %}
+            </div>
+
+            <div class="detail-trust-row premium-trust-row">
+                <div class="trust-chip">Secure Checkout</div>
+                <div class="trust-chip">Easy Returns</div>
+                <div class="trust-chip">Premium Quality</div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="product-review-section">
+    <div class="review-form-box">
+        <h3>Write a Review</h3>
+
+        {% if user.is_authenticated %}
+        <form action="{% url 'submit_review' product.id %}" method="post" class="review-form">
+            {% csrf_token %}
+
+            <label for="rating">Your Rating</label>
+            <select name="rating" id="rating" required>
+                <option value="">Select rating</option>
+                <option value="5" {% if user_review and user_review.rating == 5 %}selected{% endif %}>5 - Excellent</option>
+                <option value="4" {% if user_review and user_review.rating == 4 %}selected{% endif %}>4 - Very Good</option>
+                <option value="3" {% if user_review and user_review.rating == 3 %}selected{% endif %}>3 - Good</option>
+                <option value="2" {% if user_review and user_review.rating == 2 %}selected{% endif %}>2 - Average</option>
+                <option value="1" {% if user_review and user_review.rating == 1 %}selected{% endif %}>1 - Poor</option>
+            </select>
+
+            <label for="comment">Your Review</label>
+            <textarea name="comment" id="comment" rows="5" placeholder="Write your review here...">{% if user_review %}{{ user_review.comment }}{% endif %}</textarea>
+
+            <button type="submit" class="submit-review-btn">
+                {% if user_review %}Update Review{% else %}Submit Review{% endif %}
+            </button>
+        </form>
+        {% else %}
+        <p class="review-login-note">
+            Please <a href="{% url 'login' %}">log in</a> to write a review.
+        </p>
+        {% endif %}
+    </div>
+
+    <div class="customer-review-list">
+        <h3>What Customers Say</h3>
+
+        {% for review in reviews %}
+        <div class="single-review-card">
+            <div class="review-card-top">
+                <strong>{{ review.user.username }}</strong>
+                <span class="review-date">{{ review.created_at|date:"d M Y" }}</span>
+            </div>
+
+            <div class="review-card-stars">
+                {% if review.rating >= 1 %}★{% else %}☆{% endif %}
+                {% if review.rating >= 2 %}★{% else %}☆{% endif %}
+                {% if review.rating >= 3 %}★{% else %}☆{% endif %}
+                {% if review.rating >= 4 %}★{% else %}☆{% endif %}
+                {% if review.rating >= 5 %}★{% else %}☆{% endif %}
+            </div>
+
+            <p class="review-card-text">
+                {{ review.comment|default:"No written review provided." }}
+            </p>
+        </div>
+        {% empty %}
+        <p class="no-review-text">No reviews yet. Be the first to review this product.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% if related_products %}
+<section class="related-products-section">
+    <div class="section-top">
+        <span class="section-tag">YOU MAY ALSO LIKE</span>
+        <h2>
+            More From
+            {% if product.category == "Home" %}
+                Accessories
+            {% else %}
+                {{ product.category }}
+            {% endif %}
+        </h2>
+        <p>Explore more premium pieces from this collection.</p>
+    </div>
+
+    <div class="category-grid-page">
+        {% for item in related_products %}
+        <a href="{% url 'product_detail' item.id %}" class="detail-related-link">
+            <div class="category-product-card">
+                <div class="category-product-image">
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                </div>
+
+                <div class="category-product-info">
+                    <p class="category-product-type">
+                        {% if item.category == "Home" %}
+                            Accessories
+                        {% else %}
+                            {{ item.category }}
+                        {% endif %}
+                    </p>
+                    <h3>{{ item.name }}</h3>
+                    <p class="category-product-desc">{{ item.description|truncatechars:70 }}</p>
+
+                    <div class="product-stock-line">
+                        {% if item.stock > 5 %}
+                            <span class="stock-badge in-stock">In Stock</span>
+                        {% elif item.stock > 0 %}
+                            <span class="stock-badge low-stock">Only {{ item.stock }} left</span>
+                        {% else %}
+                            <span class="stock-badge out-stock">Out of Stock</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="category-product-bottom">
+                        <span class="category-product-price">₹{{ item.price }}</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<script>
+function changeMainImage(button, imageUrl) {
+    const mainImage = document.getElementById('mainProductImage');
+    if (mainImage) {
+        mainImage.src = imageUrl;
+    }
+
+    const thumbs = document.querySelectorAll('.product-thumb');
+    thumbs.forEach(function(thumb) {
+        thumb.classList.remove('active');
+    });
+
+    button.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const qtyValue = document.getElementById('qtyValue');
+    const minusBtn = document.getElementById('qtyMinusBtn');
+    const plusBtn = document.getElementById('qtyPlusBtn');
+    const cartInput = document.getElementById('cartQuantityInput');
+    const buyNowInput = document.getElementById('buyNowQuantityInput');
+    const mainImage = document.getElementById('mainProductImage');
+
+    if (qtyValue && minusBtn && plusBtn && mainImage) {
+        let qty = 1;
+        const maxStock = parseInt(mainImage.dataset.maxStock || '1', 10);
+
+        function updateQty() {
+            qtyValue.textContent = qty;
+            if (cartInput) cartInput.value = qty;
+            if (buyNowInput) buyNowInput.value = qty;
+        }
+
+        minusBtn.addEventListener('click', function () {
+            if (qty > 1) {
+                qty -= 1;
+                updateQty();
+            }
+        });
+
+        plusBtn.addEventListener('click', function () {
+            if (qty < maxStock) {
+                qty += 1;
+                updateQty();
+            }
+        });
+
+        updateQty();
+    }
+
+    const shareBtn = document.getElementById('shareProductBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', function () {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    url: window.location.href
+                });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(window.location.href).then(function () {
+                    alert('Product link copied.');
+                });
+            }
+        });
+    }
+
+    const checkPincodeBtn = document.getElementById('checkPincodeBtn');
+    const pincodeInput = document.getElementById('pincodeInput');
+    const pincodeResult = document.getElementById('pincodeResult');
+
+    if (checkPincodeBtn && pincodeInput && pincodeResult) {
+        checkPincodeBtn.addEventListener('click', function () {
+            const pincode = pincodeInput.value.trim();
+
+            fetch('/check-pincode/?pincode=' + encodeURIComponent(pincode))
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    pincodeResult.textContent = data.message;
+                })
+                .catch(function () {
+                    pincodeResult.textContent = 'Unable to check delivery right now.';
+                });
+        });
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+</header>
+
+<section class="success-page">
+    <div class="success-card">
+        <div class="success-badge">✓</div>
+        <span class="section-tag">ORDER CONFIRMED</span>
+        <h1>Your order has been placed successfully</h1>
+        <p class="success-subtext">
+            Thank you for shopping with Veloura. Your payment was completed and your order is now being processed.
+        </p>
+
+        {% if order %}
+        <div class="success-order-box">
+            <div class="success-order-row">
+                <span>Order ID</span>
+                <strong>#{{ order.id }}</strong>
+            </div>
+
+            <div class="success-order-row">
+                <span>Customer</span>
+                <strong>{{ order.full_name }}</strong>
+            </div>
+
+            <div class="success-order-row">
+                <span>Payment Status</span>
+                <strong>{{ order.payment_status|title }}</strong>
+            </div>
+
+            <div class="success-order-row">
+                <span>Payment Method</span>
+                <strong>{{ order.payment_provider|title }}</strong>
+            </div>
+
+            <div class="success-order-row">
+                <span>Total Paid</span>
+                <strong>₹{{ order.total_amount }}</strong>
+            </div>
+
+            <div class="success-order-row">
+                <span>Order Date</span>
+                <strong>{{ order.created_at|date:"d M Y, h:i A" }}</strong>
+            </div>
+        </div>
+
+        <div class="success-address-box">
+            <h3>Delivery Address</h3>
+            <p>{{ order.address }}</p>
+        </div>
+
+        <div class="success-items-box">
+            <h3>Items Ordered</h3>
+
+            {% for item in order.items.all %}
+            <div class="success-item-row">
+                <div class="success-item-left">
+                    {% if item.image %}
+                    <img src="{{ item.image }}" alt="{{ item.product_name }}">
+                    {% endif %}
+                    <div>
+                        <h4>{{ item.product_name }}</h4>
+                        <p>₹{{ item.price }} × {{ item.quantity }}</p>
+                    </div>
+                </div>
+                <strong>₹{{ item.price|floatformat:2 }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="success-actions">
+            <a href="/" class="success-btn primary-btn">Continue Shopping</a>
+            <a href="{% url 'order_history' %}" class="success-btn secondary-btn">View My Orders</a>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

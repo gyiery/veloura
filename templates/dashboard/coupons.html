@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Coupons - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}">Products</a>
+        <a href="{% url 'dashboard_orders' %}">Orders</a>
+        <a href="{% url 'dashboard_support_tickets' %}">Support</a>
+        <a href="{% url 'dashboard_coupons' %}" class="active">Coupons</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-page-head">
+            <div>
+                <p class="dashboard-kicker">Admin Panel</p>
+                <h1>Coupon Management</h1>
+            </div>
+
+            <a href="{% url 'dashboard_add_coupon' %}" class="dashboard-primary-link">+ Add Coupon</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="dashboard-alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="dashboard-table-card">
+            <div class="dashboard-card-head">
+                <h3>All Coupons</h3>
+                <span>{{ coupons|length }} Total</span>
+            </div>
+
+            <div class="dashboard-table-wrap">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Type</th>
+                            <th>Discount</th>
+                            <th>Minimum Order</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for coupon in coupons %}
+                        <tr>
+                            <td><strong>{{ coupon.code }}</strong></td>
+                            <td>{{ coupon.discount_type|title }}</td>
+                            <td>
+                                {% if coupon.discount_type == 'percent' %}
+                                    {{ coupon.discount_value }}%
+                                {% else %}
+                                    ₹{{ coupon.discount_value }}
+                                {% endif %}
+                            </td>
+                            <td>₹{{ coupon.minimum_order_amount }}</td>
+                            <td>
+                                {% if coupon.is_active %}
+                                    <span class="dashboard-status-badge delivered">Active</span>
+                                {% else %}
+                                    <span class="dashboard-status-badge open">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="dashboard-action-row">
+                                    <a href="{% url 'dashboard_edit_coupon' coupon.id %}" class="dashboard-action-btn">Edit</a>
+                                    <a href="{% url 'dashboard_delete_coupon' coupon.id %}" class="dashboard-action-btn delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">No coupons found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

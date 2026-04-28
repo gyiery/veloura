@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Orders - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}">Products</a>
+        <a href="{% url 'dashboard_orders' %}" class="active">Orders</a>
+        <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+        <a href="{% url 'dashboard_support_tickets' %}">Support</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-page-head">
+            <div>
+                <p class="dashboard-kicker">Admin Panel</p>
+                <h1>Order Management</h1>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="dashboard-alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="dashboard-table-card">
+            <div class="dashboard-table-wrap">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Payment</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Delivery</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>
+                                <strong>#{{ order.id }}</strong><br>
+                                <small>{{ order.created_at|date:"d M Y, h:i A" }}</small>
+                            </td>
+
+                            <td>
+                                <strong>{{ order.full_name }}</strong><br>
+                                <small>{{ order.phone }}</small>
+                            </td>
+
+                            <td>
+                                <span>{{ order.payment_provider|title }}</span><br>
+                                <small>{{ order.payment_status|title }}</small>
+                            </td>
+
+                            <td>₹{{ order.total_amount }}</td>
+
+                            <td>
+                                <span class="dashboard-status-badge {{ order.order_status }}">
+                                    {{ order.get_order_status_display }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if order.estimated_delivery %}
+                                    {{ order.estimated_delivery|date:"d M Y" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <form method="post" action="{% url 'dashboard_update_order_status' order.id %}" class="dashboard-inline-form">
+                                    {% csrf_token %}
+                                    <select name="order_status">
+                                        <option value="placed" {% if order.order_status == 'placed' %}selected{% endif %}>Placed</option>
+                                        <option value="packed" {% if order.order_status == 'packed' %}selected{% endif %}>Packed</option>
+                                        <option value="shipped" {% if order.order_status == 'shipped' %}selected{% endif %}>Shipped</option>
+                                        <option value="out_for_delivery" {% if order.order_status == 'out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
+                                        <option value="delivered" {% if order.order_status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                    </select>
+                                    <button type="submit">Save</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7">No orders found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

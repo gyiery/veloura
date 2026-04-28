@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Support - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}">Products</a>
+        <a href="{% url 'dashboard_orders' %}">Orders</a>
+        <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'dashboard_support_tickets' %}" class="active">Support</a>
+        <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-page-head">
+            <div>
+                <p class="dashboard-kicker">Admin Panel</p>
+                <h1>Support Tickets</h1>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="dashboard-alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="dashboard-ticket-grid">
+            {% for ticket in tickets %}
+            <div class="dashboard-ticket-card">
+                <div class="dashboard-ticket-top">
+                    <div>
+                        <h3>{{ ticket.subject }}</h3>
+                        <p>{{ ticket.user.username }} • {{ ticket.created_at|date:"d M Y, h:i A" }}</p>
+                    </div>
+
+                    <span class="dashboard-status-badge {{ ticket.status }}">
+                        {{ ticket.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="dashboard-ticket-message">
+                    <label>User Message</label>
+                    <p>{{ ticket.message }}</p>
+                </div>
+
+                <form method="post" action="{% url 'dashboard_update_ticket' ticket.id %}" class="dashboard-ticket-form">
+                    {% csrf_token %}
+
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="open" {% if ticket.status == 'open' %}selected{% endif %}>Open</option>
+                        <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="resolved" {% if ticket.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                    </select>
+
+                    <label>Admin Reply</label>
+                    <textarea name="admin_reply" rows="5" placeholder="Write your reply...">{{ ticket.admin_reply }}</textarea>
+
+                    <button type="submit">Save Ticket</button>
+                </form>
+            </div>
+            {% empty %}
+            <div class="dashboard-empty-state">
+                <h3>No support tickets yet</h3>
+                <p>Support requests from users will appear here.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

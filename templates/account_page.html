@@ -1,0 +1,508 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+</header>
+
+<section class="account-page-wrap">
+    <div class="account-page-top">
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" alt="Profile" class="account-page-avatar-image">
+        {% else %}
+            <div class="account-page-avatar">{{ user.username|first|upper }}</div>
+        {% endif %}
+
+        <div class="account-page-welcome">
+            <p class="account-breadcrumb">Veloura / My Account / Profile</p>
+            <h1>Welcome, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}!</h1>
+            <span>Manage your profile, orders, wishlist, addresses and support.</span>
+        </div>
+    </div>
+
+    <div class="account-page-layout">
+        <aside class="account-sidebar">
+            <a href="{% url 'account_page' %}?tab=orders" class="account-side-link {% if active_tab == 'orders' %}active{% endif %}"><span>My Orders</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=wishlist" class="account-side-link {% if active_tab == 'wishlist' %}active{% endif %}"><span>Wishlist</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=profile" class="account-side-link {% if active_tab == 'profile' %}active{% endif %}"><span>Account &amp; Information</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=addresses" class="account-side-link {% if active_tab == 'addresses' %}active{% endif %}"><span>Addresses</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=support" class="account-side-link {% if active_tab == 'support' %}active{% endif %}"><span>Customer Support</span><span>→</span></a>
+            {% if user.is_superuser %}
+            <a href="{% url 'dashboard_overview' %}" class="account-side-link"><span>Admin Dashboard</span><span>→</span></a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="account-logout-link">Logout</a>
+        </aside>
+
+        <main class="account-main-panel">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="account-success-msg">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% if active_tab == 'profile' %}
+            <div class="account-panel-card">
+                <div class="account-panel-head">
+                    <h2>Profile Details</h2>
+                    <span class="account-panel-pill">Editable</span>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="account-edit-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="profile_form">
+
+                    <div class="account-profile-edit-layout">
+                        <div class="account-profile-photo-box">
+                            {% if profile.profile_image %}
+                                <img src="{{ profile.profile_image.url }}" alt="Profile" class="account-edit-photo-preview">
+                            {% else %}
+                                <div class="account-profile-avatar-large">{{ user.username|first|upper }}</div>
+                            {% endif %}
+                            <input type="file" name="profile_image">
+                        </div>
+
+                        <div class="account-form-grid">
+                            <div class="account-form-field">
+                                <label>First Name</label>
+                                <input type="text" name="first_name" value="{{ user.first_name }}">
+                            </div>
+
+                            <div class="account-form-field">
+                                <label>Last Name</label>
+                                <input type="text" name="last_name" value="{{ user.last_name }}">
+                            </div>
+
+                            <div class="account-form-field">
+                                <label>Email Address</label>
+                                <input type="email" name="email" value="{{ user.email }}">
+                            </div>
+
+                            <div class="account-form-field">
+                                <label>Phone Number</label>
+                                <input type="text" name="phone" value="{{ profile.phone|default:'' }}">
+                            </div>
+
+                            <div class="account-form-field">
+                                <label>Gender</label>
+                                <select name="gender">
+                                    <option value="">Select gender</option>
+                                    <option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option>
+                                    <option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option>
+                                    <option value="Other" {% if profile.gender == 'Other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="account-form-field">
+                                <label>Date of Birth</label>
+                                <input type="date" name="date_of_birth" value="{{ profile.date_of_birth|date:'Y-m-d' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="account-save-btn">Save Profile</button>
+                </form>
+            </div>
+            {% endif %}
+
+            
+
+            {% if active_tab == 'orders' %}
+<div class="account-panel-card">
+    <div class="account-panel-head">
+        <h2>My Orders</h2>
+        <span class="account-panel-pill">{{ user_orders|length }} Orders</span>
+    </div>
+
+    {% for order in user_orders %}
+    <div class="order-card">
+        <div class="order-top">
+            <div>
+                <strong>Order #{{ order.id }}</strong>
+                <p>{{ order.created_at|date:"d M Y, h:i A" }}</p>
+            </div>
+
+            <div class="account-order-meta">
+                <span>{{ order.payment_provider|title }}</span>
+                <span class="order-status {{ order.order_status }}">{{ order.get_order_status_display }}</span>
+                <span>₹{{ order.total_amount }}</span>
+            </div>
+        </div>
+
+        <div class="order-timeline">
+            <div class="timeline-step {% if order.order_status == 'placed' or order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
+                <span>Placed</span>
+            </div>
+
+            <div class="timeline-step {% if order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
+                <span>Packed</span>
+            </div>
+
+            <div class="timeline-step {% if order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
+                <span>Shipped</span>
+            </div>
+
+            <div class="timeline-step {% if order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
+                <span>Out for Delivery</span>
+            </div>
+
+            <div class="timeline-step {% if order.order_status == 'delivered' %}active{% endif %}">
+                <span>Delivered</span>
+            </div>
+        </div>
+
+        <p class="delivery-date">
+            {% if order.estimated_delivery %}
+                Expected Delivery: {{ order.estimated_delivery|date:"d M Y" }}
+            {% else %}
+                Expected Delivery will be updated soon.
+            {% endif %}
+        </p>
+
+        <div class="order-request-row">
+            {% if order.order_status == 'placed' or order.order_status == 'packed' %}
+            <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
+                {% csrf_token %}
+                <input type="hidden" name="request_type" value="cancel">
+                <textarea name="reason" placeholder="Reason for cancellation..." required></textarea>
+                <button type="submit" class="small-action-btn delete-btn">Request Cancel</button>
+            </form>
+            {% endif %}
+
+            {% if order.order_status == 'delivered' %}
+            <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
+                {% csrf_token %}
+                <input type="hidden" name="request_type" value="return">
+                <textarea name="reason" placeholder="Reason for return..." required></textarea>
+                <button type="submit" class="small-action-btn">Request Return</button>
+            </form>
+            {% endif %}
+        </div>
+
+        <div class="order-request-history">
+            {% for req in order.requests.all %}
+            <div class="order-request-card">
+                <div class="order-request-top">
+                    <strong>{{ req.get_request_type_display }} Request</strong>
+                    <span class="request-status-badge {{ req.status }}">{{ req.get_status_display }}</span>
+                </div>
+                <p><strong>Reason:</strong> {{ req.reason }}</p>
+
+                {% if req.admin_note %}
+                <p><strong>Admin Note:</strong> {{ req.admin_note }}</p>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p class="order-request-empty">No cancel or return requests for this order.</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="account-empty-box">
+        <h3>No orders yet</h3>
+        <p>Your confirmed orders will appear here.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+            {% if active_tab == 'wishlist' %}
+            <div class="account-panel-card">
+                <div class="account-panel-head">
+                    <h2>Wishlist</h2>
+                    <span class="account-panel-pill">{{ wishlist_items|length }} Saved</span>
+                </div>
+
+                <div class="account-wishlist-grid">
+                    {% for item in wishlist_items %}
+                    <a href="{{ item.detail_url }}" class="account-wishlist-card">
+                        <img src="{{ item.image }}" alt="{{ item.name }}">
+                        <div class="account-wishlist-content">
+                            <p>{% if item.category == 'Home' %}Accessories{% else %}{{ item.category }}{% endif %}</p>
+                            <h3>{{ item.name }}</h3>
+                            <strong>₹{{ item.price }}</strong>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <div class="account-empty-box">
+                        <h3>Your wishlist is empty</h3>
+                        <p>Save products you love and they will appear here.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if active_tab == 'addresses' %}
+            <div class="account-panel-card">
+                <div class="account-panel-head">
+                    <h2>Saved Addresses</h2>
+                    <span class="account-panel-pill">{{ addresses|length }} Saved</span>
+                </div>
+
+                <form method="post" class="account-address-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="address_form">
+                    <input type="hidden" name="address_id" id="address_id">
+
+                    <div class="account-form-grid">
+                        <div class="account-form-field">
+                            <label>Full Name</label>
+                            <input type="text" name="address_full_name" id="address_full_name" required>
+                        </div>
+
+                        <div class="account-form-field">
+                            <label>Phone</label>
+                            <input type="text" name="address_phone" id="address_phone" required>
+                        </div>
+
+                        <div class="account-form-field full-span">
+                            <label>Address Line 1</label>
+                            <input type="text" name="address_line_1" id="address_line_1" required>
+                        </div>
+
+                        <div class="account-form-field full-span">
+                            <label>Address Line 2</label>
+                            <input type="text" name="address_line_2" id="address_line_2">
+                        </div>
+
+                        <div class="account-form-field">
+                            <label>City</label>
+                            <input type="text" name="city" id="city" required>
+                        </div>
+
+                        <div class="account-form-field">
+                            <label>State</label>
+                            <input type="text" name="state" id="state" required>
+                        </div>
+
+                        <div class="account-form-field">
+                            <label>Postal Code</label>
+                            <input type="text" name="postal_code" id="postal_code" required>
+                        </div>
+
+                        <div class="account-form-field">
+                            <label>Country</label>
+                            <input type="text" name="country" id="country" value="India" required>
+                        </div>
+                    </div>
+
+                    <label class="account-checkbox">
+                        <input type="checkbox" name="is_default" id="is_default">
+                        <span>Set as default address</span>
+                    </label>
+
+                    <div class="account-address-actions">
+                        <button type="submit" class="account-save-btn">Save Address</button>
+                        <button type="button" class="account-cancel-btn" onclick="clearAddressForm()">Clear</button>
+                    </div>
+                </form>
+
+                <div class="account-address-list">
+                    {% for item in addresses %}
+                    <div class="account-address-card">
+                        <div class="account-address-top">
+                            <h3>{{ item.full_name }}</h3>
+                            {% if item.is_default %}
+                            <span class="default-badge">Default</span>
+                            {% endif %}
+                        </div>
+
+                        <p>{{ item.full_address }}</p>
+
+                        <div class="account-address-meta">
+                            <span>{{ item.phone }}</span>
+                        </div>
+
+                        <div class="account-address-buttons">
+                            <button
+                                type="button"
+                                class="small-action-btn edit-address-btn"
+                                data-id="{{ item.id }}"
+                                data-full-name="{{ item.full_name|escapejs }}"
+                                data-phone="{{ item.phone|escapejs }}"
+                                data-line1="{{ item.address_line_1|escapejs }}"
+                                data-line2="{{ item.address_line_2|default_if_none:''|escapejs }}"
+                                data-city="{{ item.city|escapejs }}"
+                                data-state="{{ item.state|escapejs }}"
+                                data-postal="{{ item.postal_code|escapejs }}"
+                                data-country="{{ item.country|escapejs }}"
+                                data-default="{% if item.is_default %}true{% else %}false{% endif %}"
+                            >
+                                Edit
+                            </button>
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="set_default_address">
+                                <input type="hidden" name="default_address_id" value="{{ item.id }}">
+                                <button type="submit" class="small-action-btn">Make Default</button>
+                            </form>
+
+                            <form method="post" onsubmit="return confirm('Delete this address?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="delete_address">
+                                <input type="hidden" name="delete_address_id" value="{{ item.id }}">
+                                <button type="submit" class="small-action-btn delete-btn">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="account-empty-box">
+                        <h3>No saved addresses yet</h3>
+                        <p>Add your address details here for faster checkout.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if active_tab == 'support' %}
+            <div class="account-panel-card">
+                <div class="account-panel-head">
+                    <h2>Customer Support</h2>
+                    <span class="account-panel-pill">Help Desk</span>
+                </div>
+
+                <div class="support-top-intro">
+                    <p>Need help with orders, payments, delivery, returns, or account issues? Raise a support ticket below and track replies from the dashboard.</p>
+                </div>
+
+                <div class="support-form-box">
+                    <h3>Raise a Ticket</h3>
+
+                    <form method="post" action="{% url 'create_ticket' %}" class="support-ticket-form">
+                        {% csrf_token %}
+
+                        <div class="account-form-grid">
+                            <div class="account-form-field full-span">
+                                <label>Subject</label>
+                                <input type="text" name="subject" placeholder="Example: Payment issue / Return request / Delivery help" required>
+                            </div>
+
+                            <div class="account-form-field full-span">
+                                <label>Your Message</label>
+                                <textarea name="message" rows="6" placeholder="Describe your issue clearly..." required></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="account-save-btn">Submit Ticket</button>
+                    </form>
+                </div>
+
+                <div class="support-ticket-history">
+                    <div class="account-panel-head support-ticket-head">
+                        <h3>Your Tickets</h3>
+                        <span class="account-panel-pill">{{ tickets|length }} Ticket{{ tickets|length|pluralize:"s" }}</span>
+                    </div>
+
+                    {% for ticket in tickets %}
+                    <div class="support-ticket-card">
+                        <div class="support-ticket-top">
+                            <div>
+                                <h4>{{ ticket.subject }}</h4>
+                                <p>{{ ticket.created_at|date:"d M Y, h:i A" }}</p>
+                            </div>
+
+                            <span class="ticket-status-badge {{ ticket.status }}">
+                                {{ ticket.get_status_display }}
+                            </span>
+                        </div>
+
+                        <div class="support-ticket-message">
+                            <label>Your Message</label>
+                            <p>{{ ticket.message }}</p>
+                        </div>
+
+                        {% if ticket.admin_reply %}
+                        <div class="support-admin-reply">
+                            <label>Support Reply</label>
+                            <p>{{ ticket.admin_reply }}</p>
+                        </div>
+                        {% else %}
+                        <div class="support-admin-pending">
+                            <label>Support Reply</label>
+                            <p>Your ticket is under review. Our team will reply soon.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="account-empty-box">
+                        <h3>No support tickets yet</h3>
+                        <p>Submit your first ticket and it will appear here with status updates.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</section>
+
+<script>
+function editAddress(id, fullName, phone, line1, line2, city, state, postalCode, country, isDefault) {
+    document.getElementById('address_id').value = id;
+    document.getElementById('address_full_name').value = fullName;
+    document.getElementById('address_phone').value = phone;
+    document.getElementById('address_line_1').value = line1;
+    document.getElementById('address_line_2').value = line2;
+    document.getElementById('city').value = city;
+    document.getElementById('state').value = state;
+    document.getElementById('postal_code').value = postalCode;
+    document.getElementById('country').value = country;
+    document.getElementById('is_default').checked = (isDefault === true || isDefault === 'true');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function clearAddressForm() {
+    document.getElementById('address_id').value = '';
+    document.getElementById('address_full_name').value = '';
+    document.getElementById('address_phone').value = '';
+    document.getElementById('address_line_1').value = '';
+    document.getElementById('address_line_2').value = '';
+    document.getElementById('city').value = '';
+    document.getElementById('state').value = '';
+    document.getElementById('postal_code').value = '';
+    document.getElementById('country').value = 'India';
+    document.getElementById('is_default').checked = false;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editButtons = document.querySelectorAll('.edit-address-btn');
+    editButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            editAddress(
+                this.dataset.id,
+                this.dataset.fullName,
+                this.dataset.phone,
+                this.dataset.line1,
+                this.dataset.line2,
+                this.dataset.city,
+                this.dataset.state,
+                this.dataset.postal,
+                this.dataset.country,
+                this.dataset.default
+            );
+        });
+    });
+});
+</script>
+
+</body>
+</html>

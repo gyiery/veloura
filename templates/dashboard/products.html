@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}" class="active">Products</a>
+        <a href="{% url 'dashboard_orders' %}">Orders</a>
+        <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'dashboard_support_tickets' %}">Support</a>
+        <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+
+        <h1>Product Management</h1>
+
+        <!-- STATS -->
+        <div class="dashboard-stats-grid">
+    <a href="{% url 'dashboard_products' %}" class="dashboard-stat-card clickable-stat {% if not selected_category %}active{% endif %}">
+        <span>Total Products</span>
+        <strong>{{ total_products }}</strong>
+    </a>
+
+    <a href="{% url 'dashboard_products' %}?category=Women" class="dashboard-stat-card clickable-stat {% if selected_category == 'Women' %}active{% endif %}">
+        <span>Women</span>
+        <strong>{{ women_count }}</strong>
+    </a>
+
+    <a href="{% url 'dashboard_products' %}?category=Men" class="dashboard-stat-card clickable-stat {% if selected_category == 'Men' %}active{% endif %}">
+        <span>Men</span>
+        <strong>{{ men_count }}</strong>
+    </a>
+
+    <a href="{% url 'dashboard_products' %}?category=Kids" class="dashboard-stat-card clickable-stat {% if selected_category == 'Kids' %}active{% endif %}">
+        <span>Kids</span>
+        <strong>{{ kids_count }}</strong>
+    </a>
+
+    <a href="{% url 'dashboard_products' %}?category=Home" class="dashboard-stat-card clickable-stat {% if selected_category == 'Home' %}active{% endif %}">
+        <span>Accessories</span>
+        <strong>{{ accessories_count }}</strong>
+    </a>
+
+    <a href="{% url 'dashboard_products' %}?category=Perfume" class="dashboard-stat-card clickable-stat {% if selected_category == 'Perfume' %}active{% endif %}">
+        <span>Perfume</span>
+        <strong>{{ perfume_count }}</strong>
+    </a>
+</div>
+
+        <!-- LOW STOCK -->
+        <div class="dashboard-low-stock">
+            <h2>Low Stock Alerts</h2>
+
+            {% for product in low_stock_products %}
+            <div class="low-stock-item">
+                ⚠ {{ product.name }} (Stock: {{ product.stock }})
+            </div>
+            {% empty %}
+            <p>No low stock products</p>
+            {% endfor %}
+        </div>
+
+        {% if selected_category %}
+<div class="dashboard-filter-note">
+    Showing:
+    <strong>
+        {% if selected_category == 'Home' %}
+            Accessories
+        {% else %}
+            {{ selected_category }}
+        {% endif %}
+    </strong>
+    products
+    <a href="{% url 'dashboard_products' %}" class="dashboard-clear-filter">Clear Filter</a>
+</div>
+{% endif %}
+
+        <!-- PRODUCT TABLE -->
+        <div class="dashboard-table-card">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>₹{{ product.price }}</td>
+
+                        <td>
+                            {% if product.stock <= 5 %}
+                                <span class="stock-low">{{ product.stock }}</span>
+                            {% else %}
+                                {{ product.stock }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="{% url 'dashboard_edit_product' product.id %}" class="dashboard-action-btn">Edit</a>
+
+                            <a href="{% url 'dashboard_delete_product' product.id %}" class="dashboard-action-btn delete">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Coupon - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}">Products</a>
+        <a href="{% url 'dashboard_orders' %}">Orders</a>
+        <a href="{% url 'dashboard_support_tickets' %}">Support</a>
+        <a href="{% url 'dashboard_coupons' %}" class="active">Coupons</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-page-head">
+            <div>
+                <p class="dashboard-kicker">Admin Panel</p>
+                <h1>Add Coupon</h1>
+            </div>
+        </div>
+
+        <div class="dashboard-form-card">
+            <form method="post" class="dashboard-form-grid-2">
+                {% csrf_token %}
+
+                <div class="dashboard-form-group">
+                    <label>Coupon Code</label>
+                    <input type="text" name="code" required>
+                </div>
+
+                <div class="dashboard-form-group">
+                    <label>Discount Type</label>
+                    <select name="discount_type" required>
+                        <option value="flat">Flat</option>
+                        <option value="percent">Percent</option>
+                    </select>
+                </div>
+
+                <div class="dashboard-form-group">
+                    <label>Discount Value</label>
+                    <input type="number" step="0.01" name="discount_value" required>
+                </div>
+
+                <div class="dashboard-form-group">
+                    <label>Minimum Order Amount</label>
+                    <input type="number" step="0.01" name="minimum_order_amount" value="0">
+                </div>
+
+                <div class="dashboard-form-group full-span">
+                    <label class="dashboard-check-row">
+                        <input type="checkbox" name="is_active" checked>
+                        <span>Active Coupon</span>
+                    </label>
+                </div>
+
+                <div class="dashboard-form-actions full-span">
+                    <button type="submit" class="dashboard-submit-btn">Create Coupon</button>
+                    <a href="{% url 'dashboard_coupons' %}" class="dashboard-cancel-btn">Back</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

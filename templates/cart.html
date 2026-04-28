@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cart - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">Veloura</div>
+
+        <nav class="nav-links">
+            <div class="nav-item"><a href="/">HOME</a></div>
+            <div class="nav-item"><a href="#">WOMEN</a></div>
+            <div class="nav-item"><a href="#">MEN</a></div>
+            <div class="nav-item"><a href="#">KIDS</a></div>
+            <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        </nav>
+
+        <div class="nav-icons">
+            <a href="{% url 'cart' %}" class="cart-icon-link">
+                <div class="cart-icon-wrap">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    </svg>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <section class="cart-page">
+        <div class="cart-page-top">
+            <span class="section-tag">SHOPPING CART</span>
+            <h1>Your Cart</h1>
+            <p>Review your selected pieces before checkout.</p>
+        </div>
+
+        {% if cart_items %}
+        <div class="cart-layout">
+
+            <div class="cart-items-box">
+                {% for item in cart_items %}
+                <div class="cart-item-card">
+                    <div class="cart-item-image">
+                        <img src="{{ item.image }}" alt="{{ item.name }}">
+                    </div>
+
+                    <div class="cart-item-details">
+                        <p class="cart-item-category">{{ item.category }}</p>
+                        <h3>{{ item.name }}</h3>
+                        <p class="cart-item-price">₹{{ item.price }}</p>
+
+                        <div class="cart-qty-row">
+                            <a href="{% url 'decrease_cart_item' item.id %}" class="qty-btn">−</a>
+                            <span class="qty-number">{{ item.quantity }}</span>
+                            <a href="{% url 'increase_cart_item' item.id %}" class="qty-btn">+</a>
+                        </div>
+                    </div>
+
+                    <div class="cart-item-side">
+                        <p class="cart-subtotal">₹{{ item.subtotal }}</p>
+                        <a href="{% url 'remove_cart_item' item.id %}" class="remove-link">Remove</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="cart-summary-box">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Items</span>
+                    <span>{{ cart_count }}</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span>Free</span>
+                </div>
+
+                <div class="summary-row total-row">
+                    <span>Total</span>
+                    <span>₹{{ grand_total }}</span>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="checkout-btn">
+    Proceed to Checkout
+</a>
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+
+        </div>
+        {% else %}
+        <div class="empty-cart-box">
+            <h2>Your cart is empty</h2>
+            <p>Add something beautiful to get started.</p>
+            <a href="/" class="checkout-btn empty-cart-btn">Shop Now</a>
+        </div>
+        {% endif %}
+    </section>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>

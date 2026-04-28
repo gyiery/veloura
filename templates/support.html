@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Support - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="account-container">
+
+    <div class="account-sidebar">
+        <a href="{% url 'account_page' %}">Profile</a>
+        <a href="{% url 'order_history' %}">My Orders</a>
+        <a href="{% url 'wishlist' %}">Wishlist</a>
+        <a href="{% url 'support_page' %}" class="active">Customer Support</a>
+    </div>
+
+    <div class="account-content">
+
+        <h2>Customer Support</h2>
+
+        <!-- CREATE TICKET -->
+        <div class="support-box">
+            <h3>Raise a Ticket</h3>
+
+            <form method="post" action="{% url 'create_ticket' %}">
+                {% csrf_token %}
+
+                <input type="text" name="subject" placeholder="Subject" required>
+
+                <textarea name="message" placeholder="Describe your issue..." required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <!-- USER TICKETS -->
+        <div class="ticket-list">
+            <h3>Your Tickets</h3>
+
+            {% for ticket in tickets %}
+            <div class="ticket-card">
+                <div class="ticket-top">
+                    <strong>{{ ticket.subject }}</strong>
+                    <span class="status {{ ticket.status }}">{{ ticket.status }}</span>
+                </div>
+
+                <p>{{ ticket.message }}</p>
+
+                {% if ticket.admin_reply %}
+                <div class="admin-reply">
+                    <strong>Support Reply:</strong>
+                    <p>{{ ticket.admin_reply }}</p>
+                </div>
+                {% endif %}
+
+                <small>{{ ticket.created_at }}</small>
+            </div>
+            {% empty %}
+            <p>No tickets yet.</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

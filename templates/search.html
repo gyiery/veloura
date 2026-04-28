@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+
+    <nav class="nav-links">
+        <a href="{% url 'category_products' 'women' %}">WOMEN</a>
+        <a href="{% url 'category_products' 'men' %}">MEN</a>
+        <a href="{% url 'category_products' 'kids' %}">KIDS</a>
+        <a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a>
+    </nav>
+
+    <div class="nav-icons">
+        <form action="{% url 'search' %}" method="get" class="search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search again...">
+        </form>
+    </div>
+</header>
+
+<section class="category-page">
+
+    <div class="category-page-top">
+        <span class="section-tag">SEARCH</span>
+        <h1>Results for "{{ query }}"</h1>
+    </div>
+
+
+    <!--------- Filter and Sort Bar -------------->
+
+    <div class="filter-sort-bar">
+    <form method="get" class="sort-form">
+        <input type="hidden" name="q" value="{{ query }}">
+        <select name="sort" onchange="this.form.submit()">
+            <option value="">Sort By</option>
+            <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+            <option value="low-high" {% if selected_sort == 'low-high' %}selected{% endif %}>Price: Low to High</option>
+            <option value="high-low" {% if selected_sort == 'high-low' %}selected{% endif %}>Price: High to Low</option>
+        </select>
+    </form>
+</div>
+
+
+    <div class="category-grid-page">
+
+        {% for product in results %}
+        <a href="{% url 'product_detail' product.id %}" class="detail-related-link">
+            <div class="category-product-card">
+                <div class="category-product-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
+
+                <div class="category-product-info">
+                    <p class="category-product-type">{{ product.category }}</p>
+                    <h3>{{ product.name }}</h3>
+                    <p class="category-product-desc">
+                        {{ product.description|truncatechars:60 }}
+                    </p>
+
+                    <div class="category-product-bottom">
+                        <span class="category-product-price">₹{{ product.price }}</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="empty-category-box">
+            <h2>No results found</h2>
+            <p>Try searching something else.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Overview - Veloura</title>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<section class="lux-dashboard-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="lux-dashboard-sidebar">
+        <div class="lux-dashboard-brand">
+            <h2>Veloura</h2>
+            <p>Admin Panel</p>
+        </div>
+
+        <nav class="lux-dashboard-menu">
+            <a href="{% url 'dashboard_overview' %}" class="active">Overview</a>
+            <a href="{% url 'dashboard_products' %}">Products</a>
+            <a href="{% url 'dashboard_orders' %}">Orders</a>
+            <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+            <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+            <a href="{% url 'dashboard_reviews' %}">Reviews</a>
+            <a href="/">Back to Website</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="lux-dashboard-content">
+
+        <div class="lux-dashboard-header">
+            <h1>Dashboard Overview</h1>
+        </div>
+
+        <!-- STATS -->
+        <div class="lux-stat-grid">
+
+            <div class="lux-stat-card">
+                <p>Total Products</p>
+                <h2>{{ total_products }}</h2>
+            </div>
+
+            <div class="lux-stat-card">
+                <p>Total Orders</p>
+                <h2>{{ total_orders }}</h2>
+            </div>
+
+            <div class="lux-stat-card">
+                <p>Total Reviews</p>
+                <h2>{{ total_reviews }}</h2>
+            </div>
+
+            <div class="lux-stat-card accent-card">
+                <p>Total Sales</p>
+                <h2>₹{{ total_sales }}</h2>
+            </div>
+
+        </div>
+
+        <!-- CHARTS -->
+        <div class="lux-real-chart-grid">
+
+            <div class="lux-panel">
+                <h3>Monthly Sales</h3>
+                <div class="chart-wrap">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="lux-panel">
+                <h3>Monthly Orders</h3>
+                <div class="chart-wrap">
+                    <canvas id="ordersChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CATEGORY CHART -->
+        <div class="lux-panel">
+            <h3>Category Distribution</h3>
+            <div class="chart-wrap">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+</section>
+
+<!-- ✅ SAFE JSON DATA -->
+{{ sales_labels_json|json_script:"sales-labels-data" }}
+{{ sales_data_json|json_script:"sales-data-values" }}
+
+{{ orders_labels_json|json_script:"orders-labels-data" }}
+{{ orders_data_json|json_script:"orders-data-values" }}
+
+{{ category_labels_json|json_script:"category-labels-data" }}
+{{ category_data_json|json_script:"category-data-values" }}
+
+<!-- ✅ CHART SCRIPT -->
+<script>
+
+const salesLabels = JSON.parse(document.getElementById('sales-labels-data').textContent);
+const salesData = JSON.parse(document.getElementById('sales-data-values').textContent);
+
+const ordersLabels = JSON.parse(document.getElementById('orders-labels-data').textContent);
+const ordersData = JSON.parse(document.getElementById('orders-data-values').textContent);
+
+const categoryLabels = JSON.parse(document.getElementById('category-labels-data').textContent);
+const categoryData = JSON.parse(document.getElementById('category-data-values').textContent);
+
+// SALES CHART
+new Chart(document.getElementById('salesChart'), {
+    type: 'line',
+    data: {
+        labels: salesLabels,
+        datasets: [{
+            data: salesData,
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// ORDERS CHART
+new Chart(document.getElementById('ordersChart'), {
+    type: 'bar',
+    data: {
+        labels: ordersLabels,
+        datasets: [{
+            data: ordersData,
+            borderRadius: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+// CATEGORY CHART
+new Chart(document.getElementById('categoryChart'), {
+    type: 'doughnut',
+    data: {
+        labels: categoryLabels,
+        datasets: [{
+            data: categoryData
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+</script>
+
+</body>
+</html>

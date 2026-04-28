@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Order Requests - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+        <h2>Veloura Admin</h2>
+        <a href="{% url 'dashboard_overview' %}">Overview</a>
+        <a href="{% url 'dashboard_products' %}">Products</a>
+        <a href="{% url 'dashboard_orders' %}">Orders</a>
+        <a href="{% url 'dashboard_support_tickets' %}">Support</a>
+        <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+        <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+        <a href="{% url 'home' %}">Back to Store</a>
+    </aside>
+
+    <main class="dashboard-main">
+        <div class="dashboard-page-head">
+            <div>
+                <p class="dashboard-kicker">Admin Panel</p>
+                <h1>Return / Cancel Requests</h1>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="dashboard-alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="dashboard-ticket-grid">
+            {% for req in order_requests %}
+            <div class="dashboard-ticket-card">
+                <div class="dashboard-ticket-top">
+                    <div>
+                        <h3>Order #{{ req.order.id }} - {{ req.get_request_type_display }}</h3>
+                        <p>{{ req.user.username }} • {{ req.created_at|date:"d M Y, h:i A" }}</p>
+                    </div>
+
+                    <span class="dashboard-status-badge {{ req.status }}">
+                        {{ req.get_status_display }}
+                    </span>
+                </div>
+
+                <div class="dashboard-ticket-message">
+                    <label>Customer Reason</label>
+                    <p>{{ req.reason }}</p>
+                </div>
+
+                <form method="post" action="{% url 'dashboard_update_order_request' req.id %}" class="dashboard-ticket-form">
+                    {% csrf_token %}
+
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="pending" {% if req.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="approved" {% if req.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="rejected" {% if req.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+
+                    <label>Admin Note</label>
+                    <textarea name="admin_note" rows="5" placeholder="Write your response...">{{ req.admin_note }}</textarea>
+
+                    <button type="submit">Save Request</button>
+                </form>
+            </div>
+            {% empty %}
+            <div class="dashboard-empty-state">
+                <h3>No return or cancel requests yet</h3>
+                <p>User requests will appear here.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

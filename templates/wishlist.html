@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><a href="/">Veloura</a></div>
+</header>
+
+<section class="category-page">
+    <div class="category-page-top">
+        <h1>Your Wishlist</h1>
+    </div>
+
+    <div class="category-grid-page">
+        {% for item in items %}
+        <div class="category-product-card">
+            <div class="category-product-image">
+                <img src="{{ item.image }}">
+            </div>
+
+            <div class="category-product-info">
+                <h3>{{ item.name }}</h3>
+                <p>{{ item.category }}</p>
+                <span>₹{{ item.price }}</span>
+
+                <a href="{% url 'add_to_wishlist' item.id %}" class="remove-link">
+                    Remove
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p>No items in wishlist</p>
+        {% endfor %}
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews Dashboard - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="lux-dashboard-shell">
+    <aside class="lux-dashboard-sidebar">
+        <div class="lux-dashboard-brand">
+            <span class="lux-brand-dot"></span>
+            <div>
+                <h2>Veloura</h2>
+                <p>Admin Suite</p>
+            </div>
+        </div>
+
+        <nav class="lux-dashboard-menu">
+            <a href="{% url 'dashboard_overview' %}">Overview</a>
+            <a href="{% url 'dashboard_products' %}">Products</a>
+            <a href="{% url 'dashboard_orders' %}">Orders</a>
+            <a href="{% url 'dashboard_coupons' %}">Coupons</a>
+            <a href="{% url 'dashboard_order_requests' %}">Returns / Cancels</a>
+            <a href="{% url 'dashboard_support_tickets' %}">Support</a
+            <a href="{% url 'dashboard_reviews' %}" class="active">Reviews</a>
+            <a href="/">Back to Website</a>
+        </nav>
+    </aside>
+
+    <main class="lux-dashboard-content">
+        <div class="lux-dashboard-header">
+            <div>
+                <p class="lux-dashboard-kicker">Feedback</p>
+                <h1>Manage Reviews</h1>
+            </div>
+        </div>
+
+        <div class="lux-review-grid">
+            {% for review in reviews %}
+            <div class="lux-review-card">
+                <div class="lux-review-top">
+                    <strong>{{ review.product.name }}</strong>
+                    <span class="review-badge">{{ review.rating }}/5</span>
+                </div>
+                <p class="lux-review-user">{{ review.user.username }} • {{ review.created_at|date:"d M Y" }}</p>
+                <p class="lux-review-text">{{ review.comment|default:"No written review." }}</p>
+            </div>
+            {% empty %}
+            <p>No reviews found.</p>
+            {% endfor %}
+        </div>
+    </main>
+</section>
+
+</body>
+</html>

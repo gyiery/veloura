@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recently Viewed - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<section class="category-page">
+    <div class="category-page-top">
+        <span class="section-tag">YOUR HISTORY</span>
+        <h1>Recently Viewed</h1>
+        <p>Products you explored recently.</p>
+    </div>
+
+    <div class="category-grid-page">
+        {% for product in products %}
+        <div class="category-product-card clickable-card"
+             onclick="window.location.href='{% url 'product_detail' product.id %}'">
+
+            <div class="category-product-image">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+
+            <div class="category-product-info">
+                <p class="category-product-type">
+                    {% if product.category == "Home" %}
+                        Accessories
+                    {% else %}
+                        {{ product.category }}
+                    {% endif %}
+                </p>
+
+                <h3>{{ product.name }}</h3>
+
+                {% if product.has_valid_sale %}
+                <div class="sale-price-row">
+                    <span class="sale-current-price">₹{{ product.sale_price|floatformat:2 }}</span>
+                    <span class="sale-old-price">₹{{ product.price }}</span>
+                </div>
+                {% else %}
+                <span class="category-product-price">₹{{ product.price }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-category-box">
+            <h2>No recently viewed products yet</h2>
+            <p>Open some product pages and they will appear here.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+</body>
+</html>
