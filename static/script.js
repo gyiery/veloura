@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const userIcon = document.getElementById("userIcon");
+    const userIcon
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
 
