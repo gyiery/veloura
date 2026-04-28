@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+
     const userIcon = document.getElementById("userIcon");
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
@@ -201,17 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-document.addEventListener("DOMContentLoaded", function () {
-    const preloader = document.getElementById("preloader");
-
-    if (preloader) {
-        setTimeout(function () {
-            preloader.classList.add("hide");
-            preloader.style.display = "none";
-        }, 1500);
-    }
-});
-
 
 const promoSlides = document.querySelectorAll(".promo-slide");
 const promoDots = document.querySelectorAll(".promo-dot");
