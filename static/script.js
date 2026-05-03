@@ -1,5 +1,3 @@
-
-    const userIcon = document.getElementById("userIcon");
     const loginModal = document.getElementById("loginModal");
     const registerModal = document.getElementById("registerModal");
 
@@ -36,13 +34,6 @@
         });
     }
 
-    if (userIcon && loginModal) {
-        userIcon.addEventListener("click", function () {
-            loginModal.style.display = "flex";
-            registerModal && (registerModal.style.display = "none");
-        });
-    }
-
     if (openRegister && loginModal && registerModal) {
         openRegister.addEventListener("click", function () {
             loginModal.style.display = "none";
@@ -66,13 +57,6 @@
     if (closeRegister && registerModal) {
         closeRegister.addEventListener("click", function () {
             registerModal.style.display = "none";
-        });
-    }
-
-    if (accountIconWrap && accountDropdown) {
-        accountIconWrap.addEventListener("click", function (e) {
-            e.stopPropagation();
-            accountDropdown.classList.toggle("show");
         });
     }
 
@@ -105,10 +89,6 @@
         if (e.target === quickViewModal) {
         quickViewModal.style.display = "none";
         }
-
-        if (accountDropdown && !accountDropdown.contains(e.target) && accountIconWrap && !accountIconWrap.contains(e.target)) {
-            accountDropdown.classList.remove("show");
-        }
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -137,7 +117,6 @@
             }, 400);
         });
     }, 3200);
-});
 
     const quickViewModal = document.getElementById("quickViewModal");
     const closeQuickView = document.getElementById("closeQuickView");

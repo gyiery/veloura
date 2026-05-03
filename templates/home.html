@@ -63,22 +63,23 @@
                 </div>
             </a>
 
-            {% if user.is_authenticated %}
-            <a href="{% url 'account_page' %}" class="account-trigger-link">
-                <div class="account-trigger">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-                    </svg>
-                    <span class="user-mini-name">{{ user.first_name|default:user.username }}</span>
-                </div>
-            </a>
-            {% else %}
-            <a href="{% url 'login' %}" class="account-trigger-link">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-                </svg>
-            </a>
-            {% endif %}
+           {% if user.is_authenticated %}
+<a href="/account/" class="account-trigger-link">
+    <div class="account-trigger">
+        <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+        <span>{{ user.username }}</span>
+    </div>
+</a>
+
+{% else %}
+<a href="/?modal=login" class="account-trigger-link">
+    <svg class="icon" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    </svg>
+</a>
+{% endif %}
 
             <a href="{% url 'cart' %}" class="cart-icon-link">
                 <div class="cart-icon-wrap">
@@ -441,7 +442,7 @@
 
         <h2>Welcome Back</h2>
 
-        <form action="/login/" method="post">
+         <form action="/login/" method="post">
             {% csrf_token %}
             <input type="text" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Password">
