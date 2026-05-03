@@ -8965,3 +8965,222 @@ body {
         gap: 12px !important;
     }
 }
+
+
+/* =========================
+   MOBILE APP-LIKE OVERRIDES
+   Add at END of static/style.css
+   ========================= */
+
+/* base */
+@media (max-width: 768px) {
+  body {
+    background: #f6f7fb;
+    color: #1f2937;
+  }
+
+  /* top navbar */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 22px !important;
+    font-weight: 700;
+    color: #0ea5b7;
+    line-height: 1;
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-box input {
+    height: 40px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    font-size: 14px;
+    padding: 0 12px;
+  }
+
+  .nav-icons {
+    gap: 10px;
+  }
+
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* horizontal nav chips */
+  .nav-links {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #fff;
+    border-bottom: 1px solid #eceff3;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+
+  .nav-item a {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 8px 12px;
+    border: 1px solid #d9dee7;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* main sections spacing */
+  .featured-categories,
+  .best-sellers-section,
+  .arrivals-section,
+  .perfume-section,
+  .related-products-section,
+  .recently-viewed-section,
+  .category-page,
+  .product-detail-page,
+  .cart-page,
+  .checkout-page {
+    width: calc(100% - 20px);
+    margin: 12px auto;
+  }
+
+  /* product grid: APP STYLE 2-COLUMN */
+  .best-sellers-grid,
+  .category-grid,
+  .perfume-grid,
+  .search-results,
+  .account-wishlist-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* product cards */
+  .product-card,
+  .category-product-card,
+  .perfume-card,
+  .best-card,
+  .recent-card {
+    background: #fff;
+    border: 1px solid #e8ecf2;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  }
+
+  .product-image-wrap,
+  .category-product-image,
+  .perfume-image-box,
+  .best-card-image {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #f3f4f6;
+  }
+
+  .product-image-wrap img,
+  .category-product-image img,
+  .perfume-image-box img,
+  .best-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-info,
+  .category-product-info,
+  .perfume-info,
+  .best-card-info {
+    padding: 10px;
+    display: grid;
+    gap: 4px;
+  }
+
+  .product-category,
+  .category-product-type {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .product-price,
+  .category-product-price,
+  .sale-current-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  /* buttons in cards */
+  .view-all-btn,
+  .main-btn,
+  .primary-btn,
+  .perfume-btn,
+  .detail-add-cart-btn,
+  .detail-buy-now-btn {
+    min-height: 38px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* cart + checkout app cards */
+  .cart-item-card,
+  .checkout-card,
+  .checkout-summary-card,
+  .success-card,
+  .ticket-card,
+  .order-card {
+    border-radius: 14px;
+    border: 1px solid #e6ebf2;
+    box-shadow: 0 2px 12px rgba(2, 6, 23, 0.05);
+    background: #fff;
+  }
+
+  /* mobile layout for cart items */
+  .cart-item-card,
+  .checkout-item-row,
+  .success-item-row {
+    grid-template-columns: 88px 1fr !important;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  /* sticky bottom actions (app feel) */
+  .checkout-btn,
+  .place-order-btn {
+    position: sticky;
+    bottom: 10px;
+    width: 100%;
+    z-index: 50;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  /* footer less heavy on mobile */
+  .site-footer {
+    margin-top: 20px;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    padding: 14px 12px;
+  }
+}
