@@ -9157,3 +9157,94 @@ body {
         text-align: center;
     }
 }
+
+
+/* ===== GLOBAL MOBILE FIX ===== */
+html, body {
+    overflow-x: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* CONTAINER FIX */
+.container, .wrapper, .main {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* NAVBAR FIX */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-right {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .search-box {
+        width: 100% !important;
+    }
+
+    .nav-icons {
+        gap: 10px !important;
+    }
+}
+
+/* GRID FIX */
+.perfume-grid,
+.category-grid,
+.best-sellers-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .perfume-grid,
+    .category-grid,
+    .best-sellers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .perfume-grid,
+    .category-grid,
+    .best-sellers-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* SLIDER FIX */
+.arrivals-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+}
+
+.arrivals-slider .detail-related-link {
+    min-width: 160px !important;
+}
+
+/* PREVENT OVERFLOW */
+section, div {
+    max-width: 100%;
+}
