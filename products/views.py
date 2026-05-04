@@ -164,7 +164,6 @@ def product_detail(request, product_id):
     if request.user.is_authenticated:
         user_review = Review.objects.filter(product=product, user=request.user).first()
 
-    # recently viewed session logic
     recent_ids = request.session.get('recently_viewed_products', [])
 
     product_id_str = str(product.id)
@@ -727,18 +726,18 @@ def create_razorpay_order(request):
     estimated_delivery = date.today() + timedelta(days=5)
 
     order = Order.objects.create(
-    user=request.user if request.user.is_authenticated else None,
-    full_name=full_name,
-    email=email if email else None,
-    phone=phone,
-    address=address,
-    total_amount=final_total,
-    payment_provider="razorpay",
-    payment_status="created",
-    gateway_order_id=razorpay_order['id'],
-    order_status='placed',
-    estimated_delivery=estimated_delivery
-)
+        user=request.user if request.user.is_authenticated else None,
+        full_name=full_name,
+        email=email if email else None,
+        phone=phone,
+        address=address,
+        total_amount=final_total,
+        payment_provider="razorpay",
+        payment_status="created",
+        gateway_order_id=razorpay_order['id'],
+        order_status='placed',
+        estimated_delivery=estimated_delivery
+    )
 
     for product, item in validated_items:
         OrderItem.objects.create(
@@ -758,6 +757,7 @@ def create_razorpay_order(request):
         "customer_phone": phone,
         "order_db_id": order.id
     })
+
 
 @csrf_exempt
 def verify_razorpay_payment(request):
@@ -1485,7 +1485,6 @@ def dashboard_add_product(request):
 
         is_new_arrival = request.POST.get("is_new_arrival") == "on"
         is_best_seller = request.POST.get("is_best_seller") == "on"
-        
 
         Product.objects.create(
             name=name,
@@ -1501,8 +1500,7 @@ def dashboard_add_product(request):
             stock=stock,
             is_on_sale=is_on_sale,
             sale_percent=sale_percent,
-
-            )
+        )
 
         messages.success(request, "Product added successfully.")
         return redirect('dashboard_products')
@@ -1557,7 +1555,7 @@ def dashboard_orders(request):
     if not request.user.is_superuser:
         return redirect('/')
 
-    orders = Order.objects.prefetch_related('items').order_by('-created_at')
+    orders = Order.objects.all().prefetch_related('items').order_by('-created_at')
     return render(request, 'dashboard/orders.html', {'orders': orders})
 
 
@@ -1636,18 +1634,6 @@ def create_ticket(request):
             )
 
         return redirect('/account/?tab=support')
-    
-    @login_required
-    def dashboard_orders(request):
-        if not request.user.is_superuser:
-            return redirect('/')
-
-    orders = Order.objects.prefetch_related('items').order_by('-created_at')
-
-    context = {
-        'orders': orders,
-    }
-    return render(request, 'dashboard/orders.html', context)
 
 
 @login_required
@@ -1779,6 +1765,7 @@ def dashboard_delete_coupon(request, coupon_id):
     messages.success(request, "Coupon deleted successfully.")
     return redirect('dashboard_coupons')
 
+
 def sale_products(request):
     products = Product.objects.filter(is_on_sale=True, sale_percent__gt=0).order_by('-id')
 
@@ -1787,6 +1774,7 @@ def sale_products(request):
         'page_title': 'Sale',
     }
     return render(request, 'sale.html', context)
+
 
 @login_required
 def create_order_request(request, order_id):
@@ -1997,6 +1985,7 @@ Veloura Support
         fail_silently=True,
     )
 
+
 def test_email(request):
     send_mail(
         'Test Email from Veloura',
@@ -2033,4 +2022,3 @@ def live_search(request):
             })
 
     return JsonResponse({'results': results})
-    
