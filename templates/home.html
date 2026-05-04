@@ -3,666 +3,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
-    <style>
-        @media (max-width: 768px) {
-
-            * { -webkit-tap-highlight-color: transparent; }
-
-            body {
-                background: #ffffff;
-                color: #282c3f;
-                padding-bottom: 56px;
-                margin: 0;
-                overscroll-behavior: none;
-                -webkit-font-smoothing: antialiased;
-            }
-
-            /* ---- HIDE DESKTOP-ONLY SECTIONS ---- */
-            .nav-links,
-            .nav-right .search-box,
-            .account-trigger-link,
-            .brand-story-strip,
-            .newsletter-gallery-section,
-            .site-footer { display: none !important; }
-
-            /* ---- HEADER ---- */
-            .navbar {
-                position: sticky;
-                top: 0;
-                z-index: 100;
-                background: #ffffff;
-                border-bottom: 1px solid #f0f0f0;
-                padding: 10px 12px !important;
-                flex-direction: column !important;
-                align-items: stretch !important;
-                gap: 8px;
-            }
-            .logo {
-                text-align: center;
-                margin-bottom: 2px;
-            }
-            .logo-link {
-                font-size: 18px !important;
-                font-weight: 700;
-                color: #282c3f !important;
-                text-decoration: none;
-                -webkit-text-fill-color: initial !important;
-                background: none !important;
-            }
-
-            /* Mobile search row */
-            .nav-right {
-                display: flex !important;
-                align-items: center;
-                gap: 10px;
-            }
-            .mobile-search-input {
-                flex: 1;
-                background: #f5f5f6;
-                border: none;
-                border-radius: 6px;
-                padding: 9px 14px;
-                font-size: 13px;
-                color: #282c3f;
-                outline: none;
-            }
-            .mobile-search-input::placeholder { color: #94969f; }
-            .mobile-search-input:focus { background: #eeeeee; }
-
-            .nav-icons {
-                display: flex !important;
-                gap: 6px;
-                flex-shrink: 0;
-            }
-            .nav-icons .icon-link,
-            .nav-icons .cart-icon-link {
-                display: flex;
-                align-items: center;
-                text-decoration: none;
-                position: relative;
-            }
-            .nav-icons svg.icon {
-                width: 20px;
-                height: 20px;
-                fill: #282c3f;
-            }
-            .cart-icon-wrap { position: relative; }
-            .cart-badge {
-                position: absolute;
-                top: -5px;
-                right: -7px;
-                min-width: 16px;
-                height: 16px;
-                background: #ff3f6c;
-                color: #fff;
-                font-size: 9px;
-                font-weight: 700;
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 4px;
-            }
-
-            /* ---- CATEGORY TABS (from nav-links repurposed) ---- */
-            .mobile-cat-tabs {
-                display: flex;
-                overflow-x: auto;
-                gap: 0;
-                border-bottom: 1px solid #f0f0f0;
-                scrollbar-width: none;
-                background: #ffffff;
-                position: sticky;
-                top: 0;
-                z-index: 99;
-            }
-            .mobile-cat-tabs::-webkit-scrollbar { display: none; }
-            .mobile-cat-tab {
-                flex-shrink: 0;
-                padding: 10px 16px;
-                font-size: 12px;
-                font-weight: 600;
-                color: #94969f;
-                text-decoration: none;
-                border-bottom: 3px solid transparent;
-                transition: all 0.15s;
-                white-space: nowrap;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            .mobile-cat-tab.active,
-            .mobile-cat-tab:active {
-                color: #282c3f;
-                border-bottom-color: #282c3f;
-            }
-
-            /* ---- PROMO SLIDER ---- */
-            .promo-slider-section {
-                padding: 12px;
-            }
-            .promo-slider {
-                border-radius: 8px;
-                overflow: hidden;
-            }
-            .promo-slide img {
-                height: 160px !important;
-                object-fit: cover;
-                width: 100%;
-            }
-            .promo-overlay {
-                padding: 16px !important;
-            }
-            .promo-overlay h2 {
-                font-size: 16px !important;
-                color: #ffffff;
-                margin: 4px 0 !important;
-            }
-            .promo-overlay span {
-                font-size: 11px !important;
-                color: #ffffff;
-            }
-            .promo-overlay p {
-                font-size: 11px !important;
-                color: rgba(255,255,255,0.85);
-                margin-bottom: 8px !important;
-            }
-            .promo-btn {
-                display: inline-block !important;
-                padding: 7px 20px !important;
-                background: #ffffff;
-                color: #282c3f !important;
-                font-size: 11px !important;
-                font-weight: 700 !important;
-                border-radius: 4px !important;
-                text-decoration: none !important;
-                text-transform: uppercase;
-            }
-            .promo-arrow { display: none !important; }
-            .promo-dots { bottom: 8px !important; }
-            .promo-dot {
-                width: 6px !important;
-                height: 6px !important;
-                border-radius: 3px !important;
-                background: rgba(255,255,255,0.5) !important;
-            }
-            .promo-dot.active { background: #ffffff !important; width: 16px !important; }
-
-            /* ---- SECTION HEADERS ---- */
-            .section-header,
-            .section-top,
-            .arrivals-top,
-            .recently-header {
-                padding: 16px 12px 10px;
-            }
-            .section-tag {
-                font-size: 10px;
-                font-weight: 700;
-                color: #ff3f6c;
-                letter-spacing: 1.5px;
-                text-transform: uppercase;
-                display: block;
-                margin-bottom: 4px;
-            }
-            .section-header h2,
-            .section-top h2,
-            .arrivals-top h2,
-            .recently-header h2 {
-                font-size: 16px;
-                font-weight: 700;
-                color: #282c3f;
-                margin: 0;
-            }
-            .section-header p,
-            .section-top p,
-            .arrivals-top p {
-                font-size: 12px;
-                color: #94969f;
-                margin-top: 4px;
-            }
-            .view-all-btn {
-                font-size: 12px;
-                color: #ff3f6c;
-                text-decoration: none;
-                font-weight: 600;
-            }
-            .slider-controls { display: none; }
-
-            /* ---- RECENTLY VIEWED - horizontal scroll ---- */
-            .recently-viewed-section { padding-bottom: 4px; }
-            .recently-slider {
-                display: flex !important;
-                gap: 10px;
-                overflow-x: auto;
-                padding: 0 12px 4px;
-                scrollbar-width: none;
-            }
-            .recently-slider::-webkit-scrollbar { display: none; }
-            .recent-card {
-                flex-shrink: 0;
-                width: 110px;
-                text-decoration: none;
-            }
-            .recent-img {
-                width: 110px;
-                height: 140px;
-                border-radius: 6px;
-                overflow: hidden;
-                background: #f5f5f6;
-                position: relative;
-            }
-            .recent-img img { width: 100%; height: 100%; object-fit: cover; }
-            .sale-badge-card {
-                position: absolute;
-                top: 6px;
-                left: 6px;
-                background: #ff3f6c;
-                color: #fff;
-                font-size: 9px;
-                font-weight: 700;
-                padding: 2px 6px;
-                border-radius: 3px;
-            }
-            .recent-info { padding: 6px 2px 0; }
-            .recent-info h3 {
-                font-size: 11px;
-                font-weight: 500;
-                color: #282c3f;
-                line-height: 1.3;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                margin: 0;
-            }
-            .sale-price-row { display: flex; gap: 4px; margin-top: 4px; align-items: center; }
-            .sale-current-price { font-size: 12px; font-weight: 700; color: #282c3f; }
-            .sale-old-price { font-size: 10px; color: #94969f; text-decoration: line-through; }
-            .category-product-price {
-                font-size: 12px;
-                font-weight: 700;
-                color: #282c3f;
-                margin-top: 4px;
-                display: block;
-            }
-
-            /* ---- PERFUME GRID - 2 column ---- */
-            .perfume-section { padding: 0 12px 8px; }
-            .perfume-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
-            }
-            .perfume-card {
-                background: #ffffff !important;
-                border-radius: 8px !important;
-                border: 1px solid #f0f0f0 !important;
-                overflow: hidden;
-                text-decoration: none;
-            }
-            .perfume-image-box {
-                aspect-ratio: 3/4;
-                background: #f5f5f6;
-                overflow: hidden;
-            }
-            .perfume-image-box img { width: 100%; height: 100%; object-fit: cover; }
-            .no-image {
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #94969f;
-                font-size: 12px;
-            }
-            .perfume-info { padding: 8px 10px 12px; }
-            .perfume-info h3 {
-                font-size: 12px;
-                font-weight: 500;
-                color: #282c3f;
-                line-height: 1.3;
-                margin: 0 0 6px;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-            .perfume-price {
-                font-size: 13px;
-                font-weight: 700;
-                color: #282c3f;
-                margin: 0 0 8px;
-            }
-            .perfume-btn {
-                display: block !important;
-                width: 100%;
-                padding: 7px 0;
-                background: #ffffff;
-                border: 1px solid #d4d5d9;
-                border-radius: 4px;
-                color: #282c3f;
-                font-size: 11px;
-                font-weight: 600;
-                text-align: center;
-                text-decoration: none;
-                transition: all 0.15s;
-            }
-            .perfume-btn:active {
-                background: #282c3f;
-                color: #ffffff;
-                border-color: #282c3f;
-            }
-            .no-products {
-                grid-column: 1 / -1;
-                text-align: center;
-                color: #94969f;
-                font-size: 13px;
-                padding: 30px 0;
-            }
-
-            /* ---- FEATURED CATEGORIES - horizontal scroll ---- */
-            .featured-categories { padding: 0 0 4px; }
-            .category-grid {
-                display: flex !important;
-                overflow-x: auto;
-                gap: 10px;
-                padding: 0 12px;
-                scrollbar-width: none;
-            }
-            .category-grid::-webkit-scrollbar { display: none; }
-            .category-card {
-                flex-shrink: 0;
-                width: 130px;
-                height: 170px;
-                border-radius: 8px;
-                overflow: hidden;
-                text-decoration: none;
-                position: relative;
-            }
-            .category-card.large-card,
-            .category-card.wide-card { width: 130px; height: 170px; }
-            .category-image { height: 100%; }
-            .category-image img { width: 100%; height: 100%; object-fit: cover; }
-            .category-overlay {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 10px;
-                background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            }
-            .category-overlay span { display: none; }
-            .category-overlay h3 { font-size: 13px; color: #fff; margin: 0 0 2px; }
-            .category-overlay p { display: none; }
-
-            /* ---- NEW ARRIVALS - horizontal scroll ---- */
-            .arrivals-section { padding: 0 0 4px; }
-            .arrivals-slider-wrapper {
-                overflow-x: auto;
-                padding: 0 12px 4px;
-                scrollbar-width: none;
-            }
-            .arrivals-slider-wrapper::-webkit-scrollbar { display: none; }
-            .arrivals-slider {
-                display: flex !important;
-                gap: 10px;
-            }
-            .product-card {
-                flex-shrink: 0;
-                width: 140px;
-                background: #ffffff;
-                border-radius: 8px;
-                border: 1px solid #f0f0f0;
-                overflow: hidden;
-                cursor: pointer;
-            }
-            .product-image-wrap {
-                aspect-ratio: 3/4;
-                background: #f5f5f6;
-                overflow: hidden;
-                position: relative;
-            }
-            .product-image-wrap img { width: 100%; height: 100%; object-fit: cover; }
-            .wishlist-btn {
-                position: absolute;
-                bottom: 8px;
-                right: 8px;
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                background: #ffffff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #94969f;
-                font-size: 13px;
-                text-decoration: none;
-                border: none;
-                cursor: pointer;
-                box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-            }
-            .product-badge {
-                position: absolute;
-                top: 8px;
-                left: 8px;
-                background: #ff3f6c;
-                color: #fff;
-                font-size: 9px;
-                font-weight: 700;
-                padding: 2px 8px;
-                border-radius: 3px;
-                text-transform: uppercase;
-            }
-            .product-info { padding: 8px 10px; }
-            .product-info h3 {
-                font-size: 11px;
-                font-weight: 500;
-                color: #282c3f;
-                line-height: 1.3;
-                margin: 0 0 4px;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-            .product-category { font-size: 10px; color: #94969f; margin: 0 0 6px; }
-            .product-price { font-size: 13px; font-weight: 700; color: #282c3f; }
-            .product-bottom { display: flex; align-items: center; gap: 6px; }
-
-            /* ---- BEST SELLERS - 2 column ---- */
-            .best-sellers-section { padding: 0 12px 16px; }
-            .best-sellers-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
-            }
-            .detail-related-link { text-decoration: none; }
-            .best-card {
-                background: #ffffff;
-                border-radius: 8px;
-                border: 1px solid #f0f0f0;
-                overflow: hidden;
-            }
-            .best-card-image {
-                aspect-ratio: 3/4;
-                background: #f5f5f6;
-                overflow: hidden;
-            }
-            .best-card-image img { width: 100%; height: 100%; object-fit: cover; }
-            .best-card-info { padding: 8px 10px; }
-            .best-card-info h3 {
-                font-size: 12px;
-                font-weight: 500;
-                color: #282c3f;
-                line-height: 1.3;
-                margin: 0 0 4px;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-            .best-card-info p { font-size: 10px; color: #94969f; margin: 0 0 4px; }
-            .best-card-info span { font-size: 13px; font-weight: 700; color: #282c3f; }
-
-            /* ---- MODALS - bottom sheet style ---- */
-            .modal {
-                align-items: flex-end !important;
-                padding: 0 !important;
-                background: rgba(0,0,0,0.5) !important;
-            }
-            .modal-content {
-                border-radius: 16px 16px 0 0 !important;
-                width: 100% !important;
-                max-height: 90vh !important;
-                overflow-y: auto;
-                background: #ffffff !important;
-                color: #282c3f;
-            }
-            .modal-content h2 { color: #282c3f; }
-            .modal-content input {
-                background: #f5f5f6 !important;
-                border: 1px solid #e0e0e0 !important;
-                color: #282c3f !important;
-                border-radius: 6px;
-            }
-            .modal-content input::placeholder { color: #94969f; }
-            .close-btn { color: #94969f !important; }
-            .modal-content p { color: #94969f; }
-            .modal-content p span { color: #ff3f6c; cursor: pointer; }
-            .quick-view-layout { flex-direction: column !important; }
-            .quick-view-image { width: 100% !important; }
-            .quick-view-details { padding: 16px !important; }
-            .quick-view-tag { color: #ff3f6c !important; }
-            .quick-view-title { color: #282c3f !important; }
-            .quick-view-category { color: #94969f !important; }
-            .quick-view-price { color: #282c3f !important; }
-            .quick-view-description { color: #94969f !important; }
-            .main-btn {
-                background: #ff3f6c !important;
-                color: #fff !important;
-                border: none;
-                border-radius: 6px;
-                padding: 12px;
-                font-weight: 600;
-                font-size: 14px;
-                cursor: pointer;
-                width: 100%;
-            }
-            .secondary-quick-btn {
-                background: #ffffff !important;
-                border: 1px solid #d4d5d9 !important;
-                color: #282c3f !important;
-                border-radius: 6px;
-                padding: 12px;
-                font-weight: 600;
-                font-size: 14px;
-                cursor: pointer;
-            }
-            .quick-view-actions { display: flex; gap: 10px; }
-            .quick-view-actions form { flex: 1; }
-
-            /* ---- MESSAGES ---- */
-            .message-area {
-                position: fixed;
-                bottom: 70px;
-                left: 12px;
-                right: 12px;
-                z-index: 200;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-            .site-message {
-                background: #282c3f;
-                color: #ffffff;
-                padding: 12px 16px;
-                border-radius: 8px;
-                font-size: 13px;
-                text-align: center;
-                animation: slideUp 0.3s ease;
-            }
-            .site-message.success { background: #2d8a4e; }
-            .site-message.error { background: #ff3f6c; }
-            @keyframes slideUp {
-                from { transform: translateY(20px); opacity: 0; }
-                to { transform: translateY(0); opacity: 1; }
-            }
-
-            /* ---- BOTTOM NAV ---- */
-            .mobile-bottom-nav {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                z-index: 100;
-                background: #ffffff;
-                border-top: 1px solid #f0f0f0;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                padding: 6px 0 max(6px, env(safe-area-inset-bottom));
-            }
-            .mobile-nav-item {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 2px;
-                padding: 2px 12px;
-                text-decoration: none;
-                color: #94969f;
-                transition: color 0.15s;
-                position: relative;
-            }
-            .mobile-nav-item.active { color: #282c3f; }
-            .mobile-nav-item.active::after {
-                content: '';
-                position: absolute;
-                top: -6px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 16px;
-                height: 3px;
-                border-radius: 2px;
-                background: #282c3f;
-            }
-            .mobile-nav-item svg { width: 20px; height: 20px; }
-            .mobile-nav-item span { font-size: 9px; font-weight: 600; }
-
-            /* ---- CHAT WIDGET ---- */
-            .lux-chat-widget { bottom: 66px !important; }
-
-            /* Dividers between sections */
-            .section-divider {
-                height: 8px;
-                background: #f5f5f6;
-                margin: 0;
-            }
-        }
-
-        @media (min-width: 769px) {
-            .mobile-cat-tabs,
-            .mobile-bottom-nav,
-            .mobile-search-row,
-            .section-divider { display: none !important; }
-        }
-    </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="navbar">
     <div class="logo">
         <a href="/" class="logo-link">Veloura</a>
     </div>
 
     <nav class="nav-links">
-        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
-        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
-        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
-        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
-        <div class="nav-item"><a href="#">BRANDS</a></div>
-        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'women' %}">WOMEN</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'men' %}">MEN</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'kids' %}">KIDS</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="#">BRANDS</a>
+        </div>
+
+        <div class="nav-item">
+            <a href="{% url 'sale_products' %}">SALE</a>
+        </div>
     </nav>
 
     <div class="nav-right">
@@ -670,6 +45,7 @@
             <input type="text" id="search-input" placeholder="Search for products...">
             <span id="search-clear" class="search-clear">&times;</span>
             <div id="search-results" class="search-results"></div>
+
             <form id="search-form" action="{% url 'search' %}" method="get">
                 <input type="hidden" name="q" id="hidden-search-input">
             </form>
@@ -678,64 +54,48 @@
         <div class="nav-icons">
             <a href="{% url 'wishlist' %}" class="icon-link">
                 <div class="cart-icon-wrap">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/></svg>
-                    {% if wishlist_count > 0 %}<span class="cart-badge">{{ wishlist_count }}</span>{% endif %}
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/>
+                    </svg>
+                    {% if wishlist_count > 0 %}
+                    <span class="cart-badge">{{ wishlist_count }}</span>
+                    {% endif %}
                 </div>
             </a>
 
-            {% if user.is_authenticated %}
-            <a href="/account/" class="account-trigger-link">
-                <div class="account-trigger">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-                    <span>{{ user.username }}</span>
-                </div>
-            </a>
-            {% else %}
-            <a href="/?modal=login" class="account-trigger-link">
-                <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-            </a>
-            {% endif %}
+           {% if user.is_authenticated %}
+<a href="/account/" class="account-trigger-link">
+    <div class="account-trigger">
+        <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+        <span>{{ user.username }}</span>
+    </div>
+</a>
+
+{% else %}
+<a href="/?modal=login" class="account-trigger-link">
+    <svg class="icon" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    </svg>
+</a>
+{% endif %}
 
             <a href="{% url 'cart' %}" class="cart-icon-link">
                 <div class="cart-icon-wrap">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/></svg>
-                    {% if cart_count > 0 %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    </svg>
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
                 </div>
             </a>
         </div>
     </div>
 </header>
+<!------------------------HERO SECTION---------------------------->
 
-<!-- ===== MOBILE: SEARCH ROW + CATEGORY TABS ===== -->
-<div class="mobile-search-row" style="display:none">
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;border-bottom:1px solid #f0f0f0;">
-        <form action="{% url 'search' %}" method="get" style="flex:1;display:flex;">
-            <input type="text" name="q" class="mobile-search-input" placeholder="Search for products, brands...">
-        </form>
-        <a href="{% url 'wishlist' %}" style="text-decoration:none;display:flex;">
-            <div class="cart-icon-wrap">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#282c3f"><path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/></svg>
-                {% if wishlist_count > 0 %}<span class="cart-badge">{{ wishlist_count }}</span>{% endif %}
-            </div>
-        </a>
-        <a href="{% url 'cart' %}" style="text-decoration:none;display:flex;">
-            <div class="cart-icon-wrap">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#282c3f"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/></svg>
-                {% if cart_count > 0 %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
-            </div>
-        </a>
-    </div>
-    <div class="mobile-cat-tabs">
-        <a href="/" class="mobile-cat-tab active">HOME</a>
-        <a href="{% url 'category_products' 'women' %}" class="mobile-cat-tab">WOMEN</a>
-        <a href="{% url 'category_products' 'men' %}" class="mobile-cat-tab">MEN</a>
-        <a href="{% url 'category_products' 'kids' %}" class="mobile-cat-tab">KIDS</a>
-        <a href="{% url 'category_products' 'accessories' %}" class="mobile-cat-tab">ACCESSORIES</a>
-        <a href="{% url 'sale_products' %}" class="mobile-cat-tab" style="color:#ff3f6c;">SALE</a>
-    </div>
-</div>
-
-<!-- ===== PROMO SLIDER ===== -->
 <section class="promo-slider-section">
     <div class="promo-slider" id="promoSlider">
         <div class="promo-slides">
@@ -745,6 +105,7 @@
                     <a href="{% url 'category_products' 'women' %}" class="promo-btn">Shop Now</a>
                 </div>
             </div>
+
             <div class="promo-slide">
                 <img src="{% static 'menappearl.avif' %}" alt="Men Collection">
                 <div class="promo-overlay">
@@ -754,6 +115,7 @@
                     <a href="{% url 'category_products' 'men' %}" class="promo-btn">Explore Men</a>
                 </div>
             </div>
+
             <div class="promo-slide">
                 <img src="{% static 'perfumebanner.webp' %}" alt="Perfume Collection">
                 <div class="promo-overlay">
@@ -761,11 +123,14 @@
                     <h2>Perfume Collection</h2>
                     <p>Discover elegant signature scents.</p>
                     <a href="#perfume-section" class="promo-btn">See Below</a>
+                    
                 </div>
             </div>
         </div>
+
         <button class="promo-arrow prev" id="promoPrev">&#10094;</button>
         <button class="promo-arrow next" id="promoNext">&#10095;</button>
+
         <div class="promo-dots" id="promoDots">
             <span class="promo-dot active" data-slide="0"></span>
             <span class="promo-dot" data-slide="1"></span>
@@ -774,29 +139,37 @@
     </div>
 </section>
 
-<div class="section-divider"></div>
 
-<!-- ===== RECENTLY VIEWED ===== -->
+
 {% if recently_viewed_products %}
 <section class="recently-viewed-section">
+
     <div class="recently-header">
         <div>
             <span class="section-tag">PICK UP WHERE YOU LEFT OFF</span>
             <h2>Recently Viewed</h2>
         </div>
-        <a href="{% url 'recently_viewed_page' %}" class="view-all-btn">View All →</a>
+
+        <a href="{% url 'recently_viewed_page' %}" class="view-all-btn">
+            View All →
+        </a>
     </div>
+
     <div class="recently-slider">
         {% for product in recently_viewed_products %}
         <a href="{% url 'product_detail' product.id %}" class="recent-card">
+
             <div class="recent-img">
                 <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                
                 {% if product.has_valid_sale %}
                 <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
                 {% endif %}
             </div>
+
             <div class="recent-info">
                 <h3>{{ product.name }}</h3>
+
                 {% if product.has_valid_sale %}
                 <div class="sale-price-row">
                     <span class="sale-current-price">₹{{ product.sale_price|floatformat:2 }}</span>
@@ -806,86 +179,114 @@
                 <span class="category-product-price">₹{{ product.price }}</span>
                 {% endif %}
             </div>
+
         </a>
         {% endfor %}
     </div>
+
 </section>
 {% endif %}
 
-<!-- ===== PERFUMES ===== -->
+
 <section class="perfume-section" id="perfume-section">
     <div class="section-header">
         <h2>Luxury Perfumes</h2>
-        <p>Discover signature scents curated for elegance.</p>
+        <p>Discover signature scents curated for elegance and long-lasting impression.</p>
     </div>
+
     <div class="perfume-grid">
         {% for product in perfume_products %}
-        <div class="perfume-card">
-            <a href="{% url 'product_detail' product.id %}">
-                <div class="perfume-image-box">
-                    {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    {% else %}
-                    <div class="no-image">No Image</div>
-                    {% endif %}
+            <div class="perfume-card">
+                <a href="{% url 'product_detail' product.id %}">
+                    <div class="perfume-image-box">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <div class="no-image">No Image</div>
+                        {% endif %}
+                    </div>
+                </a>
+
+                <div class="perfume-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="perfume-price">₹{{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="perfume-btn">View Product</a>
                 </div>
-            </a>
-            <div class="perfume-info">
-                <h3>{{ product.name }}</h3>
-                <p class="perfume-price">₹{{ product.price }}</p>
-                <a href="{% url 'product_detail' product.id %}" class="perfume-btn">View Product</a>
             </div>
-        </div>
         {% empty %}
-        <p class="no-products">No perfume products available right now.</p>
+            <p class="no-products">No perfume products available right now.</p>
         {% endfor %}
     </div>
 </section>
 
-<div class="section-divider"></div>
-
-<!-- ===== FEATURED CATEGORIES ===== -->
 <section class="featured-categories">
     <div class="section-top">
         <span class="section-tag">CURATED CATEGORIES</span>
-        <h2>Explore Our Worlds</h2>
-        <p>Discover elevated edits for every mood and moment.</p>
+        <h2>Explore Our Signature Worlds</h2>
+        <p>Discover elevated edits designed for every mood, moment, and modern lifestyle.</p>
     </div>
+
     <div class="category-grid">
         <a href="{% url 'category_products' 'women' %}" class="category-card large-card">
-            <div class="category-image"><img src="{% static 'womenc.png' %}" alt="Women"></div>
-            <div class="category-overlay"><span>01</span><h3>Women</h3><p>Elegant silhouettes and statement essentials.</p></div>
+            <div class="category-image">
+                <img src="{% static 'womenc.png' %}" alt="Women Collection">
+            </div>
+            <div class="category-overlay">
+                <span>01</span>
+                <h3>Women</h3>
+                <p>Elegant silhouettes and statement essentials.</p>
+            </div>
         </a>
+
         <a href="{% url 'category_products' 'men' %}" class="category-card">
-            <div class="category-image"><img src="{% static 'men.png' %}" alt="Men"></div>
-            <div class="category-overlay"><span>02</span><h3>Men</h3><p>Refined everyday fashion with a premium edge.</p></div>
+            <div class="category-image">
+                <img src="{% static 'men.png' %}" alt="Men Collection">
+            </div>
+            <div class="category-overlay">
+                <span>02</span>
+                <h3>Men</h3>
+                <p>Refined everyday fashion with a premium edge.</p>
+            </div>
         </a>
+
         <a href="{% url 'category_products' 'kids' %}" class="category-card">
-            <div class="category-image"><img src="{% static 'OIP.webp' %}" alt="Kids"></div>
-            <div class="category-overlay"><span>03</span><h3>Kids</h3><p>Playful comfort crafted for bright young style.</p></div>
+            <div class="category-image">
+                <img src="{% static 'OIP.webp' %}" alt="Kids Collection">
+            </div>
+            <div class="category-overlay">
+                <span>03</span>
+                <h3>Kids</h3>
+                <p>Playful comfort crafted for bright young style.</p>
+            </div>
         </a>
+
         <a href="{% url 'category_products' 'accessories' %}" class="category-card wide-card">
-            <div class="category-image"><img src="{% static 'images.jpg' %}" alt="Accessories"></div>
-            <div class="category-overlay"><span>04</span><h3>Accessories</h3><p>Watches, eyewear, belts, bags, and more.</p></div>
-        </a>
+    <div class="category-image">
+        <img src="{% static 'images.jpg' %}" alt="Accessories Collection">
+    </div>
+    <div class="category-overlay">
+        <span>04</span>
+        <h3>Accessories</h3>
+        <p>Watches, eyewear, belts, bags, and premium finishing touches.</p>
+    </div>
+</a>
     </div>
 </section>
 
-<div class="section-divider"></div>
-
-<!-- ===== NEW ARRIVALS ===== -->
 <section class="arrivals-section">
     <div class="arrivals-top">
         <div>
             <span class="section-tag">NEW ARRIVALS</span>
             <h2>Trending Now</h2>
-            <p>Fresh luxury edits for your everyday wardrobe.</p>
+            <p>Fresh luxury edits designed to elevate your everyday wardrobe.</p>
         </div>
+
         <div class="slider-controls">
             <button class="slider-btn" id="arrivalsPrev">&#10094;</button>
             <button class="slider-btn" id="arrivalsNext">&#10095;</button>
         </div>
     </div>
+
     <div class="arrivals-slider-wrapper">
         <div class="arrivals-slider" id="arrivalsSlider">
             {% for product in new_arrivals %}
@@ -895,6 +296,7 @@
                     <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist-btn" onclick="event.stopPropagation();">♥</a>
                     <span class="product-badge">NEW</span>
                 </div>
+
                 <div class="product-info">
                     <h3>{{ product.name }}</h3>
                     <p class="product-category">{{ product.category }}</p>
@@ -904,26 +306,67 @@
                 </div>
             </div>
             {% empty %}
-            <p style="color:#94969f;font-size:13px;padding:20px;">No new arrivals yet.</p>
+            <p>No new arrivals yet.</p>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<div class="section-divider"></div>
+<section class="brand-story-strip">
+    <div class="brand-story-left">
+        <span class="section-tag">OUR SIGNATURE</span>
+        <h2>Crafted For Quiet Luxury</h2>
+        <p>
+            At Veloura, we blend modern silhouettes, premium textures, and
+            refined design language to create pieces that feel timeless,
+            elevated, and effortlessly wearable.
+        </p>
 
-<!-- ===== BEST SELLERS ===== -->
+        <div class="story-points">
+            <div class="story-point">
+                <h4>Premium Fabrics</h4>
+                <p>Soft-touch materials chosen for comfort, durability, and elegance.</p>
+            </div>
+
+            <div class="story-point">
+                <h4>Minimal Design</h4>
+                <p>Clean details and refined shapes inspired by modern luxury living.</p>
+            </div>
+
+            <div class="story-point">
+                <h4>Curated Collections</h4>
+                <p>Thoughtfully designed edits for fashion, home, and everyday style.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-story-right">
+        <div class="story-image-card">
+            <img src="{% static 'clothing.jpg' %}" alt="Brand Story">
+        </div>
+
+        <div class="story-floating-box">
+            <span>VEL OURA EDIT</span>
+            <h3>Modern Elegance</h3>
+            <p>Designed to feel exclusive, refined, and wearable every day.</p>
+        </div>
+    </div>
+</section>
+
 <section class="best-sellers-section">
     <div class="section-top">
         <span class="section-tag">BEST SELLERS</span>
         <h2>Most Loved Pieces</h2>
         <p>Discover the styles our customers keep coming back for.</p>
     </div>
+
     <div class="best-sellers-grid">
         {% for product in best_sellers %}
         <a href="{% url 'product_detail' product.id %}" class="detail-related-link">
             <div class="best-card" data-product-id="{{ product.id }}">
-                <div class="best-card-image"><img src="{{ product.image.url }}" alt="{{ product.name }}"></div>
+                <div class="best-card-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
                 <div class="best-card-info">
                     <h3>{{ product.name }}</h3>
                     <p>{{ product.category }}</p>
@@ -932,23 +375,29 @@
             </div>
         </a>
         {% empty %}
-        <p style="color:#94969f;font-size:13px;grid-column:1/-1;text-align:center;padding:20px;">No best sellers yet.</p>
+        <p>No best sellers yet.</p>
         {% endfor %}
     </div>
 </section>
 
-<!-- ===== QUICK VIEW MODAL ===== -->
 <div class="modal" id="quickViewModal">
     <div class="modal-content quick-view-box">
         <span class="close-btn" id="closeQuickView">&times;</span>
+
         <div class="quick-view-layout">
-            <div class="quick-view-image"><img id="quickViewImg" src="" alt="Product Preview"></div>
+            <div class="quick-view-image">
+                <img id="quickViewImg" src="" alt="Product Preview">
+            </div>
+
             <div class="quick-view-details">
                 <span class="quick-view-tag">BEST SELLER</span>
                 <h2 id="quickViewTitle">Product Title</h2>
                 <p class="quick-view-category" id="quickViewCategory">Category</p>
                 <p class="quick-view-price" id="quickViewPrice">₹0</p>
-                <p class="quick-view-description" id="quickViewDescription">Product description goes here.</p>
+                <p class="quick-view-description" id="quickViewDescription">
+                    Product description goes here.
+                </p>
+
                 <div class="quick-view-actions">
                     <form id="quickViewCartForm" method="post" class="quick-cart-form">
                         {% csrf_token %}
@@ -961,32 +410,17 @@
     </div>
 </div>
 
-<!-- ===== BRAND STORY (hidden on mobile) ===== -->
-<section class="brand-story-strip">
-    <div class="brand-story-left">
-        <span class="section-tag">OUR SIGNATURE</span>
-        <h2>Crafted For Quiet Luxury</h2>
-        <p>At Veloura, we blend modern silhouettes, premium textures, and refined design language to create pieces that feel timeless, elevated, and effortlessly wearable.</p>
-        <div class="story-points">
-            <div class="story-point"><h4>Premium Fabrics</h4><p>Soft-touch materials chosen for comfort, durability, and elegance.</p></div>
-            <div class="story-point"><h4>Minimal Design</h4><p>Clean details and refined shapes inspired by modern luxury living.</p></div>
-            <div class="story-point"><h4>Curated Collections</h4><p>Thoughtfully designed edits for fashion, home, and everyday style.</p></div>
-        </div>
-    </div>
-    <div class="brand-story-right">
-        <div class="story-image-card"><img src="{% static 'clothing.jpg' %}" alt="Brand Story"></div>
-        <div class="story-floating-box"><span>VEL OURA EDIT</span><h3>Modern Elegance</h3><p>Designed to feel exclusive, refined, and wearable every day.</p></div>
-    </div>
-</section>
-
-<!-- ===== NEWSLETTER (hidden on mobile) ===== -->
 <section class="newsletter-gallery-section">
     <div class="newsletter-strip">
         <div class="newsletter-left">
             <span class="section-tag">STAY CONNECTED</span>
             <h2>Join The Veloura World</h2>
-            <p>Be first to know about new collections, signature drops, exclusive offers, and style inspirations.</p>
+            <p>
+                Be first to know about new collections, signature drops,
+                exclusive offers, and style inspirations.
+            </p>
         </div>
+
         <form class="newsletter-form">
             <input type="email" placeholder="Enter your email address">
             <button type="submit">Subscribe</button>
@@ -994,35 +428,40 @@
     </div>
 </section>
 
-<!-- ===== MESSAGES ===== -->
 {% if messages %}
 <div class="message-area">
     {% for message in messages %}
-    <div class="site-message {{ message.tags }}">{{ message }}</div>
+        <div class="site-message {{ message.tags }}">{{ message }}</div>
     {% endfor %}
 </div>
 {% endif %}
 
-<!-- ===== LOGIN MODAL ===== -->
 <div class="modal" id="loginModal">
     <div class="modal-content">
         <span class="close-btn" id="closeLogin">&times;</span>
+
         <h2>Welcome Back</h2>
-        <form action="/login/" method="post">
+
+         <form action="/login/" method="post">
             {% csrf_token %}
             <input type="text" name="email" placeholder="Email">
             <input type="password" name="password" placeholder="Password">
             <button type="submit" class="main-btn">Login</button>
         </form>
-        <p>Don't have an account? <span id="openRegister">Register</span></p>
+
+        <p>
+            Don't have an account?
+            <span id="openRegister">Register</span>
+        </p>
     </div>
 </div>
 
-<!-- ===== REGISTER MODAL ===== -->
 <div class="modal" id="registerModal">
     <div class="modal-content">
         <span class="close-btn" id="closeRegister">&times;</span>
+
         <h2>Create Account</h2>
+
         <form action="/register/" method="post">
             {% csrf_token %}
             <input type="text" name="name" placeholder="Full Name">
@@ -1030,14 +469,23 @@
             <input type="password" name="password" placeholder="Password">
             <button type="submit" class="main-btn">Register</button>
         </form>
-        <p>Already have an account? <span id="openLogin">Login</span></p>
+
+        <p>
+            Already have an account?
+            <span id="openLogin">Login</span>
+        </p>
     </div>
 </div>
 
-<!-- ===== FOOTER (hidden on mobile) ===== -->
+
+
 <footer class="site-footer">
     <div class="footer-grid">
-        <div><h3>Veloura</h3><p>Luxury fashion, modern design, and premium shopping experience.</p></div>
+        <div>
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+
         <div>
             <h4>Shop</h4>
             <a href="{% url 'category_products' 'women' %}">Women</a>
@@ -1046,6 +494,7 @@
             <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
             <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
         </div>
+
         <div>
             <h4>Support</h4>
             <a href="#">Contact Us</a>
@@ -1053,6 +502,7 @@
             <a href="#">Returns</a>
             <a href="#">Help Center</a>
         </div>
+
         <div>
             <h4>Legal</h4>
             <a href="#">Privacy Policy</a>
@@ -1060,51 +510,40 @@
             <a href="#">Refund Policy</a>
         </div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Veloura. All rights reserved.</p></div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
 </footer>
 
-<!-- ===== BOTTOM NAV ===== -->
-<nav class="mobile-bottom-nav">
-    <a href="/" class="mobile-nav-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Home</span>
-    </a>
-    <a href="{% url 'category_products' 'women' %}" class="mobile-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        <span>Categories</span>
-    </a>
-    <a href="{% url 'wishlist' %}" class="mobile-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/></svg>
-        <span>Wishlist</span>
-    </a>
-    <a href="{% url 'cart' %}" class="mobile-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/><path d="M7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/></svg>
-        <span>Bag</span>
-    </a>
-    <a href="{% if user.is_authenticated %}/account/{% else %}/?modal=login{% endif %}" class="mobile-nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-        <span>Profile</span>
-    </a>
-</nav>
-
-<!-- ===== CHAT ===== -->
 <div class="lux-chat-widget">
-    <button id="chatToggleBtn" class="lux-chat-toggle" type="button"><span>✦</span></button>
+    <button id="chatToggleBtn" class="lux-chat-toggle" type="button">
+        <span>✦</span>
+    </button>
+
     <div id="chatPanel" class="lux-chat-panel">
         <div class="lux-chat-header">
-            <div><h3>Veloura Assistant</h3><p>Luxury support, instantly</p></div>
+            <div>
+                <h3>Veloura Assistant</h3>
+                <p>Luxury support, instantly</p>
+            </div>
             <button id="chatCloseBtn" class="lux-chat-close" type="button">&times;</button>
         </div>
+
         <div id="chatUserForm" class="lux-chat-user-form">
             <h4>Start Conversation</h4>
             <input type="text" id="chatUserName" placeholder="Enter your name">
             <input type="email" id="chatUserEmail" placeholder="Enter your email">
             <button id="startChatBtn" class="lux-start-chat-btn" type="button">Start Conversation</button>
         </div>
+
         <div id="chatConversation" class="lux-chat-conversation hidden">
             <div id="chatMessages" class="lux-chat-messages">
-                <div class="bot-message">Hello ✨ I'm your Veloura assistant. Ask me about products, perfumes, payments, orders, shipping, returns, or shopping help.</div>
+                <div class="bot-message">
+                    Hello ✨ I’m your Veloura assistant. Ask me about products, perfumes, payments, orders, shipping, returns, or shopping help.
+                </div>
             </div>
+
             <div class="lux-chat-input-area">
                 <input type="text" id="chatInput" placeholder="Ask about products, orders, payment...">
                 <button id="voiceChatBtn" type="button" title="Speak">🎤</button>
@@ -1115,14 +554,5 @@
 </div>
 
 <script src="{% static 'script.js' %}?v=2"></script>
-<script>
-    // Show mobile search row only on mobile
-    if (window.innerWidth <= 768) {
-        document.querySelector('.mobile-search-row').style.display = 'block';
-    }
-    window.addEventListener('resize', function() {
-        document.querySelector('.mobile-search-row').style.display = window.innerWidth <= 768 ? 'block' : 'none';
-    });
-</script>
 </body>
 </html>
