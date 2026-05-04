@@ -3,12 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Orders - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="/" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">My Orders</span>
+    <span></span>
+</div>
+
+<!-- Desktop Navbar -->
 <header class="navbar">
     <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 </header>
@@ -34,6 +46,35 @@
                         <span>₹{{ order.total_amount }}</span>
                     </div>
                 </div>
+
+                <!-- Mobile Order Card -->
+                <div class="mobile-order-history-card">
+                    <div class="mobile-order-history-top">
+                        <div class="mobile-order-history-info">
+                            <span class="mobile-order-history-id">Order #{{ order.id }}</span>
+                            <span class="mobile-order-history-date">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+                        </div>
+                        <span class="mobile-order-history-status {{ order.payment_status }}">{{ order.payment_status|title }}</span>
+                    </div>
+                    <div class="mobile-order-history-bottom">
+                        <div class="mobile-order-history-items-preview">
+                            {% for item in order.items.all|slice:":3" %}
+                            {% if item.image %}
+                            <span class="mobile-order-history-thumb">
+                                <img src="{{ item.image }}" alt="{{ item.product_name }}">
+                            </span>
+                            {% endif %}
+                            {% endfor %}
+                            {% if order.items.all|length > 3 %}
+                            <span class="mobile-order-history-thumb-more">+{{ order.items.all|length|add:"-3" }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="mobile-order-history-right">
+                            <span class="mobile-order-history-method">{{ order.payment_provider|title }}</span>
+                            <span class="mobile-order-history-amount">₹{{ order.total_amount }}</span>
+                        </div>
+                    </div>
+                </div>
             </a>
             {% empty %}
             <p class="no-review-text">You have not placed any orders yet.</p>
@@ -41,6 +82,11 @@
         </div>
     </div>
 </section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="width:100%;text-align:center;">Continue Shopping</a>
+</div>
 
 </body>
 </html>

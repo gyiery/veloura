@@ -1,2 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Payment Failed - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="/" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Payment Failed</span>
+    <span></span>
+</div>
+
+<!-- Desktop Content -->
 <h1>❌ Payment Failed</h1>
 <a href="/checkout/">Try Again</a>
+
+<!-- Mobile Failed Visual -->
+<div class="mobile-success-visual">
+    <div class="mobile-success-check mobile-failed-check">✕</div>
+    <span class="mobile-success-text">Payment Failed</span>
+    <span class="mobile-success-subtext">Your payment could not be completed. Please try again.</span>
+</div>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="/" class="mobile-order-action-btn mobile-order-secondary-btn">Go Home</a>
+    <a href="/checkout/" class="mobile-order-action-btn mobile-order-primary-btn">Try Again</a>
+</div>
+
+</body>
+</html>

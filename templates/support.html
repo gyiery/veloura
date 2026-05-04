@@ -1,14 +1,56 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Customer Support - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="{% url 'account_page' %}" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Customer Support</span>
+    <span></span>
+</div>
+
+<!-- Mobile Quick Nav Tabs -->
+<div class="mobile-support-nav">
+    <a href="{% url 'account_page' %}" class="mobile-support-nav-item">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Profile</span>
+    </a>
+    <a href="{% url 'order_history' %}" class="mobile-support-nav-item">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        <span>Orders</span>
+    </a>
+    <a href="{% url 'wishlist' %}" class="mobile-support-nav-item">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+        <span>Wishlist</span>
+    </a>
+    <a href="{% url 'support_page' %}" class="mobile-support-nav-item mobile-support-nav-active">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span>Support</span>
+    </a>
+</div>
+
 <div class="account-container">
 
+    <!-- Desktop Sidebar -->
     <div class="account-sidebar">
         <a href="{% url 'account_page' %}">Profile</a>
         <a href="{% url 'order_history' %}">My Orders</a>
@@ -20,7 +62,21 @@
 
         <h2>Customer Support</h2>
 
-        <!-- CREATE TICKET -->
+        <!-- Mobile Raise Ticket Card -->
+        <div class="mobile-support-ticket-card">
+            <div class="mobile-support-ticket-header">
+                <span class="mobile-support-ticket-icon">📝</span>
+                <span class="mobile-support-ticket-label">Raise a Ticket</span>
+            </div>
+            <form method="post" action="{% url 'create_ticket' %}">
+                {% csrf_token %}
+                <input type="text" name="subject" placeholder="Subject" required class="mobile-support-input">
+                <textarea name="message" placeholder="Describe your issue..." required class="mobile-support-textarea"></textarea>
+                <button type="submit" class="mobile-support-submit-btn">Submit Ticket</button>
+            </form>
+        </div>
+
+        <!-- CREATE TICKET (Desktop) -->
         <div class="support-box">
             <h3>Raise a Ticket</h3>
 
@@ -33,6 +89,12 @@
 
                 <button type="submit">Submit</button>
             </form>
+        </div>
+
+        <!-- Mobile Tickets Header -->
+        <div class="mobile-support-tickets-header">
+            <span class="mobile-support-tickets-label">Your Tickets</span>
+            <span class="mobile-support-tickets-count">{{ tickets|length }}</span>
         </div>
 
         <!-- USER TICKETS -->
@@ -57,7 +119,32 @@
 
                 <small>{{ ticket.created_at }}</small>
             </div>
+
+            <!-- Mobile Ticket Card -->
+            <div class="mobile-support-ticket-item">
+                <div class="mobile-support-ticket-item-top">
+                    <span class="mobile-support-ticket-item-subject">{{ ticket.subject }}</span>
+                    <span class="mobile-support-ticket-item-status {{ ticket.status }}">{{ ticket.status }}</span>
+                </div>
+                <p class="mobile-support-ticket-item-msg">{{ ticket.message|truncatechars:80 }}</p>
+                {% if ticket.admin_reply %}
+                <div class="mobile-support-ticket-reply">
+                    <span class="mobile-support-ticket-reply-icon">💬</span>
+                    <span class="mobile-support-ticket-reply-text">{{ ticket.admin_reply|truncatechars:100 }}</span>
+                </div>
+                {% endif %}
+                <span class="mobile-support-ticket-item-date">{{ ticket.created_at|date:"d M Y, h:i A" }}</span>
+            </div>
+
             {% empty %}
+
+            <!-- Mobile Empty State -->
+            <div class="mobile-order-empty-card">
+                <div class="mobile-order-empty-icon">🎫</div>
+                <span class="mobile-order-empty-title">No tickets yet</span>
+                <span class="mobile-order-empty-subtext">Raise a ticket above if you need any help.</span>
+            </div>
+
             <p>No tickets yet.</p>
             {% endfor %}
         </div>

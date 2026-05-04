@@ -3,15 +3,182 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Account - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        @media (max-width: 768px) {
+            html, body { overflow-x: hidden; width: 100%; }
+            body { background: #f5f5f6; color: #282c3f; padding-bottom: 56px; }
+
+            /* ---- NAVBAR ---- */
+            .navbar {
+                height: auto !important; background: #ffffff !important; border-bottom: none !important;
+                box-shadow: none !important; padding: 10px 12px !important; flex-wrap: wrap; gap: 0 !important;
+                backdrop-filter: none !important; position: sticky !important; top: 0 !important; z-index: 100 !important;
+            }
+            .logo { font-size: 20px !important; color: #282c3f !important; text-align: center; width: 100%; margin-bottom: 8px; }
+            .logo-link { -webkit-text-fill-color: initial !important; background: none !important; }
+            .nav-links { display: flex !important; overflow-x: auto; gap: 0; padding: 0; background: #ffffff; border-bottom: 1px solid #f0f0f0; scrollbar-width: none; order: 4; width: 100%; margin: 0 !important; }
+            .nav-links::-webkit-scrollbar { display: none; }
+            .nav-item { height: auto !important; flex-shrink: 0; }
+            .nav-item a, .mega-wrapper > a { display: inline-flex !important; align-items: center; white-space: nowrap; padding: 10px 14px; border: none !important; border-bottom: 3px solid transparent !important; border-radius: 0 !important; background: none !important; font-size: 12px; font-weight: 600; color: #94969f !important; text-transform: uppercase; letter-spacing: 0.3px; }
+            .nav-item a::after, .nav-item > a::after, .nav-item > a::before, .mega-wrapper > a::after, .mega-wrapper > a::before { display: none !important; }
+            .nav-item a:hover { color: #282c3f !important; transform: none !important; border-bottom-color: #282c3f !important; }
+            .mega-menu { display: none !important; }
+
+            /* ---- ACCOUNT PAGE ---- */
+            .account-page-wrap { padding: 0 !important; min-height: auto; }
+
+            /* Profile header - compact */
+            .account-page-top {
+                flex-direction: column; align-items: flex-start; gap: 12px;
+                padding: 14px 12px !important; background: #fff; margin: 0 !important; border-bottom: 1px solid #f0f0f0;
+            }
+            .account-page-avatar, .account-page-avatar-image { width: 56px !important; height: 56px !important; border-radius: 16px !important; }
+            .account-page-avatar { font-size: 22px !important; }
+            .account-page-welcome { margin: 0; }
+            .account-breadcrumb { font-size: 10px; margin-bottom: 4px; }
+            .account-page-welcome h1 { font-size: 18px !important; margin: 0 0 2px !important; }
+            .account-page-welcome span { font-size: 12px; color: #94969f; }
+
+            /* Sidebar → horizontal tabs */
+            .account-page-layout { display: flex !important; flex-direction: column !important; gap: 0; }
+            .account-sidebar {
+                display: flex !important; flex-direction: row !important; overflow-x: auto; gap: 0;
+                padding: 0 12px; background: #fff; border-bottom: 1px solid #f0f0f0;
+                scrollbar-width: none; position: static;
+            }
+            .account-sidebar::-webkit-scrollbar { display: none; }
+            .account-side-link {
+                flex-shrink: 0; padding: 12px 16px !important; border-radius: 0 !important; background: none !important;
+                border: none !important; border-bottom: 2px solid transparent !important;
+                display: flex !important; align-items: center !important; justify-content: center !important;
+                gap: 0 !important; font-size: 12px; font-weight: 600; text-decoration: none; color: #94969f;
+                white-space: nowrap; flex: 1; min-width: 0; text-align: center;
+            }
+            .account-side-link span:last-child { display: none !important; }
+            .account-side-link.active { color: #282c3f; border-bottom-color: #282c3f; background: none; transform: none; box-shadow: none; border-radius: 0; }
+            .account-side-link:hover { transform: none; box-shadow: none; color: #282c3f; background: none; }
+            .account-logout-link { display: none !important; }
+
+            /* Main panel */
+            .account-main-panel { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+
+            /* Panel cards */
+            .account-panel-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid #f0f0f0; box-shadow: none; }
+            .account-panel-head { flex-direction: column; align-items: flex-start; gap: 4px; margin-bottom: 14px; }
+            .account-panel-head h2 { font-size: 16px !important; margin: 0; }
+            .account-panel-pill { font-size: 10px; padding: 4px 10px; background: #f0f0f6; color: #666; border-radius: 6px; }
+            .account-success-msg { font-size: 12px; padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; }
+
+            /* ---- PROFILE TAB ---- */
+            .account-profile-edit-layout { flex-direction: column !important; gap: 16px; }
+            .account-profile-photo-box { flex-direction: row !important; align-items: center; gap: 14px; }
+            .account-edit-photo-preview, .account-profile-avatar-large { width: 80px !important; height: 80px !important; border-radius: 50% !important; }
+            .account-profile-photo-box input[type="file"] { width: auto; flex: 1; font-size: 12px; padding: 8px; border-radius: 8px; }
+            .account-form-grid { grid-template-columns: 1fr !important; gap: 12px; }
+            .account-form-field label { font-size: 11px; }
+            .account-form-field input, .account-form-field select { padding: 11px 12px; font-size: 13px; border-radius: 8px; }
+            .account-save-btn { width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; }
+            .account-save-btn:hover { transform: none; }
+
+            /* ---- ORDERS TAB ---- */
+            .order-card { border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #f0f0f0; }
+            .order-card:hover { transform: none; box-shadow: none; }
+            .order-top { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+            .order-top strong { font-size: 14px; margin-bottom: 2px; }
+            .order-top p { font-size: 11px; color: #94969f; margin: 0; }
+            .account-order-meta { flex-wrap: wrap; gap: 6px; }
+            .account-order-meta span { font-size: 11px; padding: 4px 10px; border-radius: 6px; }
+            .order-status { font-size: 10px; padding: 4px 10px; letter-spacing: 0.5px; }
+            .order-timeline { display: flex !important; flex-direction: row !important; grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important; gap: 4px; margin: 0 0 10px; }
+            .timeline-step { text-align: center; color: #bbb; font-size: 9px; position: relative; padding-top: 14px; }
+            .timeline-step::before { height: 4px; margin-bottom: 6px; }
+            .timeline-step.active { color: #282c3f; }
+            .timeline-step.active::before { background: linear-gradient(90deg, #282c3f, #0f9bb0); }
+            .delivery-date { font-size: 11px; color: #666; margin: 0 0 12px; }
+            .order-request-row { margin-top: 0; }
+            .order-request-form { background: #f9fafb; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+            .order-request-form textarea { border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; font-size: 12px; min-height: 60px; width: 100%; margin-bottom: 8px; }
+            .small-action-btn { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
+            .small-action-btn.delete-btn { background: #fee4e2; color: #b42318; }
+            .order-request-history { margin-top: 10px; }
+            .order-request-card { background: #f9fafb; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+            .order-request-top { margin-bottom: 6px; }
+            .order-request-top strong { font-size: 13px; }
+            .order-request-top p { font-size: 11px; }
+            .order-request-card p { font-size: 12px; color: #555; margin: 0 0 4px; }
+            .request-status-badge { font-size: 9px; padding: 3px 8px; }
+            .order-request-empty { font-size: 12px; color: #94969f; margin-top: 8px; }
+
+            .account-empty-box { background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 30px 16px; text-align: center; }
+            .account-empty-box h3 { font-size: 15px; color: #282c3f; margin-bottom: 6px; }
+            .account-empty-box p { font-size: 12px; color: #94969f; }
+
+            /* ---- WISHLIST TAB ---- */
+            .account-wishlist-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+            .account-wishlist-card { border-radius: 10px; overflow: hidden; border: 1px solid #f0f0f0; }
+            .account-wishlist-card:hover { transform: none; box-shadow: none; }
+            .account-wishlist-card img { width: 100%; height: 160px; object-fit: cover; }
+            .account-wishlist-content { padding: 10px; }
+            .account-wishlist-content p { font-size: 10px; color: #94969f; margin-bottom: 4px; }
+            .account-wishlist-content h3 { font-size: 12px; color: #282c3f; margin-bottom: 4px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+            .account-wishlist-content strong { font-size: 14px; color: #282c3f; }
+
+            /* ---- ADDRESSES TAB ---- */
+            .account-address-form { margin-bottom: 16px; }
+            .account-form-field.full-span { grid-column: 1 / -1; }
+            .account-checkbox { font-size: 13px; }
+            .account-address-actions { flex-direction: column; gap: 8px; }
+            .account-cancel-btn { width: 100%; text-align: center; padding: 11px; border-radius: 8px; font-size: 13px; }
+            .account-cancel-btn:hover { transform: none; }
+            .account-address-list { margin-top: 14px; }
+            .account-address-card { background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+            .account-address-card:hover { transform: none; box-shadow: none; }
+            .account-address-top { margin-bottom: 6px; }
+            .account-address-top h3 { font-size: 14px; margin: 0; }
+            .default-badge { font-size: 10px; padding: 3px 8px; }
+            .account-address-card p { font-size: 12px; color: #555; line-height: 1.5; margin: 4px 0 8px; }
+            .account-address-meta { gap: 10px; }
+            .account-address-meta span { font-size: 12px; }
+            .account-address-buttons { flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+            /* ---- SUPPORT TAB ---- */
+            .support-top-intro { display: none !important; }
+            .support-form-box { background: #f9fafb; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+            .support-form-box h3 { font-size: 14px; color: #282c3f; margin-bottom: 10px; }
+            .support-ticket-form { margin: 0; }
+            .support-ticket-history { margin-top: 0; }
+            .support-ticket-head { margin-bottom: 10px; }
+            .support-ticket-head h3 { font-size: 14px; }
+            .support-ticket-card { background: #fff; border: 1px solid #f0f0f0; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+            .support-ticket-top { margin-bottom: 8px; }
+            .support-ticket-top h4 { font-size: 13px; margin: 0 0 2px; }
+            .support-ticket-top p { font-size: 11px; margin: 0; }
+            .ticket-status-badge { font-size: 9px; padding: 3px 8px; }
+            .support-ticket-message, .support-admin-reply { background: #f9fafb; border: none; border-left: 2px solid #282c3f; border-radius: 0 8px 8px 0; padding: 10px; margin-bottom: 8px; }
+            .support-ticket-message label, .support-admin-reply label { font-size: 10px; color: #999; display: block; margin-bottom: 4px; }
+            .support-ticket-message p, .support-admin-reply p { font-size: 12px; color: #555; margin: 0; line-height: 1.6; }
+            .support-admin-pending { background: #fffbeb; border-left: 2px solid #f59e0b; }
+            .support-admin-pending label { color: #92400e; }
+            .support-admin-pending p { color: #92400e; }
+
+            /* ---- BOTTOM NAV ---- */
+            .mobile-bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: #ffffff; border-top: 1px solid #f0f0f0; align-items: center; justify-content: space-around; padding: 6px 0 max(6px, env(safe-area-inset-bottom)); }
+            .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 2px 10px; text-decoration: none; color: #94969f; position: relative; }
+            .mobile-nav-item.active { color: #282c3f; }
+            .mobile-nav-item.active::after { content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 16px; height: 3px; border-radius: 2px; background: #282c3f; }
+            .mobile-nav-item svg { width: 20px; height: 20px; }
+            .mobile-nav-item span { font-size: 9px; font-weight: 600; }
+        }
+        @media (min-width: 769px) { .mobile-bottom-nav { display: none !important; } }
+    </style>
 </head>
 <body>
 
 <header class="navbar">
     <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
-
     <nav class="nav-links">
         <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
         <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
@@ -29,7 +196,6 @@
         {% else %}
             <div class="account-page-avatar">{{ user.username|first|upper }}</div>
         {% endif %}
-
         <div class="account-page-welcome">
             <p class="account-breadcrumb">Veloura / My Account / Profile</p>
             <h1>Welcome, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %}!</h1>
@@ -38,14 +204,15 @@
     </div>
 
     <div class="account-page-layout">
+        <!-- Sidebar → horizontal tabs on mobile -->
         <aside class="account-sidebar">
-            <a href="{% url 'account_page' %}?tab=orders" class="account-side-link {% if active_tab == 'orders' %}active{% endif %}"><span>My Orders</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=orders" class="account-side-link {% if active_tab == 'orders' %}active{% endif %}"><span>Orders</span><span>→</span></a>
             <a href="{% url 'account_page' %}?tab=wishlist" class="account-side-link {% if active_tab == 'wishlist' %}active{% endif %}"><span>Wishlist</span><span>→</span></a>
-            <a href="{% url 'account_page' %}?tab=profile" class="account-side-link {% if active_tab == 'profile' %}active{% endif %}"><span>Account &amp; Information</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=profile" class="account-side-link {% if active_tab == 'profile' %}active{% endif %}"><span>Profile</span><span>→</span></a>
             <a href="{% url 'account_page' %}?tab=addresses" class="account-side-link {% if active_tab == 'addresses' %}active{% endif %}"><span>Addresses</span><span>→</span></a>
-            <a href="{% url 'account_page' %}?tab=support" class="account-side-link {% if active_tab == 'support' %}active{% endif %}"><span>Customer Support</span><span>→</span></a>
+            <a href="{% url 'account_page' %}?tab=support" class="account-side-link {% if active_tab == 'support' %}active{% endif %}"><span>Support</span><span>→</span></a>
             {% if user.is_superuser %}
-            <a href="{% url 'dashboard_overview' %}" class="account-side-link"><span>Admin Dashboard</span><span>→</span></a>
+            <a href="{% url 'dashboard_overview' %}" class="account-side-link"><span>Admin</span><span>→</span></a>
             {% endif %}
             <a href="{% url 'logout' %}" class="account-logout-link">Logout</a>
         </aside>
@@ -63,11 +230,9 @@
                     <h2>Profile Details</h2>
                     <span class="account-panel-pill">Editable</span>
                 </div>
-
                 <form method="post" enctype="multipart/form-data" class="account-edit-form">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" value="profile_form">
-
                     <div class="account-profile-edit-layout">
                         <div class="account-profile-photo-box">
                             {% if profile.profile_image %}
@@ -77,150 +242,90 @@
                             {% endif %}
                             <input type="file" name="profile_image">
                         </div>
-
                         <div class="account-form-grid">
-                            <div class="account-form-field">
-                                <label>First Name</label>
-                                <input type="text" name="first_name" value="{{ user.first_name }}">
-                            </div>
-
-                            <div class="account-form-field">
-                                <label>Last Name</label>
-                                <input type="text" name="last_name" value="{{ user.last_name }}">
-                            </div>
-
-                            <div class="account-form-field">
-                                <label>Email Address</label>
-                                <input type="email" name="email" value="{{ user.email }}">
-                            </div>
-
-                            <div class="account-form-field">
-                                <label>Phone Number</label>
-                                <input type="text" name="phone" value="{{ profile.phone|default:'' }}">
-                            </div>
-
-                            <div class="account-form-field">
-                                <label>Gender</label>
-                                <select name="gender">
-                                    <option value="">Select gender</option>
-                                    <option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option>
-                                    <option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option>
-                                    <option value="Other" {% if profile.gender == 'Other' %}selected{% endif %}>Other</option>
-                                </select>
-                            </div>
-
-                            <div class="account-form-field">
-                                <label>Date of Birth</label>
-                                <input type="date" name="date_of_birth" value="{{ profile.date_of_birth|date:'Y-m-d' }}">
-                            </div>
+                            <div class="account-form-field"><label>First Name</label><input type="text" name="first_name" value="{{ user.first_name }}"></div>
+                            <div class="account-form-field"><label>Last Name</label><input type="text" name="last_name" value="{{ user.last_name }}"></div>
+                            <div class="account-form-field"><label>Email</label><input type="email" name="email" value="{{ user.email }}"></div>
+                            <div class="account-form-field"><label>Phone</label><input type="text" name="phone" value="{{ profile.phone|default:'' }}"></div>
+                            <div class="account-form-field"><label>Gender</label><select name="gender"><option value="">Select</option><option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option><option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option><option value="Other" {% if profile.gender == 'Other' %}selected{% endif %}>Other</option></select></div>
+                            <div class="account-form-field"><label>Date of Birth</label><input type="date" name="date_of_birth" value="{{ profile.date_of_birth|date:'Y-m-d' }}"></div>
                         </div>
                     </div>
-
                     <button type="submit" class="account-save-btn">Save Profile</button>
                 </form>
             </div>
             {% endif %}
 
-            
-
             {% if active_tab == 'orders' %}
-<div class="account-panel-card">
-    <div class="account-panel-head">
-        <h2>My Orders</h2>
-        <span class="account-panel-pill">{{ user_orders|length }} Orders</span>
-    </div>
-
-    {% for order in user_orders %}
-    <div class="order-card">
-        <div class="order-top">
-            <div>
-                <strong>Order #{{ order.id }}</strong>
-                <p>{{ order.created_at|date:"d M Y, h:i A" }}</p>
-            </div>
-
-            <div class="account-order-meta">
-                <span>{{ order.payment_provider|title }}</span>
-                <span class="order-status {{ order.order_status }}">{{ order.get_order_status_display }}</span>
-                <span>₹{{ order.total_amount }}</span>
-            </div>
-        </div>
-
-        <div class="order-timeline">
-            <div class="timeline-step {% if order.order_status == 'placed' or order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
-                <span>Placed</span>
-            </div>
-
-            <div class="timeline-step {% if order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
-                <span>Packed</span>
-            </div>
-
-            <div class="timeline-step {% if order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
-                <span>Shipped</span>
-            </div>
-
-            <div class="timeline-step {% if order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}">
-                <span>Out for Delivery</span>
-            </div>
-
-            <div class="timeline-step {% if order.order_status == 'delivered' %}active{% endif %}">
-                <span>Delivered</span>
-            </div>
-        </div>
-
-        <p class="delivery-date">
-            {% if order.estimated_delivery %}
-                Expected Delivery: {{ order.estimated_delivery|date:"d M Y" }}
-            {% else %}
-                Expected Delivery will be updated soon.
-            {% endif %}
-        </p>
-
-        <div class="order-request-row">
-            {% if order.order_status == 'placed' or order.order_status == 'packed' %}
-            <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
-                {% csrf_token %}
-                <input type="hidden" name="request_type" value="cancel">
-                <textarea name="reason" placeholder="Reason for cancellation..." required></textarea>
-                <button type="submit" class="small-action-btn delete-btn">Request Cancel</button>
-            </form>
-            {% endif %}
-
-            {% if order.order_status == 'delivered' %}
-            <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
-                {% csrf_token %}
-                <input type="hidden" name="request_type" value="return">
-                <textarea name="reason" placeholder="Reason for return..." required></textarea>
-                <button type="submit" class="small-action-btn">Request Return</button>
-            </form>
-            {% endif %}
-        </div>
-
-        <div class="order-request-history">
-            {% for req in order.requests.all %}
-            <div class="order-request-card">
-                <div class="order-request-top">
-                    <strong>{{ req.get_request_type_display }} Request</strong>
-                    <span class="request-status-badge {{ req.status }}">{{ req.get_status_display }}</span>
+            <div class="account-panel-card">
+                <div class="account-panel-head">
+                    <h2>My Orders</h2>
+                    <span class="account-panel-pill">{{ user_orders|length }} Orders</span>
                 </div>
-                <p><strong>Reason:</strong> {{ req.reason }}</p>
-
-                {% if req.admin_note %}
-                <p><strong>Admin Note:</strong> {{ req.admin_note }}</p>
-                {% endif %}
+                {% for order in user_orders %}
+                <div class="order-card">
+                    <div class="order-top">
+                        <div>
+                            <strong>Order #{{ order.id }}</strong>
+                            <p>{{ order.created_at|date:"d M Y, h:i A" }}</p>
+                        </div>
+                        <div class="account-order-meta">
+                            <span>{{ order.payment_provider|title }}</span>
+                            <span class="order-status {{ order.order_status }}">{{ order.get_order_status_display }}</span>
+                            <span>₹{{ order.total_amount }}</span>
+                        </div>
+                    </div>
+                    <div class="order-timeline">
+                        <div class="timeline-step {% if order.order_status == 'placed' or order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Placed</span></div>
+                        <div class="timeline-step {% if order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Packed</span></div>
+                        <div class="timeline-step {% if order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Shipped</span></div>
+                        <div class="timeline-step {% if order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Out for Delivery</span></div>
+                        <div class="timeline-step {% if order.order_status == 'delivered' %}active{% endif %}"><span>Delivered</span></div>
+                    </div>
+                    <p class="delivery-date">
+                        {% if order.estimated_delivery %}Expected: {{ order.estimated_delivery|date:"d M Y" }}{% else %}Delivery date will be updated soon.{% endif %}
+                    </p>
+                    <div class="order-request-row">
+                        {% if order.order_status == 'placed' or order.order_status == 'packed' %}
+                        <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_type" value="cancel">
+                            <textarea name="reason" placeholder="Reason for cancellation..." required></textarea>
+                            <button type="submit" class="small-action-btn delete-btn">Request Cancel</button>
+                        </form>
+                        {% endif %}
+                        {% if order.order_status == 'delivered' %}
+                        <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="request_type" value="return">
+                            <textarea name="reason" placeholder="Reason for return..." required></textarea>
+                            <button type="submit" class="small-action-btn">Request Return</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="order-request-history">
+                        {% for req in order.requests.all %}
+                        <div class="order-request-card">
+                            <div class="order-request-top">
+                                <strong>{{ req.get_request_type_display }} Request</strong>
+                                <span class="request-status-badge {{ req.status }}">{{ req.get_status_display }}</span>
+                            </div>
+                            <p><strong>Reason:</strong> {{ req.reason }}</p>
+                            {% if req.admin_note %}<p><strong>Admin:</strong> {{ req.admin_note }}</p>{% endif %}
+                        </div>
+                        {% empty %}
+                        <p class="order-request-empty">No requests for this order.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="account-empty-box">
+                    <h3>No orders yet</h3>
+                    <p>Your confirmed orders will appear here.</p>
+                </div>
+                {% endfor %}
             </div>
-            {% empty %}
-            <p class="order-request-empty">No cancel or return requests for this order.</p>
-            {% endfor %}
-        </div>
-    </div>
-    {% empty %}
-    <div class="account-empty-box">
-        <h3>No orders yet</h3>
-        <p>Your confirmed orders will appear here.</p>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+            {% endif %}
 
             {% if active_tab == 'wishlist' %}
             <div class="account-panel-card">
@@ -228,7 +333,6 @@
                     <h2>Wishlist</h2>
                     <span class="account-panel-pill">{{ wishlist_items|length }} Saved</span>
                 </div>
-
                 <div class="account-wishlist-grid">
                     {% for item in wishlist_items %}
                     <a href="{{ item.detail_url }}" class="account-wishlist-card">
@@ -255,119 +359,51 @@
                     <h2>Saved Addresses</h2>
                     <span class="account-panel-pill">{{ addresses|length }} Saved</span>
                 </div>
-
                 <form method="post" class="account-address-form">
                     {% csrf_token %}
                     <input type="hidden" name="form_type" value="address_form">
                     <input type="hidden" name="address_id" id="address_id">
-
                     <div class="account-form-grid">
-                        <div class="account-form-field">
-                            <label>Full Name</label>
-                            <input type="text" name="address_full_name" id="address_full_name" required>
-                        </div>
-
-                        <div class="account-form-field">
-                            <label>Phone</label>
-                            <input type="text" name="address_phone" id="address_phone" required>
-                        </div>
-
-                        <div class="account-form-field full-span">
-                            <label>Address Line 1</label>
-                            <input type="text" name="address_line_1" id="address_line_1" required>
-                        </div>
-
-                        <div class="account-form-field full-span">
-                            <label>Address Line 2</label>
-                            <input type="text" name="address_line_2" id="address_line_2">
-                        </div>
-
-                        <div class="account-form-field">
-                            <label>City</label>
-                            <input type="text" name="city" id="city" required>
-                        </div>
-
-                        <div class="account-form-field">
-                            <label>State</label>
-                            <input type="text" name="state" id="state" required>
-                        </div>
-
-                        <div class="account-form-field">
-                            <label>Postal Code</label>
-                            <input type="text" name="postal_code" id="postal_code" required>
-                        </div>
-
-                        <div class="account-form-field">
-                            <label>Country</label>
-                            <input type="text" name="country" id="country" value="India" required>
-                        </div>
+                        <div class="account-form-field"><label>Full Name</label><input type="text" name="address_full_name" id="address_full_name" required></div>
+                        <div class="account-form-field"><label>Phone</label><input type="text" name="address_phone" id="address_phone" required></div>
+                        <div class="account-form-field full-span"><label>Address Line 1</label><input type="text" name="address_line_1" id="address_line_1" required></div>
+                        <div class="account-form-field full-span"><label>Address Line 2</label><input type="text" name="address_line_2" id="address_line_2"></div>
+                        <div class="account-form-field"><label>City</label><input type="text" name="city" id="city" required></div>
+                        <div class="account-form-field"><label>State</label><input type="text" name="state" id="state" required></div>
+                        <div class="account-form-field"><label>Postal Code</label><input type="text" name="postal_code" id="postal_code" required></div>
+                        <div class="account-form-field"><label>Country</label><input type="text" name="country" id="country" value="India" required></div>
                     </div>
-
                     <label class="account-checkbox">
                         <input type="checkbox" name="is_default" id="is_default">
                         <span>Set as default address</span>
                     </label>
-
                     <div class="account-address-actions">
                         <button type="submit" class="account-save-btn">Save Address</button>
                         <button type="button" class="account-cancel-btn" onclick="clearAddressForm()">Clear</button>
                     </div>
                 </form>
-
                 <div class="account-address-list">
                     {% for item in addresses %}
                     <div class="account-address-card">
                         <div class="account-address-top">
                             <h3>{{ item.full_name }}</h3>
-                            {% if item.is_default %}
-                            <span class="default-badge">Default</span>
-                            {% endif %}
+                            {% if item.is_default %}<span class="default-badge">Default</span>{% endif %}
                         </div>
-
                         <p>{{ item.full_address }}</p>
-
-                        <div class="account-address-meta">
-                            <span>{{ item.phone }}</span>
-                        </div>
-
+                        <div class="account-address-meta"><span>{{ item.phone }}</span></div>
                         <div class="account-address-buttons">
-                            <button
-                                type="button"
-                                class="small-action-btn edit-address-btn"
-                                data-id="{{ item.id }}"
-                                data-full-name="{{ item.full_name|escapejs }}"
-                                data-phone="{{ item.phone|escapejs }}"
-                                data-line1="{{ item.address_line_1|escapejs }}"
-                                data-line2="{{ item.address_line_2|default_if_none:''|escapejs }}"
-                                data-city="{{ item.city|escapejs }}"
-                                data-state="{{ item.state|escapejs }}"
-                                data-postal="{{ item.postal_code|escapejs }}"
-                                data-country="{{ item.country|escapejs }}"
-                                data-default="{% if item.is_default %}true{% else %}false{% endif %}"
-                            >
-                                Edit
-                            </button>
-
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="set_default_address">
-                                <input type="hidden" name="default_address_id" value="{{ item.id }}">
-                                <button type="submit" class="small-action-btn">Make Default</button>
-                            </form>
-
-                            <form method="post" onsubmit="return confirm('Delete this address?')">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="delete_address">
-                                <input type="hidden" name="delete_address_id" value="{{ item.id }}">
-                                <button type="submit" class="small-action-btn delete-btn">Delete</button>
-                            </form>
+                            <button type="button" class="small-action-btn edit-address-btn"
+                                data-id="{{ item.id }}" data-full-name="{{ item.full_name|escapejs }}" data-phone="{{ item.phone|escapejs }}"
+                                data-line1="{{ item.address_line_1|escapejs }}" data-line2="{{ item.address_line_2|default_if_none:''|escapejs }}"
+                                data-city="{{ item.city|escapejs }}" data-state="{{ item.state|escapejs }}"
+                                data-postal="{{ item.postal_code|escapejs }}" data-country="{{ item.country|escapejs }}"
+                                data-default="{% if item.is_default %}true{% else %}false{% endif %}">Edit</button>
+                            <form method="post">{% csrf_token %}<input type="hidden" name="form_type" value="set_default_address"><input type="hidden" name="default_address_id" value="{{ item.id }}"><button type="submit" class="small-action-btn">Default</button></form>
+                            <form method="post" onsubmit="return confirm('Delete?')">{% csrf_token %}<input type="hidden" name="form_type" value="delete_address"><input type="hidden" name="delete_address_id" value="{{ item.id }}"><button type="submit" class="small-action-btn delete-btn">Delete</button></form>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="account-empty-box">
-                        <h3>No saved addresses yet</h3>
-                        <p>Add your address details here for faster checkout.</p>
-                    </div>
+                    <div class="account-empty-box"><h3>No saved addresses</h3><p>Add your address for faster checkout.</p></div>
                     {% endfor %}
                 </div>
             </div>
@@ -379,74 +415,37 @@
                     <h2>Customer Support</h2>
                     <span class="account-panel-pill">Help Desk</span>
                 </div>
-
-                <div class="support-top-intro">
-                    <p>Need help with orders, payments, delivery, returns, or account issues? Raise a support ticket below and track replies from the dashboard.</p>
-                </div>
-
                 <div class="support-form-box">
                     <h3>Raise a Ticket</h3>
-
                     <form method="post" action="{% url 'create_ticket' %}" class="support-ticket-form">
                         {% csrf_token %}
-
                         <div class="account-form-grid">
-                            <div class="account-form-field full-span">
-                                <label>Subject</label>
-                                <input type="text" name="subject" placeholder="Example: Payment issue / Return request / Delivery help" required>
-                            </div>
-
-                            <div class="account-form-field full-span">
-                                <label>Your Message</label>
-                                <textarea name="message" rows="6" placeholder="Describe your issue clearly..." required></textarea>
-                            </div>
+                            <div class="account-form-field full-span"><label>Subject</label><input type="text" name="subject" placeholder="Example: Payment issue / Return request" required></div>
+                            <div class="account-form-field full-span"><label>Your Message</label><textarea name="message" rows="5" placeholder="Describe your issue..." required></textarea></div>
                         </div>
-
                         <button type="submit" class="account-save-btn">Submit Ticket</button>
                     </form>
                 </div>
-
                 <div class="support-ticket-history">
                     <div class="account-panel-head support-ticket-head">
                         <h3>Your Tickets</h3>
                         <span class="account-panel-pill">{{ tickets|length }} Ticket{{ tickets|length|pluralize:"s" }}</span>
                     </div>
-
                     {% for ticket in tickets %}
                     <div class="support-ticket-card">
                         <div class="support-ticket-top">
-                            <div>
-                                <h4>{{ ticket.subject }}</h4>
-                                <p>{{ ticket.created_at|date:"d M Y, h:i A" }}</p>
-                            </div>
-
-                            <span class="ticket-status-badge {{ ticket.status }}">
-                                {{ ticket.get_status_display }}
-                            </span>
+                            <div><h4>{{ ticket.subject }}</h4><p>{{ ticket.created_at|date:"d M Y, h:i A" }}</p></div>
+                            <span class="ticket-status-badge {{ ticket.status }}">{{ ticket.get_status_display }}</span>
                         </div>
-
-                        <div class="support-ticket-message">
-                            <label>Your Message</label>
-                            <p>{{ ticket.message }}</p>
-                        </div>
-
+                        <div class="support-ticket-message"><label>Your Message</label><p>{{ ticket.message }}</p></div>
                         {% if ticket.admin_reply %}
-                        <div class="support-admin-reply">
-                            <label>Support Reply</label>
-                            <p>{{ ticket.admin_reply }}</p>
-                        </div>
+                        <div class="support-admin-reply"><label>Support Reply</label><p>{{ ticket.admin_reply }}</p></div>
                         {% else %}
-                        <div class="support-admin-pending">
-                            <label>Support Reply</label>
-                            <p>Your ticket is under review. Our team will reply soon.</p>
-                        </div>
+                        <div class="support-admin-pending"><label>Support Reply</label><p>Under review. We'll reply soon.</p></div>
                         {% endif %}
                     </div>
                     {% empty %}
-                    <div class="account-empty-box">
-                        <h3>No support tickets yet</h3>
-                        <p>Submit your first ticket and it will appear here with status updates.</p>
-                    </div>
+                    <div class="account-empty-box"><h3>No tickets yet</h3><p>Submit your first ticket.</p></div>
                     {% endfor %}
                 </div>
             </div>
@@ -454,6 +453,29 @@
         </main>
     </div>
 </section>
+
+<nav class="mobile-bottom-nav">
+    <a href="/" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+    </a>
+    <a href="{% url 'account_page' %}" class="mobile-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+        <span>Profile</span>
+    </a>
+    <a href="{% url 'wishlist' %}" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-4.35-9-7.5C-1 9 2 3 7 3c2.5 0 4 1.5 5 3 1-1.5 2.5-3 5-3 5 0 8 6 4 10.5-3 3.15-9 7.5-9 7.5z"/></svg>
+        <span>Wishlist</span>
+    </a>
+    <a href="{% url 'cart' %}" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/><path d="M7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/></svg>
+        <span>Bag</span>
+    </a>
+    <a href="/" class="mobile-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Categories</span>
+    </a>
+</nav>
 
 <script>
 function editAddress(id, fullName, phone, line1, line2, city, state, postalCode, country, isDefault) {
@@ -484,25 +506,12 @@ function clearAddressForm() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const editButtons = document.querySelectorAll('.edit-address-btn');
-    editButtons.forEach(function (button) {
+    document.querySelectorAll('.edit-address-btn').forEach(function (button) {
         button.addEventListener('click', function () {
-            editAddress(
-                this.dataset.id,
-                this.dataset.fullName,
-                this.dataset.phone,
-                this.dataset.line1,
-                this.dataset.line2,
-                this.dataset.city,
-                this.dataset.state,
-                this.dataset.postal,
-                this.dataset.country,
-                this.dataset.default
-            );
+            editAddress(this.dataset.id, this.dataset.fullName, this.dataset.phone, this.dataset.line1, this.dataset.line2, this.dataset.city, this.dataset.state, this.dataset.postal, this.dataset.country, this.dataset.default);
         });
     });
 });
 </script>
-
 </body>
 </html>

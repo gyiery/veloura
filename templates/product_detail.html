@@ -3,12 +3,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ product.name }} - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-pdp-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-pdp-header-title">{{ product.name|truncatechars:25 }}</span>
+    <div class="mobile-pdp-header-actions">
+        <button type="button" class="mobile-pdp-header-icon" id="mobileShareBtn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+        </button>
+        <a href="{% url 'cart' %}" class="mobile-pdp-header-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+            </svg>
+            {% if cart_count > 0 %}
+            <span class="mobile-pdp-cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+    </div>
+</div>
+
+<!-- Desktop Navbar -->
 <header class="navbar">
     <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 
@@ -60,6 +86,21 @@
                         <img src="{{ gallery.image.url }}" alt="{{ gallery.alt_text|default:product.name }}">
                     </button>
                     {% endfor %}
+                </div>
+            </div>
+
+            <!-- Mobile Quick Price Bar -->
+            <div class="mobile-pdp-quick-price">
+                <div class="mobile-pdp-quick-price-left">
+                    <span class="mobile-pdp-quick-price-now">₹{{ product.price }}</span>
+                    <span class="mobile-pdp-quick-price-old">₹{{ product.price|add:800 }}</span>
+                    <span class="mobile-pdp-quick-price-off">18% OFF</span>
+                </div>
+                <div class="mobile-pdp-quick-price-right">
+                    <span class="mobile-pdp-quick-rating">
+                        {{ average_rating|default:"0" }} ★
+                        <span class="mobile-pdp-quick-rating-count">({{ total_reviews }})</span>
+                    </span>
                 </div>
             </div>
 
@@ -121,6 +162,30 @@
 
             <p class="premium-short-desc">{{ product.description }}</p>
 
+            <!-- Mobile Stock + Quantity Compact -->
+            <div class="mobile-pdp-stock-qty-card">
+                <div class="mobile-pdp-stock-qty-top">
+                    {% if product.stock > 5 %}
+                        <span class="mobile-pdp-stock-tag mobile-pdp-in-stock">In Stock</span>
+                    {% elif product.stock > 0 %}
+                        <span class="mobile-pdp-stock-tag mobile-pdp-low-stock">Only {{ product.stock }} left</span>
+                    {% else %}
+                        <span class="mobile-pdp-stock-tag mobile-pdp-out-stock">Out of Stock</span>
+                    {% endif %}
+                    <span class="mobile-pdp-brand-tag">Brand: Veloura</span>
+                </div>
+                {% if product.stock > 0 %}
+                <div class="mobile-pdp-qty-row">
+                    <span class="mobile-pdp-qty-label">Quantity</span>
+                    <div class="qty-controls">
+                        <button type="button" id="mobileQtyMinusBtn">−</button>
+                        <span id="mobileQtyValue">1</span>
+                        <button type="button" id="mobileQtyPlusBtn">+</button>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
             <div class="premium-info-strip">
                 <div class="info-chip">
                     <span class="info-chip-label">Brand</span>
@@ -167,6 +232,19 @@
             </div>
             {% endif %}
 
+            <!-- Mobile Delivery Check Card -->
+            <div class="mobile-pdp-delivery-card">
+                <div class="mobile-pdp-delivery-top">
+                    <span class="mobile-pdp-delivery-icon">🚚</span>
+                    <span class="mobile-pdp-delivery-label">Delivery</span>
+                </div>
+                <div class="mobile-pdp-delivery-input-row">
+                    <input type="text" id="mobilePincodeInput" placeholder="Enter pincode">
+                    <button type="button" id="mobileCheckPincodeBtn">Check</button>
+                </div>
+                <p id="mobilePincodeResult" class="mobile-pdp-delivery-note">Enter your pincode to check delivery availability.</p>
+            </div>
+
             <div class="premium-section-card">
                 <div class="premium-section-top">
                     <h3>Delivery</h3>
@@ -176,6 +254,19 @@
                     <button type="button" id="checkPincodeBtn">Check</button>
                 </div>
                 <p id="pincodeResult" class="premium-delivery-note">Enter your pincode to check delivery availability.</p>
+            </div>
+
+            <!-- Mobile Offers Card -->
+            <div class="mobile-pdp-offers-card">
+                <div class="mobile-pdp-offers-top">
+                    <span class="mobile-pdp-offers-icon">🏷️</span>
+                    <span class="mobile-pdp-offers-label">Offers</span>
+                </div>
+                <ul class="mobile-pdp-offers-list">
+                    <li>Extra 10% off on orders above ₹1999</li>
+                    <li>Free shipping on prepaid orders</li>
+                    <li>Special member-exclusive premium offers</li>
+                </ul>
             </div>
 
             <div class="premium-two-col">
@@ -200,6 +291,19 @@
                         <li>High-quality material and clean detailing</li>
                     </ul>
                 </div>
+            </div>
+
+            <!-- Mobile Highlights Card -->
+            <div class="mobile-pdp-offers-card">
+                <div class="mobile-pdp-offers-top">
+                    <span class="mobile-pdp-offers-icon">✨</span>
+                    <span class="mobile-pdp-offers-label">Highlights</span>
+                </div>
+                <ul class="mobile-pdp-offers-list">
+                    <li>Premium finish and refined styling</li>
+                    <li>Curated for elevated everyday wear</li>
+                    <li>High-quality material and clean detailing</li>
+                </ul>
             </div>
 
             <div class="detail-action-buttons premium-action-row">
@@ -345,6 +449,25 @@
 </section>
 {% endif %}
 
+<!-- Mobile Sticky Bottom Bar -->
+<div class="mobile-pdp-bottom">
+    {% if product.stock > 0 %}
+    <form action="{% url 'add_to_cart' product.id %}" method="post" class="mobile-pdp-bottom-form">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" id="mobileCartQuantityInput" value="1">
+        <button type="submit" class="mobile-pdp-btn-cart">Add to Cart</button>
+    </form>
+
+    <form action="{% url 'buy_now' product.id %}" method="post" class="mobile-pdp-bottom-form">
+        {% csrf_token %}
+        <input type="hidden" name="quantity" id="mobileBuyNowQuantityInput" value="1">
+        <button type="submit" class="mobile-pdp-btn-buy">Buy Now</button>
+    </form>
+    {% else %}
+    <button type="button" class="mobile-pdp-btn-cart mobile-pdp-btn-disabled" disabled>Out of Stock</button>
+    {% endif %}
+</div>
+
 <script>
 function changeMainImage(button, imageUrl) {
     const mainImage = document.getElementById('mainProductImage');
@@ -368,6 +491,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const buyNowInput = document.getElementById('buyNowQuantityInput');
     const mainImage = document.getElementById('mainProductImage');
 
+    // Mobile qty elements
+    const mobileQtyValue = document.getElementById('mobileQtyValue');
+    const mobileMinusBtn = document.getElementById('mobileQtyMinusBtn');
+    const mobilePlusBtn = document.getElementById('mobileQtyPlusBtn');
+    const mobileCartInput = document.getElementById('mobileCartQuantityInput');
+    const mobileBuyNowInput = document.getElementById('mobileBuyNowQuantityInput');
+
     if (qtyValue && minusBtn && plusBtn && mainImage) {
         let qty = 1;
         const maxStock = parseInt(mainImage.dataset.maxStock || '1', 10);
@@ -376,6 +506,10 @@ document.addEventListener('DOMContentLoaded', function () {
             qtyValue.textContent = qty;
             if (cartInput) cartInput.value = qty;
             if (buyNowInput) buyNowInput.value = qty;
+            // Sync mobile qty
+            if (mobileQtyValue) mobileQtyValue.textContent = qty;
+            if (mobileCartInput) mobileCartInput.value = qty;
+            if (mobileBuyNowInput) mobileBuyNowInput.value = qty;
         }
 
         minusBtn.addEventListener('click', function () {
@@ -392,43 +526,85 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // Mobile qty buttons sync
+        if (mobileMinusBtn) {
+            mobileMinusBtn.addEventListener('click', function () {
+                if (qty > 1) {
+                    qty -= 1;
+                    updateQty();
+                }
+            });
+        }
+
+        if (mobilePlusBtn) {
+            mobilePlusBtn.addEventListener('click', function () {
+                if (qty < maxStock) {
+                    qty += 1;
+                    updateQty();
+                }
+            });
+        }
+
         updateQty();
     }
 
+    // Share - desktop
     const shareBtn = document.getElementById('shareProductBtn');
+    function doShare() {
+        if (navigator.share) {
+            navigator.share({
+                title: document.title,
+                url: window.location.href
+            });
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(window.location.href).then(function () {
+                alert('Product link copied.');
+            });
+        }
+    }
     if (shareBtn) {
-        shareBtn.addEventListener('click', function () {
-            if (navigator.share) {
-                navigator.share({
-                    title: document.title,
-                    url: window.location.href
-                });
-            } else if (navigator.clipboard) {
-                navigator.clipboard.writeText(window.location.href).then(function () {
-                    alert('Product link copied.');
-                });
-            }
-        });
+        shareBtn.addEventListener('click', doShare);
     }
 
+    // Share - mobile
+    const mobileShareBtn = document.getElementById('mobileShareBtn');
+    if (mobileShareBtn) {
+        mobileShareBtn.addEventListener('click', doShare);
+    }
+
+    // Pincode check - desktop
     const checkPincodeBtn = document.getElementById('checkPincodeBtn');
     const pincodeInput = document.getElementById('pincodeInput');
     const pincodeResult = document.getElementById('pincodeResult');
 
+    function checkPincode(inputEl, resultEl) {
+        const pincode = inputEl.value.trim();
+        fetch('/check-pincode/?pincode=' + encodeURIComponent(pincode))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                resultEl.textContent = data.message;
+            })
+            .catch(function () {
+                resultEl.textContent = 'Unable to check delivery right now.';
+            });
+    }
+
     if (checkPincodeBtn && pincodeInput && pincodeResult) {
         checkPincodeBtn.addEventListener('click', function () {
-            const pincode = pincodeInput.value.trim();
+            checkPincode(pincodeInput, pincodeResult);
+        });
+    }
 
-            fetch('/check-pincode/?pincode=' + encodeURIComponent(pincode))
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (data) {
-                    pincodeResult.textContent = data.message;
-                })
-                .catch(function () {
-                    pincodeResult.textContent = 'Unable to check delivery right now.';
-                });
+    // Pincode check - mobile
+    const mobileCheckPincodeBtn = document.getElementById('mobileCheckPincodeBtn');
+    const mobilePincodeInput = document.getElementById('mobilePincodeInput');
+    const mobilePincodeResult = document.getElementById('mobilePincodeResult');
+
+    if (mobileCheckPincodeBtn && mobilePincodeInput && mobilePincodeResult) {
+        mobileCheckPincodeBtn.addEventListener('click', function () {
+            checkPincode(mobilePincodeInput, mobilePincodeResult);
         });
     }
 });

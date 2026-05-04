@@ -3,12 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Checkout - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+    <!-- Mobile App Header -->
+    <div class="mobile-checkout-header">
+        <a href="{% url 'cart' %}" class="mobile-back-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </a>
+        <span class="mobile-checkout-title">Checkout</span>
+        <span class="mobile-checkout-secure">🔒</span>
+    </div>
+
+    <!-- Desktop Navbar -->
     <header class="navbar">
         <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 
@@ -39,20 +51,19 @@
         <div class="checkout-top">
 
             {% if messages %}
-    <div class="checkout-message-stack">
-        {% for message in messages %}
-            <div class="checkout-message {{ message.tags }}">
-                {{ message }}
+            <div class="checkout-message-stack">
+                {% for message in messages %}
+                <div class="checkout-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
-{% endif %}
+            {% endif %}
 
             <span class="section-tag">SECURE CHECKOUT</span>
             <h1>Complete Your Order</h1>
             <p>Luxury checkout experience with secure details, premium flow, and elegant review.</p>
         </div>
-
 
         <div class="checkout-layout">
 
@@ -128,7 +139,8 @@
                     </div>
                 </div>
 
-                <button type="button" class="place-order-btn" id="payNowBtn" onclick="startRazorpay()">
+                <!-- Desktop Pay Button -->
+                <button type="button" class="place-order-btn" id="payNowBtnDesktop" onclick="startRazorpay()">
                     Pay Now
                 </button>
             </form>
@@ -208,7 +220,7 @@
 
                     <div class="summary-total">
                         <span>Total</span>
-                        <span>₹{{ total }}</span>
+                        <span class="summary-total-amount">₹{{ total }}</span>
                     </div>
 
                     <div class="checkout-secure-note">
@@ -222,6 +234,17 @@
 
         </div>
     </section>
+
+    <!-- Mobile Sticky Bottom Pay Bar -->
+    <div class="mobile-checkout-bottom">
+        <div class="mobile-bottom-total">
+            <span class="mobile-bottom-label">Total Amount</span>
+            <span class="mobile-bottom-amount">₹{{ total }}</span>
+        </div>
+        <button type="button" class="mobile-pay-btn" id="payNowBtnMobile" onclick="startRazorpay()">
+            Pay Now
+        </button>
+    </div>
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -291,9 +314,17 @@
             return;
         }
 
-        const payBtn = document.getElementById('payNowBtn');
-        payBtn.disabled = true;
-        payBtn.textContent = 'Processing...';
+        const desktopBtn = document.getElementById('payNowBtnDesktop');
+        const mobileBtn = document.getElementById('payNowBtnMobile');
+
+        if (desktopBtn) {
+            desktopBtn.disabled = true;
+            desktopBtn.textContent = 'Processing...';
+        }
+        if (mobileBtn) {
+            mobileBtn.disabled = true;
+            mobileBtn.textContent = 'Processing...';
+        }
 
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -318,8 +349,14 @@
 
             if (!response.ok) {
                 showGlobalError(data.error || "Unable to start payment. Please try again.");
-                payBtn.disabled = false;
-                payBtn.textContent = 'Pay Now';
+                if (desktopBtn) {
+                    desktopBtn.disabled = false;
+                    desktopBtn.textContent = 'Pay Now';
+                }
+                if (mobileBtn) {
+                    mobileBtn.disabled = false;
+                    mobileBtn.textContent = 'Pay Now';
+                }
                 return;
             }
 
@@ -352,8 +389,14 @@
                 },
                 modal: {
                     ondismiss: function () {
-                        payBtn.disabled = false;
-                        payBtn.textContent = 'Pay Now';
+                        if (desktopBtn) {
+                            desktopBtn.disabled = false;
+                            desktopBtn.textContent = 'Pay Now';
+                        }
+                        if (mobileBtn) {
+                            mobileBtn.disabled = false;
+                            mobileBtn.textContent = 'Pay Now';
+                        }
                     }
                 },
                 theme: {
@@ -366,8 +409,14 @@
 
         } catch (error) {
             showGlobalError("Something went wrong while starting payment. Please try again.");
-            payBtn.disabled = false;
-            payBtn.textContent = 'Pay Now';
+            if (desktopBtn) {
+                desktopBtn.disabled = false;
+                desktopBtn.textContent = 'Pay Now';
+            }
+            if (mobileBtn) {
+                mobileBtn.disabled = false;
+                mobileBtn.textContent = 'Pay Now';
+            }
         }
     }
     </script>

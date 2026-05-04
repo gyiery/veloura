@@ -3,11 +3,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recently Viewed - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Recently Viewed</span>
+    <span></span>
+</div>
 
 <section class="category-page">
     <div class="category-page-top">
@@ -15,6 +26,15 @@
         <h1>Recently Viewed</h1>
         <p>Products you explored recently.</p>
     </div>
+
+    <!-- Mobile Empty State -->
+    {% empty %}
+    <div class="mobile-order-empty-card">
+        <div class="mobile-order-empty-icon">👁️</div>
+        <span class="mobile-order-empty-title">No recently viewed products</span>
+        <span class="mobile-order-empty-subtext">Open some product pages and they will appear here.</span>
+    </div>
+    {% endfor %}
 
     <div class="category-grid-page">
         {% for product in products %}
@@ -54,6 +74,11 @@
         {% endfor %}
     </div>
 </section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="width:100%;text-align:center;">Browse Products</a>
+</div>
 
 </body>
 </html>

@@ -3,12 +3,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sale - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Sale</span>
+    <a href="{% url 'cart' %}" class="mobile-back-btn" style="position:relative;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+        </svg>
+        {% if cart_count > 0 %}
+        <span class="mobile-pdp-cart-badge" style="position:absolute;top:-2px;right:-2px;">{{ cart_count }}</span>
+        {% endif %}
+    </a>
+</div>
+
+<!-- Desktop Navbar -->
 <header class="navbar">
     <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 

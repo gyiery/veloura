@@ -3,22 +3,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Order #{{ order.id }} - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="{% url 'order_history' %}" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Order #{{ order.id }}</span>
+    <span class="mobile-order-status-dot {{ order.payment_status }}">{{ order.payment_status|title }}</span>
+</div>
+
+<!-- Desktop Navbar -->
 <header class="navbar">
     <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 </header>
 
 <section class="success-page">
     <div class="success-card">
+
         <span class="section-tag">ORDER DETAILS</span>
         <h1>Order #{{ order.id }}</h1>
         <p class="success-subtext">Here is your complete order summary.</p>
 
+        <!-- Mobile Order Status Badge -->
+        <div class="mobile-order-status-card">
+            <div class="mobile-order-status-top">
+                <span class="mobile-order-status-label">Payment Status</span>
+                <span class="mobile-order-status-badge {{ order.payment_status }}">{{ order.payment_status|title }}</span>
+            </div>
+            <div class="mobile-order-status-details">
+                <div class="mobile-order-detail-item">
+                    <span class="mobile-order-detail-label">Date</span>
+                    <span class="mobile-order-detail-value">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+                </div>
+                <div class="mobile-order-detail-item">
+                    <span class="mobile-order-detail-label">Method</span>
+                    <span class="mobile-order-detail-value">{{ order.payment_provider|title }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Order Info Box -->
         <div class="success-order-box">
             <div class="success-order-row">
                 <span>Customer</span>
@@ -50,11 +82,41 @@
             </div>
         </div>
 
+        <!-- Mobile Customer Info Compact -->
+        <div class="mobile-order-customer-card">
+            <div class="mobile-order-customer-row">
+                <div class="mobile-order-customer-icon">👤</div>
+                <div class="mobile-order-customer-info">
+                    <span class="mobile-order-customer-name">{{ order.full_name }}</span>
+                    <span class="mobile-order-customer-phone">{{ order.phone }}</span>
+                </div>
+            </div>
+            {% if order.email %}
+            <div class="mobile-order-customer-row">
+                <div class="mobile-order-customer-icon">✉️</div>
+                <div class="mobile-order-customer-info">
+                    <span class="mobile-order-customer-name">{{ order.email }}</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Desktop Address Box -->
         <div class="success-address-box">
             <h3>Delivery Address</h3>
             <p>{{ order.address }}</p>
         </div>
 
+        <!-- Mobile Address Card -->
+        <div class="mobile-order-address-card">
+            <div class="mobile-order-address-header">
+                <span class="mobile-order-address-icon">📍</span>
+                <span class="mobile-order-address-label">Delivery Address</span>
+            </div>
+            <p class="mobile-order-address-text">{{ order.address }}</p>
+        </div>
+
+        <!-- Items Section -->
         <div class="success-items-box">
             <h3>Ordered Items</h3>
 
@@ -74,12 +136,36 @@
             {% endfor %}
         </div>
 
+        <!-- Mobile Order Total -->
+        <div class="mobile-order-total-card">
+            <div class="mobile-order-total-row">
+                <span>Items Total</span>
+                <span>₹{{ order.total_amount }}</span>
+            </div>
+            <div class="mobile-order-total-row">
+                <span>Delivery</span>
+                <span class="mobile-order-free-tag">Free</span>
+            </div>
+            <div class="mobile-order-total-divider"></div>
+            <div class="mobile-order-total-row mobile-order-grand-total">
+                <span>Total Paid</span>
+                <span>₹{{ order.total_amount }}</span>
+            </div>
+        </div>
+
+        <!-- Desktop Action Buttons -->
         <div class="success-actions">
             <a href="{% url 'order_history' %}" class="success-btn secondary-btn">Back to My Orders</a>
             <a href="/" class="success-btn primary-btn">Continue Shopping</a>
         </div>
     </div>
 </section>
+
+<!-- Mobile Sticky Bottom Action Bar -->
+<div class="mobile-order-bottom">
+    <a href="{% url 'order_history' %}" class="mobile-order-action-btn mobile-order-secondary-btn">My Orders</a>
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn">Continue Shopping</a>
+</div>
 
 </body>
 </html>

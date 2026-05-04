@@ -1,12 +1,26 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Wishlist</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Wishlist</span>
+    <span class="mobile-wishlist-count">{{ items|length }}</span>
+</div>
+
+<!-- Desktop Navbar -->
 <header class="navbar">
     <div class="logo"><a href="/">Veloura</a></div>
 </header>
@@ -33,11 +47,46 @@
                 </a>
             </div>
         </div>
+
+        <!-- Mobile Wishlist Item -->
+        <div class="mobile-wishlist-item">
+            <div class="mobile-wishlist-item-image">
+                <img src="{{ item.image }}" alt="{{ item.name }}">
+            </div>
+            <div class="mobile-wishlist-item-info">
+                <span class="mobile-wishlist-item-category">{{ item.category }}</span>
+                <span class="mobile-wishlist-item-name">{{ item.name }}</span>
+                <span class="mobile-wishlist-item-price">₹{{ item.price }}</span>
+            </div>
+            <div class="mobile-wishlist-item-actions">
+                {% if item.in_stock %}
+                <form action="{% url 'add_to_cart' item.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="mobile-wishlist-add-btn">Add to Cart</button>
+                </form>
+                {% endif %}
+                <a href="{% url 'add_to_wishlist' item.id %}" class="mobile-wishlist-remove-btn">Remove</a>
+            </div>
+        </div>
+
         {% empty %}
+
+        <!-- Mobile Empty State -->
+        <div class="mobile-order-empty-card">
+            <div class="mobile-order-empty-icon">♡</div>
+            <span class="mobile-order-empty-title">Your wishlist is empty</span>
+            <span class="mobile-order-empty-subtext">Save your favourite items here to find them easily.</span>
+        </div>
+
         <p>No items in wishlist</p>
         {% endfor %}
     </div>
 </section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="width:100%;text-align:center;">Explore Products</a>
+</div>
 
 </body>
 </html>
