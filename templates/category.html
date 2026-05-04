@@ -3,12 +3,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ category_name }} - Veloura</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
 
+    <!-- Mobile App Header -->
+    <div class="mobile-category-header">
+        <a href="javascript:history.back()" class="mobile-back-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </a>
+        <span class="mobile-category-title">{{ category_name }}</span>
+        <button type="button" class="mobile-filter-trigger-btn" id="mobileFilterOpenBtn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="18" x2="12" y2="18"/>
+            </svg>
+            <span class="mobile-filter-trigger-label">Filter</span>
+        </button>
+    </div>
+
+    <!-- Mobile Sort + Count Bar -->
+    <div class="mobile-category-sort-bar">
+        <span class="mobile-category-result-count">{{ products|length }} products</span>
+        <div class="mobile-category-sort-wrap">
+            <form method="get" class="mobile-sort-form" id="mobileSortForm">
+                {% if selected_gender %}<input type="hidden" name="gender" value="{{ selected_gender }}">{% endif %}
+                {% if selected_type %}<input type="hidden" name="type" value="{{ selected_type }}">{% endif %}
+                {% if selected_subcategory %}<input type="hidden" name="subcategory" value="{{ selected_subcategory }}">{% endif %}
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
+                    <option value="low-high" {% if selected_sort == 'low-high' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="high-low" {% if selected_sort == 'high-low' %}selected{% endif %}>Price: High to Low</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <!-- Active filter chips (mobile) -->
+    {% if selected_gender or selected_type or selected_subcategory %}
+    <div class="mobile-active-filters">
+        {% if selected_gender %}
+        <a href="{% url 'category_products' category_name %}?{% if selected_sort %}sort={{ selected_sort }}{% endif %}" class="mobile-filter-chip">
+            {{ selected_gender|title }}
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+        {% endif %}
+        {% if selected_type %}
+        <a href="{% url 'category_products' category_name %}?{% if selected_gender %}gender={{ selected_gender }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}{% endif %}" class="mobile-filter-chip">
+            {{ selected_type|title }}
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+        {% endif %}
+        {% if selected_subcategory %}
+        <a href="{% url 'category_products' category_name %}?{% if selected_sort %}sort={{ selected_sort }}{% endif %}" class="mobile-filter-chip">
+            {{ selected_subcategory|title }}
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Mobile Filter Bottom Sheet -->
+    <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
+    <div class="mobile-filter-sheet" id="mobileFilterSheet">
+        <div class="mobile-filter-sheet-handle"></div>
+        <div class="mobile-filter-sheet-head">
+            <span class="mobile-filter-sheet-title">Filters</span>
+            <button type="button" class="mobile-filter-sheet-close" id="mobileFilterCloseBtn">✕</button>
+        </div>
+        <div class="mobile-filter-sheet-body">
+            {% if category_name == "Accessories" or category_name == "Men" or category_name == "Women" or category_name == "Kids" %}
+            <form method="get" class="mobile-filter-form" id="mobileFilterForm">
+                {% if selected_sort %}<input type="hidden" name="sort" value="{{ selected_sort }}">{% endif %}
+
+                {% if category_name == "Accessories" %}
+                <div class="mobile-filter-section">
+                    <span class="mobile-filter-section-title">Gender</span>
+                    <div class="mobile-filter-options">
+                        <label class="mobile-filter-option {% if not selected_gender %}active{% endif %}">
+                            <input type="radio" name="gender" value="" {% if not selected_gender %}checked{% endif %}>
+                            <span>All</span>
+                        </label>
+                        <label class="mobile-filter-option {% if selected_gender == "men" %}active{% endif %}">
+                            <input type="radio" name="gender" value="men" {% if selected_gender == "men" %}checked{% endif %}>
+                            <span>Men</span>
+                        </label>
+                        <label class="mobile-filter-option {% if selected_gender == "women" %}active{% endif %}">
+                            <input type="radio" name="gender" value="women" {% if selected_gender == "women" %}checked{% endif %}>
+                            <span>Women</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mobile-filter-section">
+                    <span class="mobile-filter-section-title">Accessories Type</span>
+                    <div class="mobile-filter-options">
+                        <label class="mobile-filter-option {% if not selected_type %}active{% endif %}"><input type="radio" name="type" value="" {% if not selected_type %}checked{% endif %}><span>All</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "shoes" %}active{% endif %}"><input type="radio" name="type" value="shoes" {% if selected_type == "shoes" %}checked{% endif %}><span>Shoes</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "watches" %}active{% endif %}"><input type="radio" name="type" value="watches" {% if selected_type == "watches" %}checked{% endif %}><span>Watches</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "glasses" %}active{% endif %}"><input type="radio" name="type" value="glasses" {% if selected_type == "glasses" %}checked{% endif %}><span>Glasses</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "belts" %}active{% endif %}"><input type="radio" name="type" value="belts" {% if selected_type == "belts" %}checked{% endif %}><span>Belts</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "wallets" %}active{% endif %}"><input type="radio" name="type" value="wallets" {% if selected_type == "wallets" %}checked{% endif %}><span>Wallets</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "purse" %}active{% endif %}"><input type="radio" name="type" value="purse" {% if selected_type == "purse" %}checked{% endif %}><span>Purse</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "jewellery" %}active{% endif %}"><input type="radio" name="type" value="jewellery" {% if selected_type == "jewellery" %}checked{% endif %}><span>Jewellery</span></label>
+                        <label class="mobile-filter-option {% if selected_type == "skin-care" %}active{% endif %}"><input type="radio" name="type" value="skin-care" {% if selected_type == "skin-care" %}checked{% endif %}><span>Skin-Care</span></label>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if category_name == "Men" %}
+                <div class="mobile-filter-section">
+                    <span class="mobile-filter-section-title">Men Category</span>
+                    <div class="mobile-filter-options">
+                        <label class="mobile-filter-option {% if not selected_subcategory %}active{% endif %}"><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "shirts" %}active{% endif %}"><input type="radio" name="subcategory" value="shirts" {% if selected_subcategory == "shirts" %}checked{% endif %}><span>Shirts</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "t-shirts" %}active{% endif %}"><input type="radio" name="subcategory" value="t-shirts" {% if selected_subcategory == "t-shirts" %}checked{% endif %}><span>T-Shirts</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "jeans" %}active{% endif %}"><input type="radio" name="subcategory" value="jeans" {% if selected_subcategory == "jeans" %}checked{% endif %}><span>Jeans</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "formal" %}active{% endif %}"><input type="radio" name="subcategory" value="formal" {% if selected_subcategory == "formal" %}checked{% endif %}><span>Formal</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "polos" %}active{% endif %}"><input type="radio" name="subcategory" value="polos" {% if selected_subcategory == "polos" %}checked{% endif %}><span>Polos</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "jackets" %}active{% endif %}"><input type="radio" name="subcategory" value="jackets" {% if selected_subcategory == "jackets" %}checked{% endif %}><span>Jackets</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "trousers" %}active{% endif %}"><input type="radio" name="subcategory" value="trousers" {% if selected_subcategory == "trousers" %}checked{% endif %}><span>Trousers</span></label>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if category_name == "Women" %}
+                <div class="mobile-filter-section">
+                    <span class="mobile-filter-section-title">Women Category</span>
+                    <div class="mobile-filter-options">
+                        <label class="mobile-filter-option {% if not selected_subcategory %}active{% endif %}"><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "dresses" %}active{% endif %}"><input type="radio" name="subcategory" value="dresses" {% if selected_subcategory == "dresses" %}checked{% endif %}><span>Dresses</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "tops" %}active{% endif %}"><input type="radio" name="subcategory" value="tops" {% if selected_subcategory == "tops" %}checked{% endif %}><span>Tops</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "kurtas" %}active{% endif %}"><input type="radio" name="subcategory" value="kurtas" {% if selected_subcategory == "kurtas" %}checked{% endif %}><span>Kurtas</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "jeans" %}active{% endif %}"><input type="radio" name="subcategory" value="jeans" {% if selected_subcategory == "jeans" %}checked{% endif %}><span>Jeans</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "sarees" %}active{% endif %}"><input type="radio" name="subcategory" value="sarees" {% if selected_subcategory == "sarees" %}checked{% endif %}><span>Sarees</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "skirts" %}active{% endif %}"><input type="radio" name="subcategory" value="skirts" {% if selected_subcategory == "skirts" %}checked{% endif %}><span>Skirts</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "co-ords" %}active{% endif %}"><input type="radio" name="subcategory" value="co-ords" {% if selected_subcategory == "co-ords" %}checked{% endif %}><span>Co-ords</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "leggings" %}active{% endif %}"><input type="radio" name="subcategory" value="leggings" {% if selected_subcategory == "leggings" %}checked{% endif %}><span>Leggings</span></label>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if category_name == "Kids" %}
+                <div class="mobile-filter-section">
+                    <span class="mobile-filter-section-title">Kids Category</span>
+                    <div class="mobile-filter-options">
+                        <label class="mobile-filter-option {% if not selected_subcategory %}active{% endif %}"><input type="radio" name="subcategory" value="" {% if not selected_subcategory %}checked{% endif %}><span>All</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "boys-wear" %}active{% endif %}"><input type="radio" name="subcategory" value="boys-wear" {% if selected_subcategory == "boys-wear" %}checked{% endif %}><span>Boys Wear</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "girls-wear" %}active{% endif %}"><input type="radio" name="subcategory" value="girls-wear" {% if selected_subcategory == "girls-wear" %}checked{% endif %}><span>Girls Wear</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "sets" %}active{% endif %}"><input type="radio" name="subcategory" value="sets" {% if selected_subcategory == "sets" %}checked{% endif %}><span>Sets</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "nightwear" %}active{% endif %}"><input type="radio" name="subcategory" value="nightwear" {% if selected_subcategory == "nightwear" %}checked{% endif %}><span>Nightwear</span></label>
+                        <label class="mobile-filter-option {% if selected_subcategory == "baby-wear" %}active{% endif %}"><input type="radio" name="subcategory" value="baby-wear" {% if selected_subcategory == "baby-wear" %}checked{% endif %}><span>Baby Wear</span></label>
+                    </div>
+                </div>
+                {% endif %}
+
+                <button type="submit" class="mobile-filter-apply-btn">Apply Filters</button>
+            </form>
+            {% else %}
+            <div class="mobile-filter-empty">
+                <span>No filters available for this category</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Desktop Navbar -->
     <header class="navbar">
         <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
 
@@ -63,26 +227,13 @@
                     {% if category_name == "Accessories" %}
                         <div class="filter-block">
                             <h3>Gender</h3>
-
-                            <label>
-                                <input type="radio" name="gender" value="" {% if not selected_gender %}checked{% endif %}>
-                                <span>All</span>
-                            </label>
-
-                            <label>
-                                <input type="radio" name="gender" value="men" {% if selected_gender == "men" %}checked{% endif %}>
-                                <span>Men</span>
-                            </label>
-
-                            <label>
-                                <input type="radio" name="gender" value="women" {% if selected_gender == "women" %}checked{% endif %}>
-                                <span>Women</span>
-                            </label>
+                            <label><input type="radio" name="gender" value="" {% if not selected_gender %}checked{% endif %}><span>All</span></label>
+                            <label><input type="radio" name="gender" value="men" {% if selected_gender == "men" %}checked{% endif %}><span>Men</span></label>
+                            <label><input type="radio" name="gender" value="women" {% if selected_gender == "women" %}checked{% endif %}><span>Women</span></label>
                         </div>
 
                         <div class="filter-block">
                             <h3>Accessories Type</h3>
-
                             <label><input type="radio" name="type" value="" {% if not selected_type %}checked{% endif %}><span>All</span></label>
                             <label><input type="radio" name="type" value="shoes" {% if selected_type == "shoes" %}checked{% endif %}><span>Shoes</span></label>
                             <label><input type="radio" name="type" value="watches" {% if selected_type == "watches" %}checked{% endif %}><span>Watches</span></label>
@@ -143,16 +294,9 @@
             <div class="category-content-area">
                 <div class="filter-sort-bar">
                     <form method="get" class="sort-form">
-                        {% if selected_gender %}
-                            <input type="hidden" name="gender" value="{{ selected_gender }}">
-                        {% endif %}
-                        {% if selected_type %}
-                            <input type="hidden" name="type" value="{{ selected_type }}">
-                        {% endif %}
-                        {% if selected_subcategory %}
-                            <input type="hidden" name="subcategory" value="{{ selected_subcategory }}">
-                        {% endif %}
-
+                        {% if selected_gender %}<input type="hidden" name="gender" value="{{ selected_gender }}">{% endif %}
+                        {% if selected_type %}<input type="hidden" name="type" value="{{ selected_type }}">{% endif %}
+                        {% if selected_subcategory %}<input type="hidden" name="subcategory" value="{{ selected_subcategory }}">{% endif %}
                         <select name="sort" onchange="this.form.submit()">
                             <option value="">Sort By</option>
                             <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest</option>
@@ -164,45 +308,21 @@
 
                 <div class="category-grid-page">
                     {% for product in products %}
-                    <div class="category-product-card clickable-card"
-                         onclick="window.location.href='{% url 'product_detail' product.id %}'">
-
+                    <div class="category-product-card clickable-card" onclick="window.location.href='{% url 'product_detail' product.id %}'">
                         <div class="category-product-image">
                             <img src="{{ product.image.url }}" alt="{{ product.name }}">
-
-                            {% if product.has_valid_sale %}
-                                <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
-                            {% endif %}
-
-                            <a href="{% url 'add_to_wishlist' product.id %}"
-                               class="wishlist-btn"
-                               onclick="event.stopPropagation();">
-                                ♥
-                            </a>
+                            {% if product.has_valid_sale %}<span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>{% endif %}
+                            <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist-btn" onclick="event.stopPropagation();">♥</a>
                         </div>
-
                         <div class="category-product-info">
-                            <p class="category-product-type">
-                                {% if product.category == "Home" %}
-                                    Accessories
-                                {% else %}
-                                    {{ product.category }}
-                                {% endif %}
-                            </p>
-
+                            <p class="category-product-type">{% if product.category == "Home" %}Accessories{% else %}{{ product.category }}{% endif %}</p>
                             <h3>{{ product.name }}</h3>
                             <p class="category-product-desc">{{ product.description|truncatechars:70 }}</p>
-
                             <div class="product-stock-line">
-                                {% if product.stock > 5 %}
-                                    <span class="stock-badge in-stock">In Stock</span>
-                                {% elif product.stock > 0 %}
-                                    <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
-                                {% else %}
-                                    <span class="stock-badge out-stock">Out of Stock</span>
-                                {% endif %}
+                                {% if product.stock > 5 %}<span class="stock-badge in-stock">In Stock</span>
+                                {% elif product.stock > 0 %}<span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+                                {% else %}<span class="stock-badge out-stock">Out of Stock</span>{% endif %}
                             </div>
-
                             <div class="category-product-bottom">
                                 {% if product.has_valid_sale %}
                                 <div class="sale-price-row">
@@ -212,32 +332,16 @@
                                 {% else %}
                                 <span class="category-product-price">₹{{ product.price }}</span>
                                 {% endif %}
-
                                 {% if product.stock > 0 %}
-                                    <form action="{% url 'add_to_cart' product.id %}"
-                                          method="post"
-                                          class="add-cart-form"
-                                          onclick="event.stopPropagation();">
-                                        {% csrf_token %}
-                                        <button type="submit" class="mini-cart-btn">Add</button>
-                                    </form>
+                                <form action="{% url 'add_to_cart' product.id %}" method="post" class="add-cart-form" onclick="event.stopPropagation();">{% csrf_token %}<button type="submit" class="mini-cart-btn">Add</button></form>
                                 {% else %}
-                                    <button type="button"
-                                            class="mini-cart-btn out-stock-btn"
-                                            onclick="event.stopPropagation();"
-                                            disabled>
-                                        Out of Stock
-                                    </button>
+                                <button type="button" class="mini-cart-btn out-stock-btn" onclick="event.stopPropagation();" disabled>Out of Stock</button>
                                 {% endif %}
                             </div>
                         </div>
-
                     </div>
                     {% empty %}
-                    <div class="empty-category-box">
-                        <h2>No {{ category_name }} products yet</h2>
-                        <p>Please add products from admin.</p>
-                    </div>
+                    <div class="empty-category-box"><h2>No {{ category_name }} products yet</h2><p>Please add products from admin.</p></div>
                     {% endfor %}
                 </div>
             </div>
@@ -258,45 +362,21 @@
 
         <div class="category-grid-page">
             {% for product in products %}
-            <div class="category-product-card clickable-card"
-                 onclick="window.location.href='{% url 'product_detail' product.id %}'">
-
+            <div class="category-product-card clickable-card" onclick="window.location.href='{% url 'product_detail' product.id %}'">
                 <div class="category-product-image">
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
-
-                    {% if product.has_valid_sale %}
-                        <span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>
-                    {% endif %}
-
-                    <a href="{% url 'add_to_wishlist' product.id %}"
-                       class="wishlist-btn"
-                       onclick="event.stopPropagation();">
-                        ♥
-                    </a>
+                    {% if product.has_valid_sale %}<span class="sale-badge-card">{{ product.sale_percent }}% OFF</span>{% endif %}
+                    <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist-btn" onclick="event.stopPropagation();">♥</a>
                 </div>
-
                 <div class="category-product-info">
-                    <p class="category-product-type">
-                        {% if product.category == "Home" %}
-                            Accessories
-                        {% else %}
-                            {{ product.category }}
-                        {% endif %}
-                    </p>
-
+                    <p class="category-product-type">{% if product.category == "Home" %}Accessories{% else %}{{ product.category }}{% endif %}</p>
                     <h3>{{ product.name }}</h3>
                     <p class="category-product-desc">{{ product.description|truncatechars:70 }}</p>
-
                     <div class="product-stock-line">
-                        {% if product.stock > 5 %}
-                            <span class="stock-badge in-stock">In Stock</span>
-                        {% elif product.stock > 0 %}
-                            <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
-                        {% else %}
-                            <span class="stock-badge out-stock">Out of Stock</span>
-                        {% endif %}
+                        {% if product.stock > 5 %}<span class="stock-badge in-stock">In Stock</span>
+                        {% elif product.stock > 0 %}<span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+                        {% else %}<span class="stock-badge out-stock">Out of Stock</span>{% endif %}
                     </div>
-
                     <div class="category-product-bottom">
                         {% if product.has_valid_sale %}
                         <div class="sale-price-row">
@@ -306,32 +386,16 @@
                         {% else %}
                         <span class="category-product-price">₹{{ product.price }}</span>
                         {% endif %}
-
                         {% if product.stock > 0 %}
-                            <form action="{% url 'add_to_cart' product.id %}"
-                                  method="post"
-                                  class="add-cart-form"
-                                  onclick="event.stopPropagation();">
-                                {% csrf_token %}
-                                <button type="submit" class="mini-cart-btn">Add</button>
-                            </form>
+                        <form action="{% url 'add_to_cart' product.id %}" method="post" class="add-cart-form" onclick="event.stopPropagation();">{% csrf_token %}<button type="submit" class="mini-cart-btn">Add</button></form>
                         {% else %}
-                            <button type="button"
-                                    class="mini-cart-btn out-stock-btn"
-                                    onclick="event.stopPropagation();"
-                                    disabled>
-                                Out of Stock
-                            </button>
+                        <button type="button" class="mini-cart-btn out-stock-btn" onclick="event.stopPropagation();" disabled>Out of Stock</button>
                         {% endif %}
                     </div>
                 </div>
-
             </div>
             {% empty %}
-            <div class="empty-category-box">
-                <h2>No {{ category_name }} products yet</h2>
-                <p>Please add products from admin.</p>
-            </div>
+            <div class="empty-category-box"><h2>No {{ category_name }} products yet</h2><p>Please add products from admin.</p></div>
             {% endfor %}
         </div>
 
@@ -339,5 +403,44 @@
     </section>
 
     <script src="{% static 'script.js' %}"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var openBtn = document.getElementById('mobileFilterOpenBtn');
+        var closeBtn = document.getElementById('mobileFilterCloseBtn');
+        var overlay = document.getElementById('mobileFilterOverlay');
+        var sheet = document.getElementById('mobileFilterSheet');
+
+        function openFilter() {
+            if (sheet) sheet.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFilter() {
+            if (sheet) sheet.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openFilter);
+        if (closeBtn) closeBtn.addEventListener('click', closeFilter);
+        if (overlay) overlay.addEventListener('click', closeFilter);
+
+        // Highlight active radio on change
+        var mobileOptions = document.querySelectorAll('.mobile-filter-option input[type="radio"]');
+        mobileOptions.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                var section = this.closest('.mobile-filter-options');
+                if (section) {
+                    section.querySelectorAll('.mobile-filter-option').forEach(function(opt) {
+                        opt.classList.remove('active');
+                    });
+                    this.closest('.mobile-filter-option').classList.add('active');
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
