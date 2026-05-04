@@ -796,7 +796,7 @@ def verify_razorpay_payment(request):
             del request.session['applied_coupon_code']
         request.session.modified = True
 
-        return redirect('payment_success')
+        return redirect('order_history')
 
     except Exception:
         try:

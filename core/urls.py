@@ -36,7 +36,7 @@ from products.views import (
     dashboard_update_order_status,
     dashboard_support_tickets,
     dashboard_update_ticket,
-    )
+)
 
 from accounts.views import user_login, user_register, user_logout
 
@@ -92,11 +92,8 @@ urlpatterns = [
     path('checkout/apply-coupon/', apply_coupon, name='apply_coupon'),
     path('checkout/remove-coupon/', remove_coupon, name='remove_coupon'),
 
-    path('account/', account_page, name='account_page'),
     path('account/support/create/', create_ticket, name='create_ticket'),
 
-
-    path('dashboard/orders/', views.dashboard_orders, name='dashboard_orders'),
     path('dashboard/orders/update-status/<int:order_id>/', views.dashboard_update_order_status, name='dashboard_update_order_status'),
 
     path('dashboard/support/', views.dashboard_support_tickets, name='dashboard_support_tickets'),
@@ -108,17 +105,16 @@ urlpatterns = [
     path('dashboard/coupons/delete/<int:coupon_id>/', views.dashboard_delete_coupon, name='dashboard_delete_coupon'),
 
     path('sale/', views.sale_products, name='sale_products'),
-    
 
     path('order-request/<int:order_id>/', views.create_order_request, name='create_order_request'),
 
     path('dashboard/order-requests/', views.dashboard_order_requests, name='dashboard_order_requests'),
     path('dashboard/order-requests/update/<int:request_id>/', views.dashboard_update_order_request, name='dashboard_update_order_request'),
-    
+
     path('recently-viewed/', views.recently_viewed_page, name='recently_viewed_page'),
     path('test-email/', views.test_email, name='test_email'),
 
     path('live-search/', views.live_search, name='live_search'),
-    ]
+]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
