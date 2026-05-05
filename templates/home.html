@@ -415,16 +415,23 @@
         <div class="newsletter-left">
             <span class="section-tag">STAY CONNECTED</span>
             <h2>Join The Veloura World</h2>
-            <p>
-                Be first to know about new collections, signature drops,
-                exclusive offers, and style inspirations.
-            </p>
+            <p>Get exclusive offers, new arrivals, style tips and early access to sale events delivered to your inbox.</p>
         </div>
 
-        <form class="newsletter-form">
-            <input type="email" placeholder="Enter your email address">
-            <button type="submit">Subscribe</button>
+        <form class="newsletter-form" id="newsletterForm">
+            {% csrf_token %}
+            <input type="email" id="newsletterEmail" placeholder="Enter your email address" required>
+            <button type="submit" id="subscribeBtn">Subscribe</button>
         </form>
+    </div>
+
+    <!-- Instagram Gallery below unchanged -->
+    <div class="insta-gallery-top">
+        <h2>Follow Us On Instagram</h2>
+        <p>Stay updated with our latest looks and behind-the-scenes content.</p>
+    </div>
+    <div class="insta-gallery-grid">
+        <!-- your existing gallery items -->
     </div>
 </section>
 
@@ -576,6 +583,70 @@
         <span>Profile</span>
     </a>
 </nav>
+
+<script>
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var emailInput = document.getElementById('newsletterEmail');
+    var btn = document.getElementById('subscribeBtn');
+    var originalText = btn.textContent;
+    var email = emailInput.value.trim();
+
+    if (!email) {
+        alert('Please enter your email address.');
+        return;
+    }
+
+    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    btn.textContent = 'Subscribing...';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    var form = this;
+    var formData = new FormData(form);
+
+    fetch('{% url "subscribe_newsletter" %}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.success) {
+            emailInput.value = '';
+            btn.textContent = 'Subscribed ✓';
+            btn.style.background = '#2e7d32';
+            btn.style.opacity = '1';
+
+            setTimeout(function() {
+                btn.textContent = originalText;
+                btn.style.background = '';
+                btn.style.opacity = '1';
+                btn.disabled = false;
+            }, 3000);
+        } else {
+            alert(data.message);
+            btn.textContent = originalText;
+            btn.style.opacity = '1';
+            btn.disabled = false;
+        }
+    })
+    .catch(function(err) {
+        console.log('Subscribe error:', err);
+        alert('Something went wrong. Please try again.');
+        btn.textContent = originalText;
+        btn.style.opacity = '1';
+        btn.disabled = false;
+    });
+});
+</script>
 
 <script src="{% static 'script.js' %}?v=2"></script>
 </body>

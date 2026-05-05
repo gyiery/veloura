@@ -2022,3 +2022,56 @@ def live_search(request):
             })
 
     return JsonResponse({'results': results})
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import Newsletter
+
+
+def subscribe_newsletter(request):
+    if request.method == "POST":
+        email = request.POST.get('email', '').strip()
+
+        if not email:
+            return JsonResponse({'success': False, 'message': 'Please enter your email address.'})
+
+        if '@' not in email or '.' not in email:
+            return JsonResponse({'success': False, 'message': 'Please enter a valid email address.'})
+
+        if Newsletter.objects.filter(email=email, is_active=True).exists():
+            return JsonResponse({'success': False, 'message': 'You are already subscribed!'})
+
+        Newsletter.objects.create(email=email)
+
+        # Send confirmation email
+        try:
+            send_mail(
+                'Welcome to Veloura!',
+                f'Hi there!\n\nThank you for subscribing to Veloura. You will receive updates on new arrivals, sales, and exclusive offers.\n\nHappy Shopping!\n\n— Team Veloura',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
+
+        return JsonResponse({'success': True, 'message': 'Subscribed successfully! Check your inbox for a welcome email.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})
+
+
+def unsubscribe_newsletter(request, token):
+    if request.method == "POST":
+        try:
+            subscriber = Newsletter.objects.get(email=token, is_active=True)
+            subscriber.is_active = False
+            subscriber.save()
+            return JsonResponse({'success': True, 'message': 'You have been unsubscribed successfully.'})
+        except Newsletter.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Email not found or already unsubscribed.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})
+
+def contact_page(request):
+    return render(request, 'contact.html')

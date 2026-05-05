@@ -313,3 +313,14 @@ class SupportTicket(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.subject}"
+    
+class Newsletter(models.Model):
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-subscribed_at']
+
+    def __str__(self):
+        return self.email

@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from products import views
-from products.views import create_ticket
+from products.views import contact_page, create_ticket
 
 from products.views import (
     home,
@@ -115,6 +115,11 @@ urlpatterns = [
     path('test-email/', views.test_email, name='test_email'),
 
     path('live-search/', views.live_search, name='live_search'),
+
+    path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
+    path('unsubscribe/', views.unsubscribe_newsletter, name='unsubscribe_newsletter'),
+
+    path('contact/', contact_page, name='contact'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
