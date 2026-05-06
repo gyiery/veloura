@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Terms & Conditions</span>
+    <span></span>
+</div>
+
+<!-- Desktop Navbar -->
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}" class="cart-icon-link">
+            <div class="cart-icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</header>
+
+<section class="policy-page">
+    <div class="policy-header">
+        <span class="section-tag">LEGAL AGREEMENT</span>
+        <h1>Terms & Conditions</h1>
+        <p>By accessing and using Veloura, you agree to be bound by these terms. Please read them carefully.</p>
+    </div>
+
+    <div class="policy-content">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing, browsing, or using the Veloura website (the "Site"), you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions. If you do not agree, please do not use our services.</p>
+
+        <h2>2. User Accounts</h2>
+        <p>To place an order, you may be required to create an account. You are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.</p>
+
+        <h2>3. Products & Pricing</h2>
+        <p>We make every effort to display our products accurately on the Site. However, colors may vary slightly depending on your screen settings. Prices are listed in Indian Rupees (₹) and are subject to change without prior notice. The price applicable is the price at the time you place your order. Veloura reserves the right to modify or discontinue any product without liability.</p>
+
+        <h2>4. Orders & Payment</h2>
+        <p>Placing an order on Veloura constitutes an offer to purchase. All orders are subject to acceptance and availability. We reserve the right to refuse or cancel any order for suspected fraud, unauthorized transactions, or inventory issues. Payments are processed securely via Razorpay. You agree to provide accurate and complete payment information.</p>
+
+        <h2>5. Shipping & Delivery</h2>
+        <p>Delivery timelines provided are estimates and may vary due to unforeseen circumstances, courier delays, or weather conditions. Risk of loss and title for items purchased pass to you upon delivery of the items to the shipping carrier. For full details, please refer to our <strong>Shipping Policy</strong>.</p>
+
+        <h2>6. Returns, Refunds & Cancellations</h2>
+        <p>Returns and refunds are governed by our specific Return & Refund Policy. Orders can only be cancelled if they have not yet been processed for shipping. Promotional items, clearance sales, and intimate wear may be exempt from returns.</p>
+
+        <div class="policy-highlight-box">
+            <p>⚠️ Attempting fraudulent returns, wrong claims, or abusing the return policy will result in a permanent ban from Veloura.</p>
+        </div>
+
+        <h2>7. Intellectual Property</h2>
+        <p>All content on this Site, including but not limited to logos, text, graphics, images, data compilations, and software, is the property of Veloura or its content suppliers and is protected by Indian and international copyright laws. You may not reproduce, distribute, modify, or use any content without our prior written consent.</p>
+
+        <h2>8. User Conduct</h2>
+        <p>You agree not to use the Site to:
+        <ul>
+            <li>Violate any applicable laws or regulations.</li>
+            <li>Infringe upon the rights of any third party.</li>
+            <li>Transmit viruses, malware, or any harmful code.</li>
+            <li>Attempt to gain unauthorized access to our systems.</li>
+            <li>Leave fake reviews or manipulate the rating system.</li>
+        </ul>
+        </p>
+
+        <h2>9. Limitation of Liability</h2>
+        <p>Veloura shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the Site or inability to use the Site. Our total liability to you for all claims arising out of or relating to the use of the Site shall not exceed the amount paid by you to Veloura for the specific product or service in question.</p>
+
+        <h2>10. Governing Law & Jurisdiction</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of India. Any disputes arising out of these terms shall be subject to the exclusive jurisdiction of the courts in <strong>Mumbai, Maharashtra, India</strong>.</p>
+
+        <h2>11. Changes to Terms</h2>
+        <p>Veloura reserves the right to update or modify these Terms & Conditions at any time without prior notice. Changes will be effective immediately upon posting on the Site. Your continued use of the Site following any changes constitutes acceptance of those changes.</p>
+        
+        <p><strong>Effective Date:</strong> May 2026</p>
+    </div>
+</section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="{% url 'contact' %}" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">Need Help?</a>
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Shop Now</a>
+</div>
+
+<!-- Desktop Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+            <a href="#">Brands</a>
+            <a href="{% url 'sale_products' %}">Sale</a>
+        </div>
+        <div>
+            <h4>Support</h4>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
+        </div>
+        <div>
+            <h4>Legal</h4>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

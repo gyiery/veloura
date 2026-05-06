@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Privacy Policy</span>
+    <span></span>
+</div>
+
+<!-- Desktop Navbar -->
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}" class="cart-icon-link">
+            <div class="cart-icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</header>
+
+<section class="policy-page">
+    <div class="policy-header">
+        <span class="section-tag">YOUR DATA RIGHTS</span>
+        <h1>Privacy Policy</h1>
+        <p>Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.</p>
+    </div>
+
+    <div class="policy-content">
+        <h2>Information We Collect</h2>
+        <p>To provide you with the best shopping experience, we may collect the following types of information:</p>
+        <ul>
+            <li><strong>Personal Details:</strong> Name, email address, phone number, and delivery addresses when you create an account or place an order.</li>
+            <li><strong>Payment Information:</strong> Transaction details are processed securely via <strong>Razorpay</strong>. We do not store your credit/debit card numbers, CVV, or internet banking passwords on our servers.</li>
+            <li><strong>Account Data:</strong> Profile information, wishlist items, and order history saved to enhance your experience.</li>
+            <li><strong>Device & Usage Data:</strong> IP address, browser type, and browsing behavior on our website to improve site performance and security.</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <p>The data we collect is used for the following purposes:</p>
+        <ul>
+            <li>To process, fulfill, and manage your orders and deliveries.</li>
+            <li>To communicate order updates, tracking details, and respond to your support queries.</li>
+            <li>To personalize your shopping experience and show relevant product recommendations.</li>
+            <li>To send promotional emails, offers, and newsletters (only if you have opted in).</li>
+            <li>To prevent fraudulent transactions and enhance website security.</li>
+        </ul>
+
+        <div class="policy-highlight-box">
+            <p>🔒 We will never sell, rent, or share your personal data with third-party marketers.</p>
+        </div>
+
+        <h2>Data Sharing & Third Parties</h2>
+        <p>We only share your data with trusted partners who help us operate our business:</p>
+        <ul>
+            <li><strong>Logistics Partners:</strong> (e.g., Delhivery, BlueDart) to deliver your orders. They receive only your name, phone number, and delivery address.</li>
+            <li><strong>Payment Gateways:</strong> (e.g., Razorpay) to securely process your payments.</li>
+            <li><strong>Legal Requirements:</strong> We may disclose data if required by Indian law, court orders, or government authorities.</li>
+        </ul>
+
+        <h2>Cookies & Tracking Technologies</h2>
+        <p>We use cookies and similar technologies to keep you logged in, remember your cart items, and understand how you use our site. You can manage or disable cookies in your browser settings, though some features of Veloura may not work properly without them.</p>
+
+        <h2>Data Security</h2>
+        <p>We implement industry-standard security measures, including SSL encryption, to protect your data during transmission. While no system is 100% secure, we continuously monitor and update our systems to prevent unauthorized access.</p>
+
+        <h2>Your Rights</h2>
+        <p>As a user, you have the right to:</p>
+        <ul>
+            <li>Access, update, or delete your personal data from your <strong>Account Settings</strong>.</li>
+            <li>Opt out of marketing newsletters at any time by clicking "Unsubscribe".</li>
+            <li>Request a complete copy of the data we hold about you by contacting our support team.</li>
+        </ul>
+
+        <h2>Updates to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated "Last Modified" date. We encourage you to review this page periodically.</p>
+        
+        <p><strong>Last Modified:</strong> May 2026</p>
+    </div>
+</section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="{% url 'contact' %}" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">Need Help?</a>
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Shop Now</a>
+</div>
+
+<!-- Desktop Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+            <a href="#">Brands</a>
+            <a href="{% url 'sale_products' %}">Sale</a>
+        </div>
+        <div>
+            <h4>Support</h4>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
+        </div>
+        <div>
+            <h4>Legal</h4>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Policy - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Shipping Policy</span>
+    <span></span>
+</div>
+
+<!-- Desktop Navbar -->
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}" class="cart-icon-link">
+            <div class="cart-icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</header>
+
+<section class="policy-page">
+    <div class="policy-header">
+        <span class="section-tag">DELIVERY INFO</span>
+        <h1>Shipping Policy</h1>
+        <p>We ensure a smooth and secure delivery experience right to your doorstep.</p>
+    </div>
+
+    <div class="policy-content">
+        <h2>Domestic Shipping</h2>
+        <p>Currently, Veloura delivers orders <strong>only within India</strong>. We partner with trusted courier services (BlueDart, Delhivery, XpressBees) to ensure your package reaches you safely and on time.</p>
+
+        <div class="policy-highlight-box">
+            <p>🚚 Free Standard Shipping on all prepaid orders above ₹999!</p>
+        </div>
+
+        <h2>Shipping Charges & Timelines</h2>
+        <p>Delivery times are calculated from the date of order dispatch, not the date the order is placed. Please note that during sale periods or festive seasons, deliveries may take an additional 1-2 days.</p>
+        <ul>
+            <li><strong>Standard Delivery (3-7 Business Days):</strong> ₹99 (Free above ₹999)</li>
+            <li><strong>Express Delivery (2-3 Business Days):</strong> ₹199 (Available only in select metro cities)</li>
+        </ul>
+
+        <h2>Order Dispatch</h2>
+        <p>We process and dispatch orders within <strong>24-48 hours</strong> of placing the order (excluding Sundays and public holidays). For Cash on Delivery (COD) orders, verification may take up to an additional 24 hours.</p>
+
+        <h2>Order Tracking</h2>
+        <p>As soon as your order is dispatched, you will receive an <strong>Email and SMS</strong> containing your tracking number and a direct link to track your package in real-time. You can also view the tracking status under <strong>"My Orders"</strong> in your Veloura account.</p>
+
+        <h2>Address & Pincode Verification</h2>
+        <p>Please ensure you provide a complete and accurate shipping address with the correct <strong>6-digit PIN code</strong>. Incomplete or incorrect addresses may result in delayed or returned shipments. If a shipment is returned due to an incorrect address provided by the customer, a reshipping fee will be charged.</p>
+
+        <h2>Undelivered Packages</h2>
+        <p>Our courier partners will attempt delivery <strong>up to 3 times</strong> at your provided address. If the package is still undelivered after 3 attempts, it will be automatically returned to our warehouse. A refund will be processed (minus the original shipping costs) within 5-7 business days.</p>
+
+        <h2>Force Majeure Events</h2>
+        <p>Veloura is not liable for any delays caused by unforeseen circumstances beyond our control, including but not limited to: extreme weather conditions, natural disasters, political disruptions, pandemics, or courier strikes.</p>
+
+        <h2>Need More Help?</h2>
+        <p>If you face any issues with your delivery or have specific shipping queries, our support team is just a click away.</p>
+        <ul>
+            <li>Email us at <strong>support@veloura.com</strong></li>
+            <li>Call us at <strong>+91 98765 43210</strong> (Mon-Sat, 10 AM - 8 PM IST)</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="{% url 'contact' %}" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">Need Help?</a>
+    <a href="/" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Shop Now</a>
+</div>
+
+<!-- Desktop Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+            <a href="#">Brands</a>
+            <a href="{% url 'sale_products' %}">Sale</a>
+        </div>
+        <div>
+            <h4>Support</h4>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
+        </div>
+        <div>
+            <h4>Legal</h4>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

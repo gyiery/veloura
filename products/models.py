@@ -324,3 +324,11 @@ class Newsletter(models.Model):
 
     def __str__(self):
         return self.email
+    
+class ReturnOrder(models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    reason = models.TextField()
+    requested_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Return request for Order #{self.order.id}"

@@ -120,6 +120,19 @@ urlpatterns = [
     path('unsubscribe/', views.unsubscribe_newsletter, name='unsubscribe_newsletter'),
 
     path('contact/', contact_page, name='contact'),
+
+    path('shipping-policy/', views.shipping_policy, name='shipping_policy'),
+
+    path('request-return-order/<int:order_id>/', views.request_return_order, name='request_return_order'),
+
+    path('help-center/', views.help_center, name='help_center'),
+
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+
+    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+
+    path('refund-policy/', views.refund_policy, name='refund_policy'),
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

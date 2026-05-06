@@ -13,7 +13,7 @@ import json
 import re
 
 from urllib3 import request
-from .models import Product, Order, OrderItem, Review, UserProfile, Address , Coupon
+from .models import Product, Order, OrderItem, ReturnOrder, Review, UserProfile, Address , Coupon
 from django.contrib.auth.decorators import login_required
 from .models import SupportTicket
 from .models import Product, Order, OrderItem, Review, UserProfile, Address, Coupon, SupportTicket
@@ -2075,3 +2075,43 @@ def unsubscribe_newsletter(request, token):
 
 def contact_page(request):
     return render(request, 'contact.html')
+
+def shipping_policy(request):
+    return render(request, 'shipping_policy.html')
+
+
+from django.contrib import messages
+
+@login_required
+def request_return_order(request, order_id):
+    # Fetch the order, ensure it belongs to the logged-in user
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    if request.method == 'POST':
+        reason = request.POST.get('reason')
+        if reason:
+            # Save the return request to the database
+            ReturnOrder.objects.create(order=order, reason=reason)
+            
+            # Optional: Change the order status in your database
+            # order.status = 'Return Requested'
+            # order.save()
+            
+            messages.success(request, "Your return request has been submitted successfully!")
+        else:
+            messages.error(request, "Please provide a reason for the return.")
+            
+    return redirect('my_orders') # Make sure 'my_orders' matches your actual URL name
+
+
+def help_center(request):
+    return render(request, 'help_center.html')
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def terms_and_conditions(request):
+    return render(request, 'terms_and_conditions.html')
+
+def refund_policy(request):
+    return render(request, 'refund_policy.html')

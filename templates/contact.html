@@ -37,7 +37,7 @@
         <a href="{% url 'cart' %}" class="cart-icon-link">
             <div class="cart-icon-wrap">
                 <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M7 18c-1.1 0-2 .9-2 2s.9-2 2-.9-2 2-.9-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
                 </svg>
                 {% if cart_count > 0 %}
                 <span class="cart-badge">{{ cart_count }}</span>
@@ -61,246 +61,266 @@
             <div class="contact-info-card">
                 <div class="contact-info-icon">
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 16.92V19.92a2 2 0 00-2-2H4a2 2 0 00-2-2h.01"/>
-                        <path d="M12 12c1.1 0 2-.9 2-2H5a2 2 0 00-2-2H4a2 2 0 00-2 2h.01"/>
-                        <path d="M12 2C6.48 2 2 10 4 10h1a8 8 0 00 8 8H5a8 8 0 00 8-8h1c1.1 0 2-.9 2-2H5a2 2 0 00-2 2h-1a8 8 0 00-8-8h-1a8 8 0 00-8-8c-1.1 0-2 .9-2-2h-1c-1.1 0-2 .9-2 2a8 8 0 00 8 8zM12 4a8 8 0 018 8 0 8-8 8-8 8-8h-1c-1.1 0-2 .9-2 2a8 8 0 00 8 8c-1.1 0-2 .9-2 2h-1a8 8 0 00-8-8 8-8-8-8h-1a8 8 0 00-8-8z"/>
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
                     </svg>
+                </div>
+                <div>
                     <div class="contact-info-label">Email</div>
                     <div class="contact-info-value">support@veloura.com</div>
                 </div>
+            </div>
 
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 16.92V19.92a2 2 0 00-2-2H4a2 2 0 00-2-2h.01"/>
-                            <path d="M20 12H4a2 2 0 00-2-2h.01"/>
-                            <path d="M12 2C6.48 2 2 10 4 10h1a8 8 0 00 8 8H5a8 8 0 00 8-8h1c1.1 0 2-.9 2-2H5a2 2 0 00-2 2h-1a8 8 0 00-8-8 8-8-8-8h-1a8 8 0 00-8-8z"/>
-                        </svg>
-                    </div>
+            <div class="contact-info-card">
+                <div class="contact-info-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                </div>
+                <div>
                     <div class="contact-info-label">Phone</div>
                     <div class="contact-info-value">+91 98765 43210</div>
                 </div>
+            </div>
 
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9-13-13S5 3 12 12-9-9 13-13 13-9 9-9-9zm0 2a10 10 0 0 0 20 0 10 10 0 0 0-20 0z"/>
-                            <path d="M12 22c5.52 0 10-4.48 10-10S2 2-10 10-10 10 4.48 10 10 10z"/>
-                        </svg>
-                    </div>
+            <div class="contact-info-card">
+                <div class="contact-info-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                </div>
+                <div>
                     <div class="contact-info-label">Address</div>
                     <div class="contact-info-value">Veloura HQ, Fashion Street, Mumbai, Maharashtra, India - 400001</div>
                 </div>
+            </div>
 
-                <div class="contact-info-card">
-                    <div class="contact-info-icon">
-                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 18"/>
-                        </svg>
-                    </div>
+            <div class="contact-info-card">
+                <div class="contact-info-icon">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                </div>
+                <div>
                     <div class="contact-info-label">Working Hours</div>
                     <div class="contact-info-value">Mon - Sat: 10:00 AM - 8:00 PM IST</div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right: FAQs -->
-            <div class="contact-faqs-panel">
-                <h3>Frequently Asked Questions</h3>
+        <!-- Right: FAQs -->
+        <div class="contact-faqs-panel">
+            <h3>Frequently Asked Questions</h3>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>How do I track my order?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>You can track your order by going to <strong>My Orders</strong> in your account. We also send tracking details via email and SMS once your order is shipped. Click the tracking link in the email to see live updates.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>How do I track my order?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>You can track your order by going to <strong>My Orders</strong> in your account. We also send tracking details via email and SMS once your order is shipped. Click the tracking link in the email to see live updates.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>What is the return/exchange policy?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>We accept returns within <strong>7 days</strong> of delivery. Items must be unused, unwashed, with original tags. To initiate a return, go to <strong>My Orders</strong> and click "Request Return". Refunds are processed within 5-7 business days.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>What is the return/exchange policy?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>We accept returns within <strong>7 days</strong> of delivery. Items must be unused, unwashed, with original tags. To initiate a return, go to <strong>My Orders</strong> and click "Request Return". Refunds are processed within 5-7 business days.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>How long does delivery take?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Standard delivery takes <strong>3-7 business days</strong> across India. Express delivery takes <strong>2-3 business days</strong> for select cities. Remote areas may take 7-10 days. You can check exact delivery dates using the pincode check on the product page.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>How long does delivery take?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Standard delivery takes <strong>3-7 business days</strong> across India. Express delivery takes <strong>2-3 business days</strong> for select cities. Remote areas may take 7-10 days. You can check exact delivery dates using the pincode check on the product page.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>Do you offer Cash on Delivery (COD)?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Yes, Cash on Delivery is available on select pincodes. You can select "Cash on Delivery" during checkout if available for your area.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>Do you offer Cash on Delivery (COD)?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Yes, Cash on Delivery is available on select pincodes. You can select "Cash on Delivery" during checkout if available for your area.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-item">
-                        <span>How do I cancel an order?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>To cancel, go to <strong>My Orders</strong>, click on the order, and submit a cancellation request. Cancellation is free if the order hasn't been packed yet.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>How do I cancel an order?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>To cancel, go to <strong>My Orders</strong>, click on the order, and submit a cancellation request. Cancellation is free if the order hasn't been packed yet.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>How do I apply a coupon code?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Enter the coupon code in the checkout page input box and click "Apply". Discounts are applied automatically. Only one coupon can be used per order.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>How do I apply a coupon code?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Enter the coupon code in the checkout page input box and click "Apply". Discounts are applied automatically. Only one coupon can be used per order.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>Is my payment secure?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Absolutely. We use <strong>Razorpay</strong> — one of India's most trusted payment gateways. Your card details are encrypted and never stored on our servers.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>Is my payment secure?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Absolutely. We use <strong>Razorpay</strong> — one of India's most trusted payment gateways. Your card details are encrypted and never stored on our servers.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>What payment methods do you accept?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>We accept <strong>UPI, Credit Cards, Debit Cards, Net Banking</strong> via Razorpay. All major banks including SBI, HDFC, ICICI, Axis are supported.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>We accept <strong>UPI, Credit Cards, Debit Cards, Net Banking</strong> via Razorpay. All major banks including SBI, HDFC, ICICI, Axis are supported.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>I forgot to sign in, what should I do?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Don't worry! You can checkout as a <strong>guest</strong> without logging in. Just enter your details on the checkout page and you'll receive order updates via email and SMS.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>I forgot to sign in, what should I do?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Don't worry! You can checkout as a <strong>guest</strong> without logging in. Just enter your details on the checkout page and you'll receive order updates via email and SMS.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>Do you ship internationally?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Currently we ship only within <strong>India</strong>. International shipping is coming soon. Follow us on social media for updates.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>Do you ship internationally?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Currently we ship only within <strong>India</strong>. International shipping is coming soon. Follow us on social media for updates.</p>
                 </div>
+            </div>
 
-                <div class="contact-faq-item">
-                    <button class="contact-faq-question" onclick="this.parentElement.classList.toggle('active')">
-                        <span>How do I contact support?</span>
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 12 15"/>
-                        </svg>
-                    </button>
-                    <div class="contact-faq-answer">
-                        <p>Email us at <strong>support@veloura.com</strong> or use the chat widget at the bottom right corner of any page. We typically respond within a few hours.</p>
-                    </div>
+            <div class="contact-faq-item">
+                <button class="contact-faq-question">
+                    <span>How do I contact support?</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <div class="contact-faq-answer">
+                    <p>Email us at <strong>support@veloura.com</strong> or use the chat widget at the bottom right corner of any page. We typically respond within a few hours.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Mobile Sticky Bottom -->
-    <div class="mobile-order-bottom">
-        <a href="mailto:support@veloura.com" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">Email Us</a>
-        <a href="tel:+91987654 3210" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Call Us</a>
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="mailto:support@veloura.com" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">Email Us</a>
+    <a href="tel:+919876543210" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Call Us</a>
+</div>
+
+<!-- Desktop Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+            <a href="#">Brands</a>
+            <a href="{% url 'sale_products' %}">Sale</a>
+        </div>
+
+        <div>
+            <h4>Support</h4>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
+        </div>
+
+        <div>
+            <h4>Legal</h4>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+        </div>
     </div>
 
-    <!-- Desktop Footer -->
-    <footer class="site-footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <h3>Veloura</h3>
-                <p>Luxury fashion, modern design, and premium shopping experience.</p>
-            </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
 
-            <div>
-                <h4>Shop</h4>
-                <a href="{% url 'category_products' 'women' %}">Women</a>
-                <a href="{% url 'category_products' 'men' %}">Men</a>
-                <a href="{% url 'category_products' 'kids' %}">Kids</a>
-                <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
-                <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
-                <a href="#">Brands</a>
-                <a href="{% url 'sale_products' %}">Sale</a>
-            </div>
+<script>
+document.querySelectorAll('.contact-faq-question').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var item = this.parentElement;
+        var answer = this.nextElementSibling;
+        var isActive = item.classList.contains('active');
 
-            <div>
-                <h4>Support</h4>
-                <a href="{% url 'contact' %}">Contact Us</a>
-                <a href="#">Shipping Policy</a>
-                <a href="#">Returns</a>
-                <a href="#">Help Center</a>
-            </div>
-
-            <div>
-                <h4>Legal</h4>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Refund Policy</a>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2026 Veloura. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script>
-    // Accordion toggle for contact FAQs
-    document.querySelectorAll('.contact-faq-question').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var answer = this.nextElementSibling;
-            if (answer) {
-                answer.style.maxHeight = answer.scrollHeight + 'px';
-                answer.style.opacity = answer.scrollHeight > 0 ? '1' : '0';
+        // Close all open items first
+        document.querySelectorAll('.contact-faq-item').forEach(function(el) {
+            el.classList.remove('active');
+            var a = el.querySelector('.contact-faq-answer');
+            if (a) {
+                a.style.maxHeight = '0';
+                a.style.opacity = '0';
             }
         });
+
+        // Open the clicked item (if it wasn't already open)
+        if (!isActive && answer) {
+            item.classList.add('active');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+            answer.style.opacity = '1';
+        }
     });
-    </script>
+});
+</script>
 
 </body>
 </html>

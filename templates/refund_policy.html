@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Policy - Veloura</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Mobile App Header -->
+<div class="mobile-order-header">
+    <a href="javascript:history.back()" class="mobile-back-btn">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+    </a>
+    <span class="mobile-order-title">Refund Policy</span>
+    <span></span>
+</div>
+
+<!-- Desktop Navbar -->
+<header class="navbar">
+    <div class="logo"><a href="/" class="logo-link">Veloura</a></div>
+    <nav class="nav-links">
+        <div class="nav-item"><a href="{% url 'category_products' 'women' %}">WOMEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'men' %}">MEN</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'kids' %}">KIDS</a></div>
+        <div class="nav-item"><a href="{% url 'category_products' 'accessories' %}">ACCESSORIES</a></div>
+        <div class="nav-item"><a href="#">BRANDS</a></div>
+        <div class="nav-item"><a href="{% url 'sale_products' %}">SALE</a></div>
+    </nav>
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}" class="cart-icon-link">
+            <div class="cart-icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.45c.75 0 1.41-.41 1.75-1.03L21 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44C5.52 15.37 6.48 17 8 17h12v-2H8l1.2-2z"/>
+                </svg>
+                {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</header>
+
+<section class="policy-page">
+    <div class="policy-header">
+        <span class="section-tag">MONEY BACK GUARANTEE</span>
+        <h1>Refund Policy</h1>
+        <p>We want you to love your purchase. If you don't, we ensure a smooth and transparent refund process.</p>
+    </div>
+
+    <div class="policy-content">
+        <h2>1. Order Cancellations (Pre-Shipment)</h2>
+        <p>If you cancel your order before it has been packed or shipped, the refund will be initiated immediately.</p>
+        <ul>
+            <li><strong>Prepaid Orders (UPI/Card/Net Banking):</strong> Refunded to the original payment method within <strong>3-5 business days</strong>.</li>
+            <li><strong>COD Orders:</strong> No refund is needed as no payment was collected.</li>
+        </ul>
+
+        <h2>2. Refunds for Returns</h2>
+        <p>Once your returned item is received at our warehouse and passes the quality check, your refund will be processed.</p>
+        <ul>
+            <li>The quality check takes <strong>1-2 business days</strong> after the item reaches us.</li>
+            <li>The product must be unused, unwashed, and in its original condition with all tags attached.</li>
+            <li>Refunds are processed within <strong>5-7 business days</strong> after the quality check is approved.</li>
+        </ul>
+
+        <h2>3. How Refunds Are Credited</h2>
+        <p>The way you receive your refund depends on how you paid for the order:</p>
+        <ul>
+            <li><strong>UPI / Credit Card / Debit Card / Net Banking:</strong> The amount will be credited back to the exact source of payment. Your bank may take an additional 2-3 days to reflect the balance.</li>
+            <li><strong>Cash on Delivery (COD):</strong> Since you paid by cash at the doorstep, the refund will be processed via <strong>NEFT/IMPS directly to your bank account</strong>. (You will be asked for your bank details when initiating the return).</li>
+        </ul>
+
+        <div class="policy-highlight-box">
+            <p>💡 <strong>COD Tip:</strong> Please keep your bank account details (Account Number, IFSC Code, Account Holder Name) handy when filling out the return form to avoid delays.
+        </div>
+
+        <h2>4. Shipping Charges & Coupons</h2>
+        <p>
+            <strong>Shipping Charges:</strong> If you received free shipping on your order but later return the items, the original shipping cost (₹99) may be deducted from your refund amount. If you return all items from an order where you paid for shipping, the shipping fee will be fully refunded.<br><br>
+            <strong>Coupons & Discounts:</strong> If you used a coupon code, the discount amount will not be refunded as cash. The refund will only be for the actual amount paid by you.
+        </p>
+
+        <h2>5. Delayed or Missing Refunds</h2>
+        <p>If you have received an email confirming your refund but the money hasn't appeared in your account after 10 business days, please check your bank statement first. If you still don't see it, contact us at <strong>support@veloura.com</strong> with your Order ID and we will look into it immediately.</p>
+
+        <h2>6. Non-Refundable Items</h2>
+        <p>The following items cannot be refunded once delivered (unless received damaged or defective):</p>
+        <ul>
+            <li>Perfumes and Fragrances (due to hygiene reasons)</li>
+            <li>Innerwear and Swimwear</li>
+            <li>Items purchased during Final Clearance Sale (unless defective)</li>
+            <li>Free gifts or promotional items</li>
+        </ul>
+    </div>
+</section>
+
+<!-- Mobile Sticky Bottom -->
+<div class="mobile-order-bottom">
+    <a href="{% url 'account_page' %}?tab=orders" class="mobile-order-action-btn mobile-order-secondary-btn" style="text-decoration:none;text-align:center;">My Orders</a>
+    <a href="{% url 'contact' %}" class="mobile-order-action-btn mobile-order-primary-btn" style="text-decoration:none;text-align:center;">Contact Us</a>
+</div>
+
+<!-- Desktop Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h3>Veloura</h3>
+            <p>Luxury fashion, modern design, and premium shopping experience.</p>
+        </div>
+        <div>
+            <h4>Shop</h4>
+            <a href="{% url 'category_products' 'women' %}">Women</a>
+            <a href="{% url 'category_products' 'men' %}">Men</a>
+            <a href="{% url 'category_products' 'kids' %}">Kids</a>
+            <a href="{% url 'category_products' 'accessories' %}">Accessories</a>
+            <a href="{% url 'category_products' 'perfume' %}">Perfume</a>
+            <a href="#">Brands</a>
+            <a href="{% url 'sale_products' %}">Sale</a>
+        </div>
+        <div>
+            <h4>Support</h4>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
+        </div>
+        <div>
+            <h4>Legal</h4>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Veloura. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

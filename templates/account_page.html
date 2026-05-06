@@ -42,7 +42,7 @@
             .account-page-welcome h1 { font-size: 18px !important; margin: 0 0 2px !important; }
             .account-page-welcome span { font-size: 12px; color: #94969f; }
 
-            /* Sidebar → horizontal tabs */
+            /* Sidebar -> horizontal tabs */
             .account-page-layout { display: flex !important; flex-direction: column !important; gap: 0; }
             .account-sidebar {
                 display: flex !important; flex-direction: row !important; overflow-x: auto; gap: 0;
@@ -86,12 +86,26 @@
             /* ---- ORDERS TAB ---- */
             .order-card { border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid #f0f0f0; }
             .order-card:hover { transform: none; box-shadow: none; }
-            .order-top { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+            .order-top { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 14px; }
             .order-top strong { font-size: 14px; margin-bottom: 2px; }
             .order-top p { font-size: 11px; color: #94969f; margin: 0; }
             .account-order-meta { flex-wrap: wrap; gap: 6px; }
             .account-order-meta span { font-size: 11px; padding: 4px 10px; border-radius: 6px; }
             .order-status { font-size: 10px; padding: 4px 10px; letter-spacing: 0.5px; }
+            
+            /* --- NEW: Product Items in Order --- */
+            .order-items-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px dashed #e0e0e0; }
+            .order-item-card { display: flex; gap: 12px; align-items: center; text-decoration: none; color: inherit; background: #f9fafb; padding: 10px; border-radius: 10px; border: 1px solid #f0f0f0; }
+            .order-item-image { width: 72px; height: 72px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: #fff; border: 1px solid #f0f0f0; }
+            .order-item-image img { width: 100%; height: 100%; object-fit: cover; }
+            .order-item-details { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+            .order-item-details h4 { font-size: 13px; font-weight: 600; color: #282c3f; margin: 0; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+            .order-item-meta { display: flex; gap: 10px; font-size: 11px; color: #94969f; }
+            .order-item-price { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+            .item-current-price { font-size: 14px; font-weight: 700; color: #282c3f; }
+            .item-old-price { font-size: 12px; color: #bbb; text-decoration: line-through; }
+            /* --- END Product Items --- */
+
             .order-timeline { display: flex !important; flex-direction: row !important; grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important; gap: 4px; margin: 0 0 10px; }
             .timeline-step { text-align: center; color: #bbb; font-size: 9px; position: relative; padding-top: 14px; }
             .timeline-step::before { height: 4px; margin-bottom: 6px; }
@@ -103,6 +117,7 @@
             .order-request-form textarea { border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; font-size: 12px; min-height: 60px; width: 100%; margin-bottom: 8px; }
             .small-action-btn { padding: 8px 14px; font-size: 11px; border-radius: 6px; }
             .small-action-btn.delete-btn { background: #fee4e2; color: #b42318; }
+            .small-action-btn.return-btn { background: #b08d57; color: #fff; border: none; }
             .order-request-history { margin-top: 10px; }
             .order-request-card { background: #f9fafb; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
             .order-request-top { margin-bottom: 6px; }
@@ -204,7 +219,7 @@
     </div>
 
     <div class="account-page-layout">
-        <!-- Sidebar → horizontal tabs on mobile -->
+        <!-- Sidebar -->
         <aside class="account-sidebar">
             <a href="{% url 'account_page' %}?tab=orders" class="account-side-link {% if active_tab == 'orders' %}active{% endif %}"><span>Orders</span><span>→</span></a>
             <a href="{% url 'account_page' %}?tab=wishlist" class="account-side-link {% if active_tab == 'wishlist' %}active{% endif %}"><span>Wishlist</span><span>→</span></a>
@@ -275,6 +290,31 @@
                             <span>₹{{ order.total_amount }}</span>
                         </div>
                     </div>
+
+                    <!-- FIXED: Product Details using correct model fields -->
+                    <div class="order-items-list">
+                        {% for item in order.items.all %}
+                        <div class="order-item-card">
+                            <div class="order-item-image">
+                                {% if item.image %}
+                                <img src="{{ item.image }}" alt="{{ item.product_name }}">
+                                {% else %}
+                                <div style="width:100%;height:100%;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:10px;">No Img</div>
+                                {% endif %}
+                            </div>
+                            <div class="order-item-details">
+                                <h4>{{ item.product_name }}</h4>
+                                <div class="order-item-meta">
+                                    <span>Qty: {{ item.quantity }}</span>
+                                </div>
+                                <div class="order-item-price">
+                                    <span class="item-current-price">₹{{ item.price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
                     <div class="order-timeline">
                         <div class="timeline-step {% if order.order_status == 'placed' or order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Placed</span></div>
                         <div class="timeline-step {% if order.order_status == 'packed' or order.order_status == 'shipped' or order.order_status == 'out_for_delivery' or order.order_status == 'delivered' %}active{% endif %}"><span>Packed</span></div>
@@ -285,6 +325,7 @@
                     <p class="delivery-date">
                         {% if order.estimated_delivery %}Expected: {{ order.estimated_delivery|date:"d M Y" }}{% else %}Delivery date will be updated soon.{% endif %}
                     </p>
+                    
                     <div class="order-request-row">
                         {% if order.order_status == 'placed' or order.order_status == 'packed' %}
                         <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
@@ -293,16 +334,16 @@
                             <textarea name="reason" placeholder="Reason for cancellation..." required></textarea>
                             <button type="submit" class="small-action-btn delete-btn">Request Cancel</button>
                         </form>
-                        {% endif %}
-                        {% if order.order_status == 'delivered' %}
+                        {% elif order.order_status == 'delivered' %}
                         <form method="post" action="{% url 'create_order_request' order.id %}" class="order-request-form">
                             {% csrf_token %}
                             <input type="hidden" name="request_type" value="return">
                             <textarea name="reason" placeholder="Reason for return..." required></textarea>
-                            <button type="submit" class="small-action-btn">Request Return</button>
+                            <button type="submit" class="small-action-btn return-btn">Request Return</button>
                         </form>
                         {% endif %}
                     </div>
+
                     <div class="order-request-history">
                         {% for req in order.requests.all %}
                         <div class="order-request-card">
@@ -515,3 +556,5 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </body>
 </html>
+
+

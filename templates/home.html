@@ -504,17 +504,17 @@
 
         <div>
             <h4>Support</h4>
-            <a href="#">Contact Us</a>
-            <a href="#">Shipping Policy</a>
-            <a href="#">Returns</a>
-            <a href="#">Help Center</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+            <a href="{% url 'shipping_policy' %}">Shipping Policy</a>
+            <a href="{% url 'account_page' %}?tab=orders">Returns</a>
+            <a href="{% url 'help_center' %}">Help Center</a>
         </div>
 
         <div>
             <h4>Legal</h4>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Refund Policy</a>
+            <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+            <a href="{% url 'terms_and_conditions' %}">Terms & Conditions</a>
+            <a href="{% url 'refund_policy' %}">Refund Policy</a>
         </div>
     </div>
 
